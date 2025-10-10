@@ -43,16 +43,18 @@ public class BaseCultivator {
         hp= (RangeValue) new RangeValue()
                 .setMinValue(100)
                 .setMaxValue(RandomUtil.randomInt(100, 200))
+                .setCurrentValue(100)
                 .setMinGrowthDelta(10)
                 .setMaxGrowthDelta(20)
                 .setName("生命值");
         atk= (RangeValue) new RangeValue()
                 .setMinValue(10)
                 .setMaxValue(RandomUtil.randomInt(10, 20))
+                .setCurrentValue(10)
                 .setMinGrowthDelta(1)
                 .setMaxGrowthDelta(2)
                 .setName("攻击力");
-        for (int i = 0; i < (int)level.getCurrentValue(); i++) {
+        for (int i = 0; i < level.getCurrentValue().intValue(); i++) {
             level.grow();
             hp.grow();
             atk.grow();
