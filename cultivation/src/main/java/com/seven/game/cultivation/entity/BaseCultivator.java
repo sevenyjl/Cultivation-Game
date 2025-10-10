@@ -37,24 +37,24 @@ public class BaseCultivator {
         int lv=RandomUtil.randomInt(1, 10);
         level = new GrowthAttribute()
                 .setName("等级")
-                .setMinGrowthDelta(1)
-                .setMaxGrowthDelta(1)
-                .setCurrentValue(1);
+                .setMinGrowthDelta(1.0)
+                .setMaxGrowthDelta(1.0)
+                .setCurrentValue(1.0);
         hp= (RangeValue) new RangeValue()
-                .setMinValue(100)
-                .setMaxValue(RandomUtil.randomInt(100, 200))
-                .setCurrentValue(100)
-                .setMinGrowthDelta(10)
-                .setMaxGrowthDelta(20)
+                .setMinValue(100.0)
+                .setMaxValue(RandomUtil.randomDouble(100, 200))
+                .setCurrentValue(100.0)
+                .setMinGrowthDelta(10.0)
+                .setMaxGrowthDelta(20.0)
                 .setName("生命值");
         atk= (RangeValue) new RangeValue()
-                .setMinValue(10)
-                .setMaxValue(RandomUtil.randomInt(10, 20))
-                .setCurrentValue(10)
-                .setMinGrowthDelta(1)
-                .setMaxGrowthDelta(2)
+                .setMinValue(10.0)
+                .setMaxValue(RandomUtil.randomDouble(10, 20))
+                .setCurrentValue(10.0)
+                .setMinGrowthDelta(1.0)
+                .setMaxGrowthDelta(2.0)
                 .setName("攻击力");
-        for (int i = 0; i < level.getCurrentValue().intValue(); i++) {
+        for (int i = 0; i < lv; i++) {
             level.grow();
             hp.grow();
             atk.grow();

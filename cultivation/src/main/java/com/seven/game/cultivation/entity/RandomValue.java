@@ -15,9 +15,8 @@ import java.math.BigDecimal;
 public class RandomValue extends RangeValue {
 
     @Override
-    public BigDecimal getCurrentValue() {
+    public Double getCurrentValue() {
         // 保留两位小数
-        float v = RandomUtil.randomFloat(getMinValue().floatValue(), getMaxValue().floatValue());
-        return new BigDecimal(v).setScale(SCALE, ROUNDING_MODE);
+        return RandomUtil.randomDouble(getMinValue(), getMaxValue());
     }
 }

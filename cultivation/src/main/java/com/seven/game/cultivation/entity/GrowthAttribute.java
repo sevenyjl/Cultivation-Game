@@ -14,41 +14,23 @@ import java.math.RoundingMode;
 @Accessors(chain = true)
 public class GrowthAttribute {
     private String name;
-    private BigDecimal currentValue;
+    private Double currentValue;
     /**
      * 成长最小增量
      */
-    private BigDecimal minGrowthDelta;
+    private Double minGrowthDelta;
     /**
      * 成长最大增量
      */
-    private BigDecimal maxGrowthDelta;
+    private Double maxGrowthDelta;
 
-    protected static final int SCALE = 2;
-    protected static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_UP;
 
     public void grow() {
         float delta = RandomUtil.randomFloat(
             minGrowthDelta.floatValue(), 
             maxGrowthDelta.floatValue()
         );
-        BigDecimal formattedDelta = new BigDecimal(delta).setScale(SCALE, ROUNDING_MODE);
-        this.currentValue = this.currentValue.add(formattedDelta);
+        this.currentValue += delta;
     }
-    
-    // 便捷的float设置方法
-    public GrowthAttribute setCurrentValue(float value) {
-        this.currentValue = new BigDecimal(value).setScale(SCALE, ROUNDING_MODE);
-        return this;
-    }
-    
-    public GrowthAttribute setMinGrowthDelta(float value) {
-        this.minGrowthDelta = new BigDecimal(value).setScale(SCALE, ROUNDING_MODE);
-        return this;
-    }
-    
-    public GrowthAttribute setMaxGrowthDelta(float value) {
-        this.maxGrowthDelta = new BigDecimal(value).setScale(SCALE, ROUNDING_MODE);
-        return this;
-    }
+
 }
