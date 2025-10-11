@@ -1,6 +1,8 @@
 package com.seven.game.cultivation.entity;
 
 import cn.hutool.core.util.RandomUtil;
+import com.seven.game.cultivation.entity.attribute.GrowthAttribute;
+import com.seven.game.cultivation.entity.attribute.RangeValue;
 import com.seven.game.cultivation.utils.NameUtils;
 import lombok.Data;
 import lombok.experimental.Accessors;

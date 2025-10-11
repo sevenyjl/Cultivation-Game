@@ -1,4 +1,4 @@
-package com.seven.game.cultivation.entity;
+package com.seven.game.cultivation.entity.attribute;
 
 import cn.hutool.core.util.RandomUtil;
 import lombok.Data;
