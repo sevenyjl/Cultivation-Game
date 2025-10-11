@@ -2,6 +2,7 @@ package com.seven.game.cultivation.entity.attribute;
 
 import cn.hutool.core.util.RandomUtil;
 import lombok.Data;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
@@ -10,9 +11,17 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
+@ToString(callSuper = true)
 public class RangeValue extends GrowthAttribute {
     private Double minValue;
     private Double maxValue;
+
+    @Override
+    public GrowthAttribute setCurrentValue(Double currentValue) {
+        currentValue = Math.max(currentValue, minValue);
+        currentValue = Math.min(currentValue, maxValue);
+        return super.setCurrentValue(currentValue);
+    }
 
     @Override
     public void grow() {

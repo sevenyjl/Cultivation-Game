@@ -1,5 +1,6 @@
 package com.seven.game.cultivation.entity;
 
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.seven.game.cultivation.entity.attribute.GrowthAttribute;
 import com.seven.game.cultivation.entity.attribute.RangeValue;
@@ -38,7 +39,7 @@ public class BaseCultivator {
     }
 
     /**
-     * 进行行为决策，并行动
+     * 进行行为决策，并行动（用于ai）
      */
     public void action() {
 
@@ -50,6 +51,7 @@ public class BaseCultivator {
      * @return
      */
     public BaseCultivator randomAssignmentMethod() {
+        id = IdUtil.fastSimpleUUID();
         name = NameUtils.generateCultivatorName();
         int lv = RandomUtil.randomInt(1, 10);
         level = new GrowthAttribute()

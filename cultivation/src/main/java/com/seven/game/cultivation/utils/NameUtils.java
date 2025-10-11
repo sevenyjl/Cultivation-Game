@@ -83,6 +83,40 @@ public class NameUtils {
         "大阵", "结界", "领域", "世界", "空间", "时空", "轮回", "因果", "命运", "天道"
     };
     
+    // 地点描述 - 环境特征
+    private static final String[] LOCATION_ENVIRONMENT = {
+        "云雾缭绕", "灵气充沛", "仙气弥漫", "魔气森森", "鬼气阴森", "妖气冲天", "神光普照", "佛光万丈",
+        "灵气稀薄", "灵气浓郁", "灵气狂暴", "灵气温和", "灵气纯净", "灵气污浊", "灵气枯竭", "灵气复苏",
+        "山清水秀", "鸟语花香", "风景如画", "景色宜人", "荒凉贫瘠", "寸草不生", "生机勃勃", "死气沉沉",
+        "四季如春", "严寒酷暑", "春暖花开", "秋高气爽", "夏日炎炎", "冬雪皑皑", "风雨交加", "雷电交加"
+    };
+    
+    // 地点描述 - 建筑特征
+    private static final String[] LOCATION_ARCHITECTURE = {
+        "宫殿巍峨", "楼阁耸立", "亭台楼阁", "雕梁画栋", "金碧辉煌", "古朴典雅", "气势恢宏", "雄伟壮观",
+        "破败不堪", "残垣断壁", "荒废已久", "年久失修", "崭新如初", "精心维护", "神秘莫测", "诡异莫测",
+        "阵法环绕", "结界保护", "禁制重重", "机关密布", "陷阱遍地", "安全无忧", "戒备森严", "自由开放"
+    };
+    
+    // 地点描述 - 资源特征
+    private static final String[] LOCATION_RESOURCES = {
+        "灵药遍地", "灵石丰富", "灵矿众多", "灵泉涌流", "灵脉纵横", "灵草茂盛", "灵果累累", "灵兽出没",
+        "资源匮乏", "资源丰富", "资源稀有", "资源普通", "资源珍贵", "资源常见", "资源枯竭", "资源再生",
+        "天材地宝", "奇珍异宝", "法宝众多", "法器遍地", "丹药充足", "符箓丰富", "阵法材料", "炼器材料"
+    };
+    
+    // 地点描述 - 危险程度
+    private static final String[] LOCATION_DANGER = {
+        "极度危险", "非常危险", "比较危险", "相对安全", "十分安全", "绝对安全", "危机四伏", "险象环生",
+        "妖魔横行", "鬼怪出没", "妖兽遍地", "魔物众多", "邪修聚集", "正道守护", "中立区域", "和平地带"
+    };
+    
+    // 地点描述 - 历史传说
+    private static final String[] LOCATION_HISTORY = {
+        "上古遗迹", "远古战场", "神话传说", "仙人洞府", "魔王巢穴", "妖王领地", "鬼王领域", "神王居所",
+        "历史悠久的", "新近建立的", "传说中的", "真实存在的", "神秘消失的", "重新发现的", "从未探索的", "人迹罕至的"
+    };
+    
     /**
      * 生成随机修仙者名称
      * @return 修仙者名称
@@ -171,5 +205,103 @@ public class NameUtils {
             names[i] = generateLocationName();
         }
         return names;
+    }
+    
+    /**
+     * 生成随机地点描述
+     * @return 地点描述字符串
+     */
+    public static String generateLocationDescription() {
+        // 随机选择2-4个描述特征组合
+        int featureCount = 2 + random.nextInt(3); // 2-4个特征
+        StringBuilder description = new StringBuilder();
+        
+        // 确保不重复选择相同的特征类型
+        boolean[] usedTypes = new boolean[5]; // 5种特征类型
+        
+        for (int i = 0; i < featureCount; i++) {
+            int type;
+            do {
+                type = random.nextInt(5); // 0-4分别对应环境、建筑、资源、危险、历史
+            } while (usedTypes[type]);
+            
+            usedTypes[type] = true;
+            
+            String feature = "";
+            switch (type) {
+                case 0:
+                    feature = LOCATION_ENVIRONMENT[random.nextInt(LOCATION_ENVIRONMENT.length)];
+                    break;
+                case 1:
+                    feature = LOCATION_ARCHITECTURE[random.nextInt(LOCATION_ARCHITECTURE.length)];
+                    break;
+                case 2:
+                    feature = LOCATION_RESOURCES[random.nextInt(LOCATION_RESOURCES.length)];
+                    break;
+                case 3:
+                    feature = LOCATION_DANGER[random.nextInt(LOCATION_DANGER.length)];
+                    break;
+                case 4:
+                    feature = LOCATION_HISTORY[random.nextInt(LOCATION_HISTORY.length)];
+                    break;
+            }
+            
+            if (description.length() > 0) {
+                description.append("，");
+            }
+            description.append(feature);
+        }
+        
+        return description.toString();
+    }
+    
+    /**
+     * 根据地点名称生成更具体的描述
+     * @param locationName 地点名称
+     * @return 具体的地点描述
+     */
+    public static String generateLocationDescription(String locationName) {
+        String baseDescription = generateLocationDescription();
+        
+        // 根据地点名称的特征添加更具体的描述
+        if (locationName.contains("山") || locationName.contains("峰") || locationName.contains("岭")) {
+            baseDescription += "，山势险峻";
+        } else if (locationName.contains("河") || locationName.contains("江") || locationName.contains("海")) {
+            baseDescription += "，水波荡漾";
+        } else if (locationName.contains("林") || locationName.contains("原")) {
+            baseDescription += "，植被茂密";
+        } else if (locationName.contains("城") || locationName.contains("镇") || locationName.contains("村")) {
+            baseDescription += "，人烟稠密";
+        } else if (locationName.contains("宫") || locationName.contains("殿") || locationName.contains("阁")) {
+            baseDescription += "，建筑精美";
+        }
+        
+        return baseDescription;
+    }
+    
+    /**
+     * 批量生成地点描述
+     * @param count 生成数量
+     * @return 地点描述数组
+     */
+    public static String[] generateLocationDescriptions(int count) {
+        String[] descriptions = new String[count];
+        for (int i = 0; i < count; i++) {
+            descriptions[i] = generateLocationDescription();
+        }
+        return descriptions;
+    }
+    
+    /**
+     * 批量生成带名称的地点描述
+     * @param locationNames 地点名称数组
+     * @return 对应的地点描述数组
+     */
+    public static String[] generateLocationDescriptions(String[] locationNames) {
+        String[] descriptions = new String[locationNames.length];
+        for (int i = 0; i < locationNames.length; i++) {
+            descriptions[i] = generateLocationDescription(locationNames[i]);
+        }
+        return descriptions;
     }
 }
