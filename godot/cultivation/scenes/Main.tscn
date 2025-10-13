@@ -1,0 +1,166 @@
+[gd_scene load_steps=3 format=3 uid="uid://cgryb2pno3ypx"]
+
+[ext_resource type="Script" uid="uid://dtfqecbwo7rs8" path="res://manager/GameManager.gd" id="1_3d2pv"]
+
+[sub_resource type="GDScript" id="GDScript_qnwvq"]
+script/source = "extends Node
+
+
+@onready var cultivator_info_label = $CanvasLayer/UI/CultivatorPanel/CultivatorInfo
+@onready var location_info_label = $CanvasLayer/UI/LocationPanel/LocationInfo
+@onready var absorb_button = $CanvasLayer/UI/Controls/AbsorbButton
+@onready var upgrade_location_button = $CanvasLayer/UI/Controls/UpgradeLocationButton
+@onready var game_log = $CanvasLayer/UI/LogPanel/LogScroll/LogText
+
+
+func _ready():
+	# 连接按钮信号
+	absorb_button.connect(\"pressed\", Callable(self, \"_on_absorb_pressed\"))
+	upgrade_location_button.connect(\"pressed\", Callable(self, \"_on_upgrade_location_pressed\"))
+	
+	# 初始化UI显示
+	update_ui()
+
+func _process(delta):
+	# 每帧更新UI信息
+	update_ui()
+
+func update_ui():
+	# 更新修炼者信息
+	var cultivator = GameManager.instance.cultivator
+	cultivator_info_label.text = \"修炼者信息:\\n\"
+	cultivator_info_label.text += \"姓名: %s\\n\" % [cultivator.get_name_info()]
+	cultivator_info_label.text += \"境界: %s (%d级)\\n\" % [cultivator.stage_name, cultivator.level]
+	cultivator_info_label.text += \"灵气: %.1f / %.1f\\n\" % [cultivator.qi, cultivator.get_required_qi()]
+	cultivator_info_label.text += \"升级进度: %d%%\" % (min(100, (cultivator.qi / cultivator.get_required_qi()) * 100))
+	
+	# 更新修炼地信息
+	var location = GameManager.instance.cultivation_location
+	location_info_label.text = \"修炼地信息:\\n\"
+	location_info_label.text += \"等级: %d级\\n\" % location.level
+	location_info_label.text += \"灵气存储: %.1f / %.1f\\n\" % [location.current_qi, location.max_qi_storage]
+	location_info_label.text += \"生产速度: %.1f/秒\\n\" % location.qi_generation_rate
+	location_info_label.text += \"溢出经验: %.1f / %.1f\" % [location.overflow_exp, location.get_required_exp()]
+
+func _on_absorb_pressed():
+	var location = GameManager.instance.cultivation_location
+	var cultivator = GameManager.instance.cultivator
+	var lq=location.current_qi
+	if  lq> 0:
+		GameManager.instance.absorb_qi(lq)
+		add_log(\"吸收了所有灵气: %.1f\" % lq)
+		
+		# 检查是否可以升级
+		if cultivator.can_level_up():
+			if cultivator.level_up():
+				add_log(\"恭喜！成功升级到 %s (%d级)\" % [cultivator.stage_name, cultivator.level])
+	else:
+		add_log(\"没有灵气可以吸收\")
+
+func _on_upgrade_location_pressed():
+	var location = GameManager.instance.cultivation_location
+	
+	if location.can_upgrade():
+		if location.upgrade():
+			add_log(\"修炼地升级成功！现在是 %d 级\" % location.level)
+		else:
+			add_log(\"修炼地升级失败\")
+	else:
+		var needed_exp = location.get_required_exp() - location.overflow_exp
+		add_log(\"修炼地经验不足，还需要 %.1f 经验\" % needed_exp)
+
+func add_log(message):
+	game_log.text += \"[%s] %s\\n\" % [Time.get_time_string_from_system(), message]
+	# 自动滚动到底部
+	game_log.get_parent().scroll_vertical = game_log.get_line_count()
+"
+
+[node name="Main" type="Node"]
+script = SubResource("GDScript_qnwvq")
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("1_3d2pv")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CultivatorPanel" type="PanelContainer" parent="CanvasLayer/UI"]
+layout_mode = 0
+anchor_right = 0.5
+anchor_bottom = 0.4
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+
+[node name="CultivatorInfo" type="Label" parent="CanvasLayer/UI/CultivatorPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+autowrap_mode = 1
+
+[node name="LocationPanel" type="PanelContainer" parent="CanvasLayer/UI"]
+layout_mode = 0
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.4
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+
+[node name="LocationInfo" type="Label" parent="CanvasLayer/UI/LocationPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+autowrap_mode = 1
+
+[node name="Controls" type="HBoxContainer" parent="CanvasLayer/UI"]
+layout_mode = 0
+anchor_top = 0.4
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+alignment = 1
+
+[node name="AbsorbButton" type="Button" parent="CanvasLayer/UI/Controls"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "吸收灵气"
+
+[node name="UpgradeLocationButton" type="Button" parent="CanvasLayer/UI/Controls"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "升级修炼地"
+
+[node name="LogPanel" type="PanelContainer" parent="CanvasLayer/UI"]
+layout_mode = 0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+
+[node name="LogScroll" type="ScrollContainer" parent="CanvasLayer/UI/LogPanel"]
+layout_mode = 2
+
+[node name="LogText" type="RichTextLabel" parent="CanvasLayer/UI/LogPanel/LogScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 2
+theme_override_font_sizes/normal_font_size = 14
+autowrap_mode = 1
+selection_enabled = true
+
+[connection signal="pressed" from="CanvasLayer/UI/Controls/AbsorbButton" to="." method="_on_absorb_button_pressed"]
