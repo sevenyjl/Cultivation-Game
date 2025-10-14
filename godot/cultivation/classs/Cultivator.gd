@@ -43,6 +43,14 @@ const NAME_SUFFIXES = [
 @export var attack_base_min: float = 1.0
 @export var attack_base_max: float = 5.0
 
+# 生命值相关属性
+@export var health_base: float = 100.0
+@export var health_current: float = 100.0
+
+# 生命值恢复速度相关属性
+@export var health_restore_min: float = 5.0
+@export var health_restore_max: float = 15.0
+
 # 只读属性
 var stage_name:
 	get:
@@ -109,6 +117,54 @@ func get_attack_range() -> Dictionary:
 		"max": attack_base_max * (1.0 + level_bonus) * stage_multiplier
 	}
 
+# 获取最大生命值
+func get_max_health() -> float:
+	# 最大生命值计算公式：
+	# 最大生命值 = 基础生命值 × (1 + 等级加成) × 境界倍数
+	
+	# 境界倍数计算，与攻击力相同
+	var stage_multiplier = 1.0 + (STAGES.keys().find(stage_name) * 0.5)
+	
+	# 等级加成计算，每级提供50%的基础生命值加成
+	# 例：1级 = 50%加成，2级 = 100%加成，3级 = 150%加成...
+	var level_bonus = level * 0.5
+	
+	return health_base * (1.0 + level_bonus) * stage_multiplier
+
+# 恢复生命值
+func restore_health(amount: float) -> void:
+	var max_health = get_max_health()
+	health_current = min(health_current + amount, max_health)
+
+# 受到伤害
+func take_damage(amount: float) -> void:
+	health_current = max(health_current - amount, 0.0)
+
+# 检查是否存活
+func is_alive() -> bool:
+	return health_current > 0.0
+
+# 获取当前恢复生命值范围
+func get_health_restore_range() -> Dictionary:
+	# 生命值恢复公式：
+	# 恢复量 = 基础恢复量 × (1 + 等级加成) × 境界倍数
+	
+	# 境界倍数计算，与攻击力相同
+	var stage_multiplier = 1.0 + (STAGES.keys().find(stage_name) * 0.5)
+	
+	# 等级加成计算，每级提供15%的基础恢复加成
+	var level_bonus = level * 0.15
+	
+	return {
+		"min": health_restore_min * (1.0 + level_bonus) * stage_multiplier,
+		"max": health_restore_max * (1.0 + level_bonus) * stage_multiplier
+	}
+
+# 获取随机恢复生命值
+func get_random_health_restore() -> float:
+	var range = get_health_restore_range()
+	return range.min + randf() * (range.max - range.min)
+
 # 获取随机攻击力值
 func get_random_attack() -> float:
 	var range = get_attack_range()
@@ -125,5 +181,19 @@ func level_up() -> bool:
 		# 这样设计使得攻击范围随等级提升而逐渐扩大
 		attack_base_min *= 1.1
 		attack_base_max *= 1.15
+		
+		# 升级时基础生命值增长公式：
+		# 基础生命值 = 当前基础生命值 × 1.25（每级提升25%）
+		health_base *= 1.25
+		
+		# 升级时基础恢复速度增长公式：
+		# 基础最小恢复速度 = 当前基础最小恢复速度 × 1.12（每级提升12%）
+		# 基础最大恢复速度 = 当前基础最大恢复速度 × 1.18（每级提升18%）
+		health_restore_min *= 1.12
+		health_restore_max *= 1.18
+		
+		# 升级时恢复满生命值
+		health_current = get_max_health()
+		
 		return true
 	return false

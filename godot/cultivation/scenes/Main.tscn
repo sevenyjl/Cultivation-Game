@@ -10,6 +10,7 @@ script/source = "extends Node
 @onready var location_info_label = $CanvasLayer/UI/LocationPanel/LocationInfo
 @onready var absorb_button = $CanvasLayer/UI/Controls/AbsorbButton
 @onready var upgrade_location_button = $CanvasLayer/UI/Controls/UpgradeLocationButton
+@onready var meditate_button = $CanvasLayer/UI/Controls/MeditateButton
 @onready var game_log = $CanvasLayer/UI/LogPanel/LogScroll/LogText
 
 
@@ -24,10 +25,20 @@ func _process(delta):
 func update_ui():
 	# 更新修炼者信息
 	var cultivator = GameManager.instance.cultivator
+	
 	cultivator_info_label.text = \"修炼者信息:\\n\"
 	cultivator_info_label.text += \"姓名: %s\\n\" % [cultivator.get_name_info()]
 	cultivator_info_label.text += \"境界: %s (%d级)\\n\" % [cultivator.stage_name, cultivator.level]
 	cultivator_info_label.text += \"灵气: %.1f / %.1f\\n\" % [cultivator.qi, cultivator.get_required_qi()]
+	
+	# 获取并显示攻击力范围
+	var attack_range = cultivator.get_attack_range()
+	cultivator_info_label.text += \"攻击力: %.1f - %.1f\\n\" % [attack_range.min, attack_range.max]
+	
+	# 显示生命值信息
+	var max_health = cultivator.get_max_health()
+	cultivator_info_label.text += \"生命值: %.1f / %.1f\\n\" % [cultivator.health_current, max_health]
+	
 	cultivator_info_label.text += \"升级进度: %d%%\" % (min(100, (cultivator.qi / cultivator.get_required_qi()) * 100))
 	
 	# 更新修炼地信息
@@ -54,7 +65,6 @@ func _on_absorb_button_pressed() -> void:
 	else:
 		add_log(\"没有灵气可以吸收\")
 
-
 func _on_upgrade_location_button_pressed() -> void:
 	var location = GameManager.instance.cultivation_location
 	
@@ -66,6 +76,24 @@ func _on_upgrade_location_button_pressed() -> void:
 	else:
 		var needed_exp = location.get_required_exp() - location.overflow_exp
 		add_log(\"修炼地经验不足，还需要 %.1f 经验\" % needed_exp)
+
+func _on_meditate_button_pressed() -> void:
+	var cultivator = GameManager.instance.cultivator
+	
+	# 检查是否还有恢复空间
+	var max_health = cultivator.get_max_health()
+	if cultivator.health_current >= max_health:
+		add_log(\"生命值已满，无需打坐\")
+		return
+	
+	# 获取随机恢复量并恢复生命值
+	var restore_amount = cultivator.get_random_health_restore()
+	cultivator.restore_health(restore_amount)
+	
+	# 记录并显示恢复信息
+	add_log(\"打坐修炼，恢复了 %.1f 点生命值\" % restore_amount)
+	add_log(\"当前生命值: %.1f / %.1f\" % [cultivator.health_current, max_health])
+
 
 func add_log(message):
 	game_log.text += \"[%s] %s\\n\" % [Time.get_time_string_from_system(), message]
@@ -139,6 +167,11 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "升级修炼地"
 
+[node name="MeditateButton" type="Button" parent="CanvasLayer/UI/Controls"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "打坐恢复"
+
 [node name="LogPanel" type="PanelContainer" parent="CanvasLayer/UI"]
 layout_mode = 0
 anchor_top = 0.5
@@ -163,3 +196,4 @@ selection_enabled = true
 
 [connection signal="pressed" from="CanvasLayer/UI/Controls/AbsorbButton" to="." method="_on_absorb_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/UI/Controls/UpgradeLocationButton" to="." method="_on_upgrade_location_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/UI/Controls/MeditateButton" to="." method="_on_meditate_button_pressed"]
