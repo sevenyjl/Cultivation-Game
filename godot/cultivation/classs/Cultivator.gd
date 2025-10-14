@@ -39,6 +39,10 @@ const NAME_SUFFIXES = [
 @export var qi: float = 0.0
 @export var name_info: String = ""
 
+# 攻击力相关属性
+@export var attack_base_min: float = 1.0
+@export var attack_base_max: float = 5.0
+
 # 只读属性
 var stage_name:
 	get:
@@ -83,10 +87,43 @@ func get_required_qi() -> float:
 func can_level_up() -> bool:
 	return qi >= get_required_qi()
 
+# 获取当前攻击范围
+func get_attack_range() -> Dictionary:
+	# 攻击力计算公式：
+	# 最终攻击力 = 基础攻击力 × (1 + 等级加成) × 境界倍数
+	
+	# 1. 境界倍数计算
+	# 每个境界增加50%的攻击力系数
+	# 例：炼气(第0个境界) = 1.0，筑基(第1个境界) = 1.5，金丹(第2个境界) = 2.0
+	var stage_multiplier = 1.0 + (STAGES.keys().find(stage_name) * 0.5)
+	
+	# 2. 等级加成计算
+	# 每级提供20%的基础攻击加成
+	# 例：1级 = 20%加成，2级 = 40%加成，3级 = 60%加成...
+	var level_bonus = level * 0.2
+	
+	# 3. 计算最终的最小和最大攻击力范围
+	# 将基础攻击力、等级加成和境界倍数相乘得到最终攻击力
+	return {
+		"min": attack_base_min * (1.0 + level_bonus) * stage_multiplier,
+		"max": attack_base_max * (1.0 + level_bonus) * stage_multiplier
+	}
+
+# 获取随机攻击力值
+func get_random_attack() -> float:
+	var range = get_attack_range()
+	return range.min + randf() * (range.max - range.min)
+
 # 执行升级
 func level_up() -> bool:
 	if can_level_up():
 		qi -= get_required_qi()
 		level += 1
+		# 升级时基础攻击力增长公式：
+		# 基础最小攻击力 = 当前基础最小攻击力 × 1.1（每级提升10%）
+		# 基础最大攻击力 = 当前基础最大攻击力 × 1.15（每级提升15%）
+		# 这样设计使得攻击范围随等级提升而逐渐扩大
+		attack_base_min *= 1.1
+		attack_base_max *= 1.15
 		return true
 	return false

@@ -22,7 +22,7 @@ func _ready() -> void:
 	# 初始化游戏对象
 	if not cultivator:
 		cultivator = Cultivator.new()
-		cultivator.set_name(cultivator.generate_random_name())  # 设置随机名称
+		cultivator.set_name_info(cultivator.generate_random_name())  # 设置随机名称
 	if not cultivation_location:
 		cultivation_location = CultivationLocation.new()
 	
@@ -74,7 +74,7 @@ func absorb_qi(amount: float) -> void:
 # 获取修炼者境界信息
 func get_cultivator_info() -> Dictionary:
 	return {
-		"name": cultivator.get_name(),
+		"name": cultivator.get_name_info(),
 		"level": cultivator.level,
 		"stage": cultivator.stage_name,
 		"current_qi": cultivator.qi,

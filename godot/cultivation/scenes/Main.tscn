@@ -14,10 +14,6 @@ script/source = "extends Node
 
 
 func _ready():
-	# 连接按钮信号
-	absorb_button.connect(\"pressed\", Callable(self, \"_on_absorb_pressed\"))
-	upgrade_location_button.connect(\"pressed\", Callable(self, \"_on_upgrade_location_pressed\"))
-	
 	# 初始化UI显示
 	update_ui()
 
@@ -42,7 +38,8 @@ func update_ui():
 	location_info_label.text += \"生产速度: %.1f/秒\\n\" % location.qi_generation_rate
 	location_info_label.text += \"溢出经验: %.1f / %.1f\" % [location.overflow_exp, location.get_required_exp()]
 
-func _on_absorb_pressed():
+
+func _on_absorb_button_pressed() -> void:
 	var location = GameManager.instance.cultivation_location
 	var cultivator = GameManager.instance.cultivator
 	var lq=location.current_qi
@@ -57,7 +54,8 @@ func _on_absorb_pressed():
 	else:
 		add_log(\"没有灵气可以吸收\")
 
-func _on_upgrade_location_pressed():
+
+func _on_upgrade_location_button_pressed() -> void:
 	var location = GameManager.instance.cultivation_location
 	
 	if location.can_upgrade():
@@ -164,3 +162,4 @@ autowrap_mode = 1
 selection_enabled = true
 
 [connection signal="pressed" from="CanvasLayer/UI/Controls/AbsorbButton" to="." method="_on_absorb_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/UI/Controls/UpgradeLocationButton" to="." method="_on_upgrade_location_button_pressed"]
