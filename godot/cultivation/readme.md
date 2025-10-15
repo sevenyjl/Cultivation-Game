@@ -18,3 +18,4 @@ func add_log(message):
 	# 自动滚动到底部
 	game_log.get_parent().scroll_vertical = game_log.get_line_count()
 "
+有什么问题尽管提出来

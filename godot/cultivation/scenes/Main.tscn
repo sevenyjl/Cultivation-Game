@@ -11,12 +11,17 @@ script/source = "extends Node
 @onready var absorb_button = $CanvasLayer/UI/Controls/AbsorbButton
 @onready var upgrade_location_button = $CanvasLayer/UI/Controls/UpgradeLocationButton
 @onready var meditate_button = $CanvasLayer/UI/Controls/MeditateButton
+@onready var combat_button = $CanvasLayer/UI/Controls/CombatButton
 @onready var game_log = $CanvasLayer/UI/LogPanel/LogScroll/LogText
+@onready var main_ui = $CanvasLayer/UI
 
 
 func _ready():
 	# 初始化UI显示
 	update_ui()
+	
+	# 连接战斗按钮
+	combat_button.pressed.connect(_on_combat_button_pressed)
 
 func _process(delta):
 	# 每帧更新UI信息
@@ -99,6 +104,58 @@ func add_log(message):
 	game_log.text += \"[%s] %s\\n\" % [Time.get_time_string_from_system(), message]
 	# 自动滚动到底部
 	game_log.get_parent().scroll_vertical = game_log.get_line_count()
+
+func _on_combat_button_pressed():
+	# 同步修炼者状态到玩家
+	GameManager.instance.sync_cultivator_to_player()
+	
+	# 开始战斗
+	GameManager.instance.start_combat()
+	
+	# 显示战斗UI
+	show_combat_ui()
+
+func show_combat_ui():
+	# 检查是否已经有战斗UI
+	if has_node(\"CombatUI\"):
+		return
+	
+	# 隐藏主UI
+	main_ui.visible = false
+	
+	# 加载战斗UI场景
+	var combat_ui_scene = preload(\"res://scenes/combat/CombatUI.tscn\")
+	var combat_ui = combat_ui_scene.instantiate()
+	combat_ui.name = \"CombatUI\"
+	add_child(combat_ui)
+	
+	# 设置战斗管理器
+	combat_ui.set_combat_manager(GameManager.instance.get_combat_manager())
+	
+	# 连接战斗结束信号
+	GameManager.instance.get_combat_manager().combat_ended.connect(_on_combat_ended.bind(combat_ui))
+
+func _on_combat_ended(combat_ui, result):
+	# 移除战斗UI
+	combat_ui.queue_free()
+	
+	# 恢复主UI
+	main_ui.visible = true
+	
+	# 同步玩家状态到修炼者
+	GameManager.instance.sync_player_to_cultivator()
+	
+	# 更新UI显示
+	update_ui()
+	
+	# 根据战斗结果显示不同的消息
+	match result:
+		\"victory\":
+			add_log(\"战斗胜利！\")
+		\"defeat\":
+			add_log(\"战斗失败...\")
+		\"escape\":
+			add_log(\"成功逃跑\")
 "
 
 [node name="Main" type="Node"]
@@ -172,6 +229,11 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "打坐恢复"
 
+[node name="CombatButton" type="Button" parent="CanvasLayer/UI/Controls"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "开始战斗"
+
 [node name="LogPanel" type="PanelContainer" parent="CanvasLayer/UI"]
 layout_mode = 0
 anchor_top = 0.5
@@ -197,3 +259,4 @@ selection_enabled = true
 [connection signal="pressed" from="CanvasLayer/UI/Controls/AbsorbButton" to="." method="_on_absorb_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/UI/Controls/UpgradeLocationButton" to="." method="_on_upgrade_location_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/UI/Controls/MeditateButton" to="." method="_on_meditate_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/UI/Controls/CombatButton" to="." method="_on_combat_button_pressed"]
