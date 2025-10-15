@@ -133,11 +133,21 @@ func generate_enemies(enemy_types: Array, enemy_levels: Array) -> Array:
 	if enemy_types.is_empty():
 		enemy_types = [Enemy.EnemyType.BEAST, Enemy.EnemyType.DEMON, Enemy.EnemyType.SPIRIT]
 	
-	# 如果没有指定等级，根据玩家等级生成
+	# 如果没有指定等级，根据修炼地等级生成
 	if enemy_levels.is_empty():
-		var base_level = max(1, player.level - 2)
-		for i in range(1, 4):  # 生成1-3个敌人
-			enemy_levels.append(base_level + randi() % 3)
+		var location_level = cultivation_location.level
+		var player_level = player.level
+		
+		# 敌人等级基于修炼地等级，但不超过玩家等级太多
+		var base_level = max(1, min(location_level, player_level + 1))
+		var enemy_count = min(3, max(1, min(location_level, 3)))  # 最多3个敌人
+		
+		for i in range(enemy_count):
+			# 敌人等级在base_level-1到base_level+1之间随机
+			var enemy_level = max(1, base_level - 1 + randi() % 3)
+			enemy_levels.append(enemy_level)
+	
+	print("根据修炼地等级 ", cultivation_location.level, " 生成敌人，等级范围: ", enemy_levels)
 	
 	# 创建敌人
 	for i in range(min(enemy_types.size(), enemy_levels.size())):
@@ -146,6 +156,7 @@ func generate_enemies(enemy_types: Array, enemy_levels: Array) -> Array:
 		
 		var enemy = preload("res://classs/combat/Enemy.gd").new(enemy_type, enemy_level)
 		enemies.append(enemy)
+		print("生成敌人: ", enemy.get_name_info(), " 等级: ", enemy_level)
 	
 	return enemies
 

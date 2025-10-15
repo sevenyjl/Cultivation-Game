@@ -60,20 +60,26 @@ func calculate_turn_order() -> void:
 
 # 获取下一个行动者
 func get_next_actor():
+	print("获取下一个行动者 - 回合顺序大小: ", turn_order.size(), " 当前索引: ", current_turn_index)
+	
 	if turn_order.is_empty():
+		print("回合顺序为空")
 		return null
 	
 	# 如果当前回合索引超出范围，重新计算回合顺序
 	if current_turn_index >= turn_order.size():
+		print("重新计算回合顺序")
 		current_turn_index = 0
 		turn_count += 1
 		calculate_turn_order()
 	
 	# 获取当前行动者
 	var current_actor = turn_order[current_turn_index]
+	print("当前行动者: ", current_actor.get_name_info() if current_actor else "无")
 	
 	# 如果当前行动者已死亡，跳过到下一个
 	while current_actor and not current_actor.is_alive_in_battle():
+		print("行动者已死亡，跳过: ", current_actor.get_name_info())
 		current_turn_index += 1
 		if current_turn_index >= turn_order.size():
 			current_turn_index = 0
@@ -81,6 +87,7 @@ func get_next_actor():
 			calculate_turn_order()
 		
 		if turn_order.is_empty():
+			print("回合顺序为空，无法获取行动者")
 			return null
 		
 		current_actor = turn_order[current_turn_index]
@@ -91,6 +98,7 @@ func get_next_actor():
 	# 发出信号
 	turn_changed.emit(current_actor, turn_count)
 	
+	print("返回行动者: ", current_actor.get_name_info() if current_actor else "无")
 	return current_actor
 
 # 获取当前行动者

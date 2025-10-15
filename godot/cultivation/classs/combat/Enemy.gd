@@ -110,13 +110,13 @@ func initialize_enemy_stats() -> void:
 	defense = config.base_defense
 	speed = config.base_speed
 	
-	# 根据等级调整属性
-	var level_multiplier = 1.0 + (level - 1) * 0.3
+	# 根据等级调整属性（降低成长率，使敌人不会太强）
+	var level_multiplier = 1.0 + (level - 1) * 0.2  # 从0.3降低到0.2
 	health_base *= level_multiplier
 	attack_base_min *= level_multiplier
 	attack_base_max *= level_multiplier
 	defense *= level_multiplier
-	speed *= (1.0 + (level - 1) * 0.1)
+	speed *= (1.0 + (level - 1) * 0.05)  # 从0.1降低到0.05
 	
 	# 设置当前生命值为最大值
 	health_current = get_max_health()

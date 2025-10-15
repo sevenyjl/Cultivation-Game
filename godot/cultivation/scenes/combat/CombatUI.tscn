@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dax8lam2n3p4q"]
 
-[ext_resource type="Script" path="res://scenes/combat/CombatUIController.gd" id="1_combat_ui"]
+[ext_resource type="Script" uid="uid://s7a0wut0lv48" path="res://scenes/combat/CombatUIController.gd" id="1_combat_ui"]
 
 [node name="CombatUI" type="Control"]
 layout_mode = 3
@@ -10,3 +10,293 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_combat_ui")
+
+[node name="MainContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InfoPanel" type="HBoxContainer" parent="MainContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="PlayerPanel" type="PanelContainer" parent="MainContainer/InfoPanel"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PlayerVBox" type="VBoxContainer" parent="MainContainer/InfoPanel/PlayerPanel"]
+layout_mode = 2
+
+[node name="PlayerTitle" type="Label" parent="MainContainer/InfoPanel/PlayerPanel/PlayerVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "修炼者"
+
+[node name="PlayerGrid" type="GridContainer" parent="MainContainer/InfoPanel/PlayerPanel/PlayerVBox"]
+layout_mode = 2
+columns = 2
+
+[node name="PlayerNameLabel" type="Label" parent="MainContainer/InfoPanel/PlayerPanel/PlayerVBox/PlayerGrid"]
+layout_mode = 2
+text = "姓名: "
+
+[node name="PlayerNameValue" type="Label" parent="MainContainer/InfoPanel/PlayerPanel/PlayerVBox/PlayerGrid"]
+layout_mode = 2
+text = "未知"
+
+[node name="PlayerLevelLabel" type="Label" parent="MainContainer/InfoPanel/PlayerPanel/PlayerVBox/PlayerGrid"]
+layout_mode = 2
+text = "境界: "
+
+[node name="PlayerLevelValue" type="Label" parent="MainContainer/InfoPanel/PlayerPanel/PlayerVBox/PlayerGrid"]
+layout_mode = 2
+text = "未知"
+
+[node name="HealthContainer" type="VBoxContainer" parent="MainContainer/InfoPanel/PlayerPanel/PlayerVBox"]
+layout_mode = 2
+
+[node name="HealthLabelContainer" type="HBoxContainer" parent="MainContainer/InfoPanel/PlayerPanel/PlayerVBox/HealthContainer"]
+layout_mode = 2
+
+[node name="HealthTitle" type="Label" parent="MainContainer/InfoPanel/PlayerPanel/PlayerVBox/HealthContainer/HealthLabelContainer"]
+layout_mode = 2
+text = "生命值:"
+
+[node name="PlayerHealthLabel" type="Label" parent="MainContainer/InfoPanel/PlayerPanel/PlayerVBox/HealthContainer/HealthLabelContainer"]
+layout_mode = 2
+text = "100/100"
+
+[node name="PlayerHealthBar" type="ProgressBar" parent="MainContainer/InfoPanel/PlayerPanel/PlayerVBox/HealthContainer"]
+layout_mode = 2
+value = 100.0
+show_percentage = false
+
+[node name="QiContainer" type="VBoxContainer" parent="MainContainer/InfoPanel/PlayerPanel/PlayerVBox"]
+layout_mode = 2
+
+[node name="QiLabelContainer" type="HBoxContainer" parent="MainContainer/InfoPanel/PlayerPanel/PlayerVBox/QiContainer"]
+layout_mode = 2
+
+[node name="QiTitle" type="Label" parent="MainContainer/InfoPanel/PlayerPanel/PlayerVBox/QiContainer/QiLabelContainer"]
+layout_mode = 2
+text = "灵气:"
+
+[node name="PlayerQiLabel" type="Label" parent="MainContainer/InfoPanel/PlayerPanel/PlayerVBox/QiContainer/QiLabelContainer"]
+layout_mode = 2
+text = "0/100"
+
+[node name="PlayerQiBar" type="ProgressBar" parent="MainContainer/InfoPanel/PlayerPanel/PlayerVBox/QiContainer"]
+layout_mode = 2
+show_percentage = false
+
+[node name="StatsContainer" type="HBoxContainer" parent="MainContainer/InfoPanel/PlayerPanel/PlayerVBox"]
+layout_mode = 2
+
+[node name="PlayerAttackLabel" type="Label" parent="MainContainer/InfoPanel/PlayerPanel/PlayerVBox/StatsContainer"]
+layout_mode = 2
+text = "攻击: 0-0"
+
+[node name="PlayerDefenseLabel" type="Label" parent="MainContainer/InfoPanel/PlayerPanel/PlayerVBox/StatsContainer"]
+layout_mode = 2
+text = "防御: 0"
+
+[node name="PlayerEffectsContainer" type="VBoxContainer" parent="MainContainer/InfoPanel/PlayerPanel/PlayerVBox"]
+layout_mode = 2
+
+[node name="EnemyPanel" type="PanelContainer" parent="MainContainer/InfoPanel"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EnemyVBox" type="VBoxContainer" parent="MainContainer/InfoPanel/EnemyPanel"]
+layout_mode = 2
+
+[node name="EnemyTitle" type="Label" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "敌人"
+
+[node name="EnemyGrid" type="GridContainer" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox"]
+layout_mode = 2
+columns = 2
+
+[node name="EnemyNameLabel" type="Label" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox/EnemyGrid"]
+layout_mode = 2
+text = "姓名: "
+
+[node name="EnemyNameValue" type="Label" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox/EnemyGrid"]
+layout_mode = 2
+text = "未知"
+
+[node name="EnemyLevelLabel" type="Label" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox/EnemyGrid"]
+layout_mode = 2
+text = "等级: "
+
+[node name="EnemyLevelValue" type="Label" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox/EnemyGrid"]
+layout_mode = 2
+text = "未知"
+
+[node name="EnemyHealthContainer" type="VBoxContainer" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox"]
+layout_mode = 2
+
+[node name="EnemyHealthLabelContainer" type="HBoxContainer" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox/EnemyHealthContainer"]
+layout_mode = 2
+
+[node name="EnemyHealthTitle" type="Label" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox/EnemyHealthContainer"]
+layout_mode = 2
+text = "生命值:"
+
+[node name="EnemyHealthLabel" type="Label" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox/EnemyHealthContainer"]
+layout_mode = 2
+text = "100/100"
+
+[node name="EnemyHealthBar" type="ProgressBar" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox/EnemyHealthContainer"]
+layout_mode = 2
+value = 100.0
+show_percentage = false
+
+[node name="EnemyAttackLabel" type="Label" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox"]
+layout_mode = 2
+text = "攻击: 0-0"
+
+[node name="EnemyEffectsContainer" type="VBoxContainer" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox"]
+layout_mode = 2
+
+[node name="CombatArea" type="CenterContainer" parent="MainContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CombatAnimationArea" type="ColorRect" parent="MainContainer/CombatArea"]
+custom_minimum_size = Vector2(400, 200)
+layout_mode = 2
+color = Color(0.2, 0.2, 0.3, 0.8)
+
+[node name="CombatText" type="Label" parent="MainContainer/CombatArea/CombatAnimationArea"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -12.0
+offset_right = 50.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "战斗区域"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ActionPanel" type="PanelContainer" parent="MainContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="ActionContainer" type="VBoxContainer" parent="MainContainer/ActionPanel"]
+layout_mode = 2
+
+[node name="TurnLabel" type="Label" parent="MainContainer/ActionPanel/ActionContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "等待战斗开始..."
+horizontal_alignment = 1
+
+[node name="ButtonContainer" type="HBoxContainer" parent="MainContainer/ActionPanel/ActionContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="AttackButton" type="Button" parent="MainContainer/ActionPanel/ActionContainer/ButtonContainer"]
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 2
+text = "攻击"
+
+[node name="DefendButton" type="Button" parent="MainContainer/ActionPanel/ActionContainer/ButtonContainer"]
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 2
+text = "防御"
+
+[node name="SkillButton" type="Button" parent="MainContainer/ActionPanel/ActionContainer/ButtonContainer"]
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 2
+text = "技能"
+
+[node name="EscapeButton" type="Button" parent="MainContainer/ActionPanel/ActionContainer/ButtonContainer"]
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 2
+text = "逃跑"
+
+[node name="SkillPanel" type="PanelContainer" parent="MainContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="SkillContainer" type="VBoxContainer" parent="MainContainer/SkillPanel"]
+layout_mode = 2
+
+[node name="SkillTitle" type="Label" parent="MainContainer/SkillPanel/SkillContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "选择技能"
+horizontal_alignment = 1
+
+[node name="SkillScroll" type="ScrollContainer" parent="MainContainer/SkillPanel/SkillContainer"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+
+[node name="SkillList" type="VBoxContainer" parent="MainContainer/SkillPanel/SkillContainer/SkillScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CloseSkillButton" type="Button" parent="MainContainer/SkillPanel/SkillContainer"]
+layout_mode = 2
+text = "关闭"
+
+[node name="LogPanel" type="PanelContainer" parent="MainContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="LogContainer" type="VBoxContainer" parent="MainContainer/LogPanel"]
+layout_mode = 2
+
+[node name="LogTitle" type="Label" parent="MainContainer/LogPanel/LogContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "战斗日志"
+
+[node name="LogScroll" type="ScrollContainer" parent="MainContainer/LogPanel/LogContainer"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+
+[node name="CombatLog" type="RichTextLabel" parent="MainContainer/LogPanel/LogContainer/LogScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+fit_content = true
+scroll_following = true
+
+[node name="StatusPanel" type="PanelContainer" parent="MainContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="StatusContainer" type="VBoxContainer" parent="MainContainer/StatusPanel"]
+layout_mode = 2
+
+[node name="StatusTitle" type="Label" parent="MainContainer/StatusPanel/StatusContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "战斗状态"
+
+[node name="StatusEffects" type="VBoxContainer" parent="MainContainer/StatusPanel/StatusContainer"]
+layout_mode = 2
+
+[connection signal="pressed" from="MainContainer/ActionPanel/ActionContainer/ButtonContainer/AttackButton" to="." method="_on_attack_pressed"]
+[connection signal="pressed" from="MainContainer/ActionPanel/ActionContainer/ButtonContainer/DefendButton" to="." method="_on_defend_pressed"]
+[connection signal="pressed" from="MainContainer/ActionPanel/ActionContainer/ButtonContainer/SkillButton" to="." method="_on_skill_pressed"]
+[connection signal="pressed" from="MainContainer/ActionPanel/ActionContainer/ButtonContainer/EscapeButton" to="." method="_on_escape_pressed"]
+[connection signal="pressed" from="MainContainer/SkillPanel/SkillContainer/CloseSkillButton" to="." method="_on_close_skill_pressed"]

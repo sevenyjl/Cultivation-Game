@@ -20,8 +20,6 @@ func _ready():
 	# 初始化UI显示
 	update_ui()
 	
-	# 连接战斗按钮
-	combat_button.pressed.connect(_on_combat_button_pressed)
 
 func _process(delta):
 	# 每帧更新UI信息
@@ -109,8 +107,6 @@ func _on_combat_button_pressed():
 	# 同步修炼者状态到玩家
 	GameManager.instance.sync_cultivator_to_player()
 	
-	# 开始战斗
-	GameManager.instance.start_combat()
 	
 	# 显示战斗UI
 	show_combat_ui()
@@ -127,17 +123,34 @@ func show_combat_ui():
 	var combat_ui_scene = preload(\"res://scenes/combat/CombatUI.tscn\")
 	var combat_ui = combat_ui_scene.instantiate()
 	combat_ui.name = \"CombatUI\"
+	
+	# 先添加到场景中，触发_ready方法
 	add_child(combat_ui)
 	
 	# 设置战斗管理器
 	combat_ui.set_combat_manager(GameManager.instance.get_combat_manager())
 	
+	# 设置战斗管理器的UI引用
+	GameManager.instance.get_combat_manager().combat_ui = combat_ui
+	
+	# 断开之前的信号连接（如果存在）
+	if GameManager.instance.get_combat_manager().combat_ended.is_connected(_on_combat_ended):
+		GameManager.instance.get_combat_manager().combat_ended.disconnect(_on_combat_ended)
+	
 	# 连接战斗结束信号
-	GameManager.instance.get_combat_manager().combat_ended.connect(_on_combat_ended.bind(combat_ui))
+	GameManager.instance.get_combat_manager().combat_ended.connect(_on_combat_ended)
+	
+	# 开始战斗
+	GameManager.instance.start_combat()
+	
 
-func _on_combat_ended(combat_ui, result):
+func _on_combat_ended(result):
+	# 获取战斗UI引用
+	var combat_ui = get_node(\"CombatUI\")
+	
 	# 移除战斗UI
-	combat_ui.queue_free()
+	if combat_ui:
+		combat_ui.queue_free()
 	
 	# 恢复主UI
 	main_ui.visible = true
@@ -150,11 +163,11 @@ func _on_combat_ended(combat_ui, result):
 	
 	# 根据战斗结果显示不同的消息
 	match result:
-		\"victory\":
+		CombatManager.CombatState.VICTORY:
 			add_log(\"战斗胜利！\")
-		\"defeat\":
+		CombatManager.CombatState.DEFEAT:
 			add_log(\"战斗失败...\")
-		\"escape\":
+		CombatManager.CombatState.ESCAPED:
 			add_log(\"成功逃跑\")
 "
 

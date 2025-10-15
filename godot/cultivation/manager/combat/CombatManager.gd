@@ -57,13 +57,19 @@ func _ready() -> void:
 
 # 开始战斗
 func start_combat(player_instance: Player, enemy_instances: Array) -> void:
-	if current_state != CombatState.IDLE:
+	print("开始战斗 - 当前状态: ", current_state)
+	
+	# 如果战斗正在进行中（不是空闲或已结束状态），则不允许开始新战斗
+	if current_state == CombatState.PREPARING or current_state == CombatState.PLAYER_TURN or current_state == CombatState.ENEMY_TURN or current_state == CombatState.ANIMATING:
 		push_warning("战斗已在进行中，无法开始新战斗")
 		return
 	
 	# 设置战斗参与者
 	player = player_instance
 	enemies = enemy_instances.duplicate()
+	
+	print("玩家: ", player.get_name_info() if player else "无")
+	print("敌人数量: ", enemies.size())
 	
 	# 重置战斗状态
 	reset_combat_state()
@@ -83,6 +89,7 @@ func start_combat(player_instance: Player, enemy_instances: Array) -> void:
 	# 发出信号
 	combat_started.emit()
 	
+	print("开始第一回合")
 	# 开始第一回合
 	start_next_turn()
 
@@ -109,11 +116,16 @@ func reset_combat_state() -> void:
 
 # 开始下一回合
 func start_next_turn() -> void:
+	print("开始下一回合 - 当前状态: ", current_state)
+	
 	if current_state == CombatState.VICTORY or current_state == CombatState.DEFEAT or current_state == CombatState.ESCAPED:
+		print("战斗已结束，无法开始新回合")
 		return
 	
 	# 获取下一个行动者
 	var next_actor = turn_manager.get_next_actor()
+	print("下一个行动者: ", next_actor.get_name_info() if next_actor else "无")
+	
 	if not next_actor:
 		push_error("无法获取下一个行动者")
 		return
@@ -123,19 +135,27 @@ func start_next_turn() -> void:
 	
 	# 检查战斗是否结束
 	if check_combat_end():
+		print("战斗已结束")
 		return
 	
 	# 设置当前回合
 	if next_actor == player:
 		current_state = CombatState.PLAYER_TURN
+		print("设置玩家回合")
 		turn_started.emit("player")
 		add_combat_log("玩家回合开始")
 	else:
 		current_state = CombatState.ENEMY_TURN
+		print("设置敌人回合: ", next_actor.get_name_info())
 		turn_started.emit("enemy")
 		add_combat_log(next_actor.get_name_info() + " 的回合开始")
+		
+		# 自动执行敌人行动
+		print("执行敌人行动")
+		execute_enemy_action()
 	
 	# 更新UI
+	print("更新战斗UI")
 	update_combat_ui()
 
 # 执行玩家行动
@@ -148,36 +168,56 @@ func execute_player_action(action: CombatAction) -> void:
 
 # 执行敌人行动
 func execute_enemy_action() -> void:
+	print("开始执行敌人行动")
+	
 	if current_state != CombatState.ENEMY_TURN:
 		push_warning("不是敌人回合，无法执行行动")
 		return
 	
 	# 获取当前行动的敌人
 	var current_enemy = turn_manager.get_current_actor()
+	print("当前敌人: ", current_enemy.get_name_info() if current_enemy else "无")
+	
 	if not current_enemy:
 		push_error("无法获取当前敌人")
 		return
 	
 	# 使用AI选择行动
+	print("AI选择行动中...")
 	var action = combat_ai.choose_action(current_enemy, player, enemies)
+	print("AI选择的行动: ", action.action_type if action else "无")
+	
 	if action:
+		print("执行AI选择的行动")
 		execute_action(action)
 	else:
 		# 如果AI没有选择行动，使用基础攻击
+		print("使用基础攻击")
 		var basic_action = CombatAction.new(CombatAction.ActionType.ATTACK, current_enemy, player)
 		execute_action(basic_action)
 
 # 执行行动
 func execute_action(action: CombatAction) -> void:
+	print("执行行动: ", action.action_type, " 行动者: ", action.actor.get_name_info() if action.actor else "无")
+	
 	if not action or not action.is_valid():
 		push_warning("无效的行动")
 		return
 	
 	# 设置动画状态
 	current_state = CombatState.ANIMATING
+	print("设置动画状态")
 	
 	# 执行行动
+	print("执行行动逻辑")
 	var result = action.execute()
+	print("行动执行结果: ", result)
+	
+	# 检查逃跑成功
+	if action.action_type == CombatAction.ActionType.ESCAPE and result.get("success", false):
+		print("逃跑成功，结束战斗")
+		end_combat(CombatState.ESCAPED)
+		return
 	
 	# 更新战斗统计
 	update_combat_stats(action, result)
@@ -193,10 +233,13 @@ func execute_action(action: CombatAction) -> void:
 	
 	# 检查战斗是否结束
 	if check_combat_end():
+		print("战斗已结束，不进入下一回合")
 		return
 	
 	# 延迟后开始下一回合
+	print("等待1秒后开始下一回合")
 	await get_tree().create_timer(1.0).timeout
+	print("开始下一回合")
 	start_next_turn()
 
 # 更新所有战斗者的状态效果

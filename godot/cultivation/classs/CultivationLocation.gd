@@ -16,13 +16,13 @@ var qi_generation_rate:
 	get:
 		# 修正计算方式，避免递归
 		if level == 1:
-			return 2.0
+			return 2.0*10
 		else:
 			# 根据公式 V(R) = V(R-1) × (1 + 0.3) + 2 递推计算
 			var rate = 2.0
 			for i in range(2, level + 1):
 				rate = rate * 1.3 + 2.0
-			return rate
+			return rate*10
 
 # 获取升级所需经验
 func get_required_exp() -> float:
