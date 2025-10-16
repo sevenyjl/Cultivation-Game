@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://d3r87tepgl6qf"]
+
+[ext_resource type="Script" uid="uid://btdwy6e4hkax7" path="res://tscns/main.gd" id="1_gpgin"]
+[ext_resource type="PackedScene" uid="uid://c4g6jg0gt6hbr" path="res://tscns/战斗UI.tscn" id="1_guqoi"]
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gpgin")
+
+[node name="战斗UI" parent="." instance=ExtResource("1_guqoi")]
+layout_mode = 1

@@ -1,0 +1,211 @@
+[gd_scene load_steps=3 format=3 uid="uid://c4g6jg0gt6hbr"]
+
+[ext_resource type="Script" uid="uid://dvb1nbi7vsqn6" path="res://tscns/战斗UI.gd" id="1_0x8k9"]
+[ext_resource type="PackedScene" uid="uid://ch5ft504adcxv" path="res://tscns/人员战斗信息组件.tscn" id="2_3x4k5"]
+
+[node name="战斗UI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0x8k9")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="MainContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopContainer" type="HBoxContainer" parent="MainContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PlayerTeamPanel" type="Panel" parent="MainContainer/TopContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PlayerTeamContainer" type="VBoxContainer" parent="MainContainer/TopContainer/PlayerTeamPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlayerTeamTitle" type="Label" parent="MainContainer/TopContainer/PlayerTeamPanel/PlayerTeamContainer"]
+layout_mode = 2
+text = "玩家队伍"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerTeamScrollContainer" type="ScrollContainer" parent="MainContainer/TopContainer/PlayerTeamPanel/PlayerTeamContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PlayerTeamList" type="VBoxContainer" parent="MainContainer/TopContainer/PlayerTeamPanel/PlayerTeamContainer/PlayerTeamScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="人员战斗信息组件" parent="MainContainer/TopContainer/PlayerTeamPanel/PlayerTeamContainer/PlayerTeamScrollContainer/PlayerTeamList" instance=ExtResource("2_3x4k5")]
+layout_mode = 2
+
+[node name="人员战斗信息组件2" parent="MainContainer/TopContainer/PlayerTeamPanel/PlayerTeamContainer/PlayerTeamScrollContainer/PlayerTeamList" instance=ExtResource("2_3x4k5")]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="MainContainer/TopContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EnemyTeamPanel" type="Panel" parent="MainContainer/TopContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="EnemyTeamContainer" type="VBoxContainer" parent="MainContainer/TopContainer/EnemyTeamPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EnemyTeamTitle" type="Label" parent="MainContainer/TopContainer/EnemyTeamPanel/EnemyTeamContainer"]
+layout_mode = 2
+text = "敌人队伍"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EnemyTeamScrollContainer" type="ScrollContainer" parent="MainContainer/TopContainer/EnemyTeamPanel/EnemyTeamContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="EnemyTeamList" type="VBoxContainer" parent="MainContainer/TopContainer/EnemyTeamPanel/EnemyTeamContainer/EnemyTeamScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="人员战斗信息组件2" parent="MainContainer/TopContainer/EnemyTeamPanel/EnemyTeamContainer/EnemyTeamScrollContainer/EnemyTeamList" instance=ExtResource("2_3x4k5")]
+layout_mode = 2
+
+[node name="SpeedQueuePanel" type="Panel" parent="MainContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SpeedQueueContainer" type="VBoxContainer" parent="MainContainer/SpeedQueuePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SpeedQueueTitle" type="Label" parent="MainContainer/SpeedQueuePanel/SpeedQueueContainer"]
+layout_mode = 2
+text = "速度队列"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SpeedQueueBar" type="Control" parent="MainContainer/SpeedQueuePanel/SpeedQueueContainer"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SpeedQueueBackground" type="ColorRect" parent="MainContainer/SpeedQueuePanel/SpeedQueueContainer/SpeedQueueBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.1, 0.1, 0.1, 0.8)
+
+[node name="SpeedQueueTrack" type="ColorRect" parent="MainContainer/SpeedQueuePanel/SpeedQueueContainer/SpeedQueueBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.3, 0.3, 0.3, 0.5)
+
+[node name="SpeedQueueFinishLine" type="ColorRect" parent="MainContainer/SpeedQueuePanel/SpeedQueueContainer/SpeedQueueBar"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -5.0
+grow_vertical = 2
+color = Color(1, 1, 0, 0.8)
+
+[node name="CharacterNamesContainer" type="Control" parent="MainContainer/SpeedQueuePanel/SpeedQueueContainer/SpeedQueueBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BattleLogPanel" type="Panel" parent="MainContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="BattleLogContainer" type="VBoxContainer" parent="MainContainer/BattleLogPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BattleLogTitle" type="Label" parent="MainContainer/BattleLogPanel/BattleLogContainer"]
+layout_mode = 2
+text = "战斗日志"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BattleLogContent" type="RichTextLabel" parent="MainContainer/BattleLogPanel/BattleLogContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "[color=white]战斗开始！[/color]
+[color=yellow]玩家对野狼造成了15点伤害[/color]
+[color=red]野狼对玩家造成了8点伤害[/color]
+[color=green]玩家使用了治疗术，恢复了20点生命值[/color]"
