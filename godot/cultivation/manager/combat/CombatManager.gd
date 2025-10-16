@@ -23,9 +23,14 @@ enum CombatState {
 @export var enemies: Array = []  # 敌人数组
 var turn_manager
 var combat_ai
+var player_auto_ai  # 玩家自动战斗AI
 
 # 战斗UI引用
 var combat_ui: Node = null
+
+# 战斗速度控制
+var combat_speed: float = 1.0  # 当前战斗速度倍数
+var speed_timer: Timer  # 用于控制战斗速度的定时器
 
 # 战斗日志
 var combat_log: Array[String] = []
@@ -52,8 +57,16 @@ func _ready() -> void:
 	instance = self
 	turn_manager = preload("res://manager/combat/TurnManager.gd").new()
 	combat_ai = preload("res://manager/combat/CombatAI.gd").new()
+	player_auto_ai = preload("res://manager/combat/PlayerAutoCombatAI.gd").new()
+	player_auto_ai.name = "PlayerAutoCombatAI"
 	add_child(turn_manager)
 	add_child(combat_ai)
+	add_child(player_auto_ai)
+	
+	# 初始化速度定时器
+	speed_timer = Timer.new()
+	speed_timer.name = "SpeedTimer"
+	add_child(speed_timer)
 
 # 开始战斗
 func start_combat(player_instance: Player, enemy_instances: Array) -> void:
@@ -144,6 +157,11 @@ func start_next_turn() -> void:
 		print("设置玩家回合")
 		turn_started.emit("player")
 		add_combat_log("玩家回合开始")
+		
+		# 检查是否启用自动战斗
+		if combat_ui and combat_ui.is_auto_combat_enabled:
+			print("执行玩家自动行动")
+			execute_player_auto_action()
 	else:
 		current_state = CombatState.ENEMY_TURN
 		print("设置敌人回合: ", next_actor.get_name_info())
@@ -165,6 +183,44 @@ func execute_player_action(action: CombatAction) -> void:
 		return
 	
 	execute_action(action)
+
+# 执行玩家自动行动
+func execute_player_auto_action() -> void:
+	print("=== 执行玩家自动行动 ===")
+	print("当前状态: ", current_state)
+	print("玩家自动AI存在: ", player_auto_ai != null)
+	print("玩家存在: ", player != null)
+	print("敌人数量: ", enemies.size())
+	
+	if current_state != CombatState.PLAYER_TURN:
+		push_warning("不是玩家回合，无法执行自动行动")
+		return
+	
+	if not player_auto_ai:
+		push_warning("玩家自动AI未初始化")
+		return
+	
+	if not player:
+		push_warning("玩家未初始化")
+		return
+	
+	if enemies.is_empty():
+		push_warning("没有敌人")
+		return
+	
+	# 使用AI选择行动
+	print("调用AI选择行动...")
+	var action = player_auto_ai.choose_player_action(player, enemies)
+	print("AI选择的行动: ", action)
+	
+	if action:
+		print("玩家自动选择行动: ", action.action_type)
+		execute_action(action)
+	else:
+		print("AI无法选择行动，使用基础攻击")
+		# 如果AI无法选择行动，使用基础攻击
+		var basic_action = CombatAction.new(CombatAction.ActionType.ATTACK, player, enemies[0] if not enemies.is_empty() else null)
+		execute_action(basic_action)
 
 # 执行敌人行动
 func execute_enemy_action() -> void:
@@ -236,9 +292,9 @@ func execute_action(action: CombatAction) -> void:
 		print("战斗已结束，不进入下一回合")
 		return
 	
-	# 延迟后开始下一回合
-	print("等待1秒后开始下一回合")
-	await get_tree().create_timer(1.0).timeout
+	# 延迟后开始下一回合（考虑战斗速度）
+	print("等待1秒后开始下一回合（速度: x", combat_speed, "）")
+	await wait_for_time(1.0)
 	print("开始下一回合")
 	start_next_turn()
 
@@ -432,3 +488,20 @@ func basic_attack(target) -> void:
 	
 	var attack_action = CombatAction.new(CombatAction.ActionType.ATTACK, player, target)
 	execute_action(attack_action)
+
+# 设置战斗速度
+func set_combat_speed(speed: float) -> void:
+	combat_speed = speed
+	print("CombatManager: 战斗速度设置为 x", speed)
+
+# 获取战斗速度
+func get_combat_speed() -> float:
+	return combat_speed
+
+# 等待指定时间（考虑战斗速度）
+func wait_for_time(seconds: float) -> void:
+	if combat_speed <= 0:
+		return
+	
+	var actual_wait_time = seconds / combat_speed
+	await get_tree().create_timer(actual_wait_time).timeout

@@ -53,7 +53,7 @@ func trigger_random_encounter() -> void:
 	}
 	
 	combat_event_triggered.emit(CombatEventType.RANDOM_ENCOUNTER, event_data)
-	GameManager.instance.start_combat([random_type], [enemy_level])
+	GameManager.instance.start_combat_with_ui([random_type], [enemy_level])
 
 # 检查首领战
 func check_boss_encounter() -> bool:
@@ -88,7 +88,7 @@ func trigger_boss_encounter() -> void:
 	}
 	
 	combat_event_triggered.emit(CombatEventType.BOSS_FIGHT, event_data)
-	GameManager.instance.start_combat([boss_type], [boss_level])
+	GameManager.instance.start_combat_with_ui([boss_type], [boss_level])
 
 # 检查竞技场解锁
 func check_arena_unlock() -> bool:
@@ -114,7 +114,7 @@ func trigger_arena_battle(difficulty: int = 1) -> void:
 	}
 	
 	combat_event_triggered.emit(CombatEventType.ARENA_BATTLE, event_data)
-	GameManager.instance.start_combat(enemy_types, [enemy_level])
+	GameManager.instance.start_combat_with_ui(enemy_types, [enemy_level])
 
 # 触发任务战斗
 func trigger_quest_battle(quest_data: Dictionary) -> void:
@@ -132,7 +132,7 @@ func trigger_quest_battle(quest_data: Dictionary) -> void:
 	}
 	
 	combat_event_triggered.emit(CombatEventType.QUEST_BATTLE, event_data)
-	GameManager.instance.start_combat(enemy_types, enemy_levels)
+	GameManager.instance.start_combat_with_ui(enemy_types, enemy_levels)
 
 # 触发决斗
 func trigger_duel(opponent_data: Dictionary) -> void:
@@ -157,7 +157,7 @@ func generate_duel_opponent(opponent_data: Dictionary) -> void:
 	opponent.ai_intelligence = 0.8  # 高智能
 	opponent.ai_aggression = 0.7    # 高攻击性
 	
-	GameManager.instance.start_combat([opponent], [])
+	GameManager.instance.start_combat_with_ui([opponent], [])
 
 # 更新战斗事件（每回合调用）
 func update_combat_events() -> void:

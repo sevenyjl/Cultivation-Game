@@ -2,7 +2,7 @@
 class_name Enemy
 extends "res://classs/combat/Combatant.gd"
 
-# 敌人类型枚举
+# 敌人类型枚举 - 现在使用Cultivator的类型系统
 enum EnemyType {
 	BEAST,      # 妖兽
 	DEMON,      # 魔物
@@ -18,53 +18,13 @@ enum EnemyType {
 @export var ai_aggression: float = 0.5  # AI攻击性 (0.0-1.0)
 @export var ai_intelligence: float = 0.5  # AI智能程度 (0.0-1.0)
 
-# 敌人等级配置
-const ENEMY_LEVEL_CONFIGS = {
-	EnemyType.BEAST: {
-		"base_health": 80.0,
-		"base_attack_min": 8.0,
-		"base_attack_max": 12.0,
-		"base_defense": 2.0,
-		"base_speed": 90.0,
-		"exp_multiplier": 1.0,
-		"qi_multiplier": 0.8
-	},
-	EnemyType.DEMON: {
-		"base_health": 120.0,
-		"base_attack_min": 12.0,
-		"base_attack_max": 18.0,
-		"base_defense": 4.0,
-		"base_speed": 80.0,
-		"exp_multiplier": 1.2,
-		"qi_multiplier": 1.0
-	},
-	EnemyType.SPIRIT: {
-		"base_health": 60.0,
-		"base_attack_min": 15.0,
-		"base_attack_max": 20.0,
-		"base_defense": 1.0,
-		"base_speed": 150.0,
-		"exp_multiplier": 1.5,
-		"qi_multiplier": 1.5
-	},
-	EnemyType.CULTIVATOR: {
-		"base_health": 100.0,
-		"base_attack_min": 10.0,
-		"base_attack_max": 15.0,
-		"base_defense": 3.0,
-		"base_speed": 110.0,
-		"exp_multiplier": 2.0,
-		"qi_multiplier": 2.0
-	},
-	EnemyType.BOSS: {
-		"base_health": 300.0,
-		"base_attack_min": 20.0,
-		"base_attack_max": 30.0,
-		"base_defense": 8.0,
-		"base_speed": 70.0,
-		"exp_multiplier": 5.0,
-		"qi_multiplier": 5.0
-	}
+# 敌人类型到Cultivator类型的映射
+const ENEMY_TYPE_TO_CULTIVATOR_TYPE = {
+	EnemyType.BEAST: Cultivator.CultivatorType.BEAST,
+	EnemyType.DEMON: Cultivator.CultivatorType.DEMON,
+	EnemyType.SPIRIT: Cultivator.CultivatorType.SPIRIT,
+	EnemyType.CULTIVATOR: Cultivator.CultivatorType.CULTIVATOR,
+	EnemyType.BOSS: Cultivator.CultivatorType.BOSS
 }
 
 # 敌人名称配置
@@ -77,7 +37,7 @@ const ENEMY_NAMES = {
 }
 
 func _init(enemy_type_param: EnemyType = EnemyType.BEAST, enemy_level: int = 1):
-	# 初始化父类属性
+	# 初始化父类属性 - 使用与Cultivator相同的基础值
 	level = 1
 	qi = 0.0
 	name_info = ""
@@ -90,6 +50,9 @@ func _init(enemy_type_param: EnemyType = EnemyType.BEAST, enemy_level: int = 1):
 	self.enemy_type = enemy_type_param
 	level = enemy_level
 	
+	# 设置Cultivator类型
+	cultivator_type = ENEMY_TYPE_TO_CULTIVATOR_TYPE[enemy_type_param]
+	
 	# 根据敌人类型和等级初始化属性
 	initialize_enemy_stats()
 	
@@ -99,34 +62,42 @@ func _init(enemy_type_param: EnemyType = EnemyType.BEAST, enemy_level: int = 1):
 	# 根据等级解锁技能
 	unlock_enemy_skills()
 
-# 初始化敌人属性
+# 初始化敌人属性 - 基于Cultivator成长体系
 func initialize_enemy_stats() -> void:
-	var config = ENEMY_LEVEL_CONFIGS[enemy_type]
+	# 模拟Cultivator的成长过程，从1级成长到目标等级
+	# 这样可以确保敌人遵循与玩家相同的成长规律
+	for current_level in range(1, level):
+		# 模拟升级过程，使用Cultivator的成长因子
+		simulate_level_up(current_level)
 	
-	# 基础属性
-	health_base = config.base_health
-	attack_base_min = config.base_attack_min
-	attack_base_max = config.base_attack_max
-	defense = config.base_defense
-	speed = config.base_speed
-	
-	# 根据等级调整属性（降低成长率，使敌人不会太强）
-	var level_multiplier = 1.0 + (level - 1) * 0.2  # 从0.3降低到0.2
-	health_base *= level_multiplier
-	attack_base_min *= level_multiplier
-	attack_base_max *= level_multiplier
-	defense *= level_multiplier
-	speed *= (1.0 + (level - 1) * 0.05)  # 从0.1降低到0.05
+	# 设置固定属性（这些不随等级变化）
+	speed = get_base_speed()
+	defense = get_base_defense()
 	
 	# 设置当前生命值为最大值
 	health_current = get_max_health()
 	
 	# 设置奖励
-	experience_reward = config.exp_multiplier * level * 50.0
-	qi_reward = config.qi_multiplier * level * 25.0
+	experience_reward = get_exp_multiplier() * level * 50.0
+	qi_reward = get_qi_multiplier() * level * 25.0
 	
 	# 根据敌人类型调整特殊属性
 	adjust_type_specific_stats()
+
+# 模拟敌人升级过程
+func simulate_level_up(_current_level: int) -> void:
+	# 使用与Cultivator相同的成长公式，通过继承获得成长因子
+	
+	# 攻击力成长（参考Cultivator的level_up函数）
+	attack_base_min *= 1.1 * get_growth_factors().attack_factor
+	attack_base_max *= 1.15 * get_growth_factors().attack_factor
+	
+	# 生命值成长
+	health_base *= 1.25 * get_growth_factors().health_factor
+	
+	# 恢复力成长
+	health_restore_min *= 1.12 * get_growth_factors().restore_factor
+	health_restore_max *= 1.18 * get_growth_factors().restore_factor
 
 # 调整类型特定属性
 func adjust_type_specific_stats() -> void:
@@ -489,6 +460,9 @@ func create_ultimate_skill():
 	skill.target_type = "player"
 	skill.skill_range = 3
 	return skill
+
+# 注意：get_max_health(), get_attack_range(), get_health_restore_range() 等方法
+# 现在直接继承自Cultivator，会自动使用正确的成长因子
 
 # 获取敌人战斗信息
 func get_enemy_combat_info() -> Dictionary:

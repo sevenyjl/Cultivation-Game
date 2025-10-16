@@ -16,6 +16,7 @@ script/source = "extends Node
 @onready var main_ui = $CanvasLayer/UI
 
 
+
 func _ready():
 	# 初始化UI显示
 	update_ui()

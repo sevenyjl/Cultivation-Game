@@ -5,6 +5,7 @@ extends "res://classs/combat/Combatant.gd"
 # 玩家特有属性
 @export var experience_gain_multiplier: float = 1.0  # 经验获得倍率
 @export var qi_gain_multiplier: float = 1.0  # 灵气获得倍率
+@export var auto_combat_enabled: bool = false  # 自动战斗开关状态
 
 # 玩家技能解锁等级
 const SKILL_UNLOCK_LEVELS = {
@@ -328,4 +329,14 @@ func get_player_combat_info() -> Dictionary:
 	info["qi_multiplier"] = qi_gain_multiplier
 	info["available_skills"] = available_skills.size()
 	info["usable_skills"] = get_usable_skills().size()
+	info["auto_combat_enabled"] = auto_combat_enabled
 	return info
+
+# 设置自动战斗状态
+func set_auto_combat_enabled(enabled: bool) -> void:
+	auto_combat_enabled = enabled
+	print("玩家自动战斗状态设置为: ", enabled)
+
+# 获取自动战斗状态
+func get_auto_combat_enabled() -> bool:
+	return auto_combat_enabled

@@ -120,51 +120,13 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "敌人"
 
-[node name="EnemyGrid" type="GridContainer" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox"]
+[node name="EnemyScroll" type="ScrollContainer" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox"]
 layout_mode = 2
-columns = 2
+size_flags_vertical = 3
 
-[node name="EnemyNameLabel" type="Label" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox/EnemyGrid"]
+[node name="EnemyList" type="VBoxContainer" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox/EnemyScroll"]
 layout_mode = 2
-text = "姓名: "
-
-[node name="EnemyNameValue" type="Label" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox/EnemyGrid"]
-layout_mode = 2
-text = "未知"
-
-[node name="EnemyLevelLabel" type="Label" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox/EnemyGrid"]
-layout_mode = 2
-text = "等级: "
-
-[node name="EnemyLevelValue" type="Label" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox/EnemyGrid"]
-layout_mode = 2
-text = "未知"
-
-[node name="EnemyHealthContainer" type="VBoxContainer" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox"]
-layout_mode = 2
-
-[node name="EnemyHealthLabelContainer" type="HBoxContainer" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox/EnemyHealthContainer"]
-layout_mode = 2
-
-[node name="EnemyHealthTitle" type="Label" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox/EnemyHealthContainer"]
-layout_mode = 2
-text = "生命值:"
-
-[node name="EnemyHealthLabel" type="Label" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox/EnemyHealthContainer"]
-layout_mode = 2
-text = "100/100"
-
-[node name="EnemyHealthBar" type="ProgressBar" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox/EnemyHealthContainer"]
-layout_mode = 2
-value = 100.0
-show_percentage = false
-
-[node name="EnemyAttackLabel" type="Label" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox"]
-layout_mode = 2
-text = "攻击: 0-0"
-
-[node name="EnemyEffectsContainer" type="VBoxContainer" parent="MainContainer/InfoPanel/EnemyPanel/EnemyVBox"]
-layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="CombatArea" type="CenterContainer" parent="MainContainer"]
 layout_mode = 2
@@ -229,6 +191,45 @@ text = "技能"
 custom_minimum_size = Vector2(100, 40)
 layout_mode = 2
 text = "逃跑"
+
+[node name="AutoCombatToggle" type="CheckButton" parent="MainContainer/ActionPanel/ActionContainer/ButtonContainer"]
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 2
+text = "自动战斗"
+
+[node name="SpeedControlContainer" type="HBoxContainer" parent="MainContainer/ActionPanel/ActionContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="SpeedLabel" type="Label" parent="MainContainer/ActionPanel/ActionContainer/SpeedControlContainer"]
+layout_mode = 2
+text = "战斗速度:"
+theme_override_font_sizes/font_size = 14
+
+[node name="Speed1xButton" type="Button" parent="MainContainer/ActionPanel/ActionContainer/SpeedControlContainer"]
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+text = "x1"
+
+[node name="Speed2xButton" type="Button" parent="MainContainer/ActionPanel/ActionContainer/SpeedControlContainer"]
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+text = "x2"
+
+[node name="Speed5xButton" type="Button" parent="MainContainer/ActionPanel/ActionContainer/SpeedControlContainer"]
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+text = "x5"
+
+[node name="Speed10xButton" type="Button" parent="MainContainer/ActionPanel/ActionContainer/SpeedControlContainer"]
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+text = "x10"
+
+[node name="Speed100xButton" type="Button" parent="MainContainer/ActionPanel/ActionContainer/SpeedControlContainer"]
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+text = "x100"
 
 [node name="SkillPanel" type="PanelContainer" parent="MainContainer"]
 visible = false
@@ -299,4 +300,10 @@ layout_mode = 2
 [connection signal="pressed" from="MainContainer/ActionPanel/ActionContainer/ButtonContainer/DefendButton" to="." method="_on_defend_pressed"]
 [connection signal="pressed" from="MainContainer/ActionPanel/ActionContainer/ButtonContainer/SkillButton" to="." method="_on_skill_pressed"]
 [connection signal="pressed" from="MainContainer/ActionPanel/ActionContainer/ButtonContainer/EscapeButton" to="." method="_on_escape_pressed"]
+[connection signal="toggled" from="MainContainer/ActionPanel/ActionContainer/ButtonContainer/AutoCombatToggle" to="." method="_on_auto_combat_toggled"]
+[connection signal="pressed" from="MainContainer/ActionPanel/ActionContainer/SpeedControlContainer/Speed1xButton" to="." method="_on_speed_1x_pressed"]
+[connection signal="pressed" from="MainContainer/ActionPanel/ActionContainer/SpeedControlContainer/Speed2xButton" to="." method="_on_speed_2x_pressed"]
+[connection signal="pressed" from="MainContainer/ActionPanel/ActionContainer/SpeedControlContainer/Speed5xButton" to="." method="_on_speed_5x_pressed"]
+[connection signal="pressed" from="MainContainer/ActionPanel/ActionContainer/SpeedControlContainer/Speed10xButton" to="." method="_on_speed_10x_pressed"]
+[connection signal="pressed" from="MainContainer/ActionPanel/ActionContainer/SpeedControlContainer/Speed100xButton" to="." method="_on_speed_100x_pressed"]
 [connection signal="pressed" from="MainContainer/SkillPanel/SkillContainer/CloseSkillButton" to="." method="_on_close_skill_pressed"]
