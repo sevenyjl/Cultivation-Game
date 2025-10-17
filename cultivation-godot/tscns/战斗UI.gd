@@ -35,7 +35,8 @@ var enemy_team_data: Array = []
 # 速度队列相关变量
 var speed_queue_items: Array = []  # 存储速度队列中的角色
 var speed_queue_timer: Timer
-var speed_queue_update_interval: float = 0.1  # 更新间隔（秒）
+var base_update_interval: float = 0.167  # 基础更新间隔（约60FPS）
+var min_update_interval: float = 0.033  # 最小更新间隔（约30FPS）
 
 # 战斗状态
 enum BattleState {
@@ -68,7 +69,7 @@ func _ready():
 	
 	# 创建速度队列计时器
 	speed_queue_timer = Timer.new()
-	speed_queue_timer.wait_time = speed_queue_update_interval
+	speed_queue_timer.wait_time = base_update_interval
 	speed_queue_timer.timeout.connect(_on_speed_queue_timer_timeout)
 	speed_queue_timer.autostart = true
 	add_child(speed_queue_timer)
@@ -211,7 +212,12 @@ func execute_speed_based_turn():
 # 获取角色速度
 func get_character_speed(character) -> int:
 	if character.has_method("get"):
-		return character.speed
+		# 使用get_speed()方法获取速度
+		if character.has_method("get_speed"):
+			return int(character.get_speed())
+		else:
+			# 兼容旧版
+			return character.constitution if character.has_property("constitution") else 10
 	else:
 		return character.get("speed", 10)
 
@@ -226,7 +232,6 @@ func get_character_name(character) -> String:
 func execute_character_actions(characters: Array, current_index: int):
 	if current_index >= characters.size():
 		# 所有角色行动完毕，开始下一回合
-		await get_tree().create_timer(1.0 / battle_speed).timeout
 		start_next_turn()
 		return
 	
@@ -238,7 +243,7 @@ func execute_character_actions(characters: Array, current_index: int):
 	# 检查角色是否还存活
 	var hp = 0
 	if character.has_method("get"):
-		hp = character.current_hp
+		hp = character.get_current_hp()
 	else:
 		hp = character.get("hp", 0)
 	
@@ -262,9 +267,41 @@ func execute_character_actions(characters: Array, current_index: int):
 		var team_type = "玩家" if is_player else "敌人"
 		add_battle_log(team_type + " " + attacker_name + " 没有找到可攻击的目标", "gray")
 	
-	# 延迟后执行下一个角色
-	await get_tree().create_timer(1.0 / battle_speed).timeout
-	execute_character_actions(characters, current_index + 1)
+	# 使用帧跳过机制代替多次await
+	# 在高速战斗时减少延迟
+	var frames_to_wait = max(1, int(5.0 / battle_speed))  # 高速时减少等待的帧数
+	
+	# 使用调用树延迟调用下一角色，避免过多的await操作
+	self.call_deferred("_execute_next_character", characters, current_index + 1, frames_to_wait)
+
+# 用于_process中跟踪等待状态的变量
+var _wait_frames_remaining = 0
+var _pending_next_character = null
+var _pending_next_index = -1
+
+# 延迟执行下一角色 - 使用_process而非Timer
+func _execute_next_character(characters: Array, next_index: int, frames_to_wait: int):
+	if frames_to_wait <= 1:
+		# 如果不需要等待或只需要等待一帧，直接执行下一角色
+		execute_character_actions(characters, next_index)
+	else:
+		# 设置等待状态，在_process中处理
+		_wait_frames_remaining = frames_to_wait
+		_pending_next_character = characters
+		_pending_next_index = next_index
+
+# 在_process中处理帧等待逻辑
+func _process(_delta):
+	# 检查是否有待处理的角色行动等待
+	if _wait_frames_remaining > 0:
+		_wait_frames_remaining -= 1
+		if _wait_frames_remaining <= 0:
+			# 等待结束，执行下一角色
+			if _pending_next_character != null and _pending_next_index >= 0:
+				execute_character_actions(_pending_next_character, _pending_next_index)
+			# 重置等待状态
+			_pending_next_character = null
+			_pending_next_index = -1
 
 # 为角色寻找目标（随机选择）
 func find_target_for_character(_attacker, is_player: bool):
@@ -336,25 +373,31 @@ func execute_attack(attacker, target, is_player_attack: bool):
 		var enemy_index = find_character_index(enemy_team_data, target)
 		if enemy_index != -1:
 			var enemy = enemy_team_data[enemy_index]
+			var new_hp = 0
 			if enemy.has_method("get"):
 				# 修仙者对象
-				enemy.current_hp = max(0, enemy.current_hp - damage)
+				new_hp = max(0, enemy.get_current_hp() - damage)
+				enemy.set_current_hp(new_hp)
 			else:
 				# 普通字典
-				enemy["hp"] = max(0, enemy.get("hp", 0) - damage)
-			update_enemy_character_hp(enemy_index, enemy.current_hp if enemy.has_method("get") else enemy.get("hp", 0))
+				new_hp = max(0, enemy.get("hp", 0) - damage)
+				enemy["hp"] = new_hp
+			update_enemy_character_hp(enemy_index, new_hp)
 	else:
 		# 敌人攻击玩家
 		var player_index = find_character_index(player_team_data, target)
 		if player_index != -1:
 			var player = player_team_data[player_index]
+			var new_hp = 0
 			if player.has_method("get"):
 				# 修仙者对象
-				player.current_hp = max(0, player.current_hp - damage)
+				new_hp = max(0, player.get_current_hp() - damage)
+				player.set_current_hp(new_hp)
 			else:
 				# 普通字典
-				player["hp"] = max(0, player.get("hp", 0) - damage)
-			update_player_character_hp(player_index, player.current_hp if player.has_method("get") else player.get("hp", 0))
+				new_hp = max(0, player.get("hp", 0) - damage)
+				player["hp"] = new_hp
+			update_player_character_hp(player_index, new_hp)
 	
 	# 记录战斗日志
 	var color = "blue" if is_player_attack else "red"
@@ -363,7 +406,7 @@ func execute_attack(attacker, target, is_player_attack: bool):
 	# 检查目标是否死亡
 	var target_hp = 0
 	if target.has_method("get"):
-		target_hp = target.current_hp
+		target_hp = target.get_current_hp()
 	else:
 		target_hp = target.get("hp", 0)
 	
@@ -378,19 +421,6 @@ func execute_attack(attacker, target, is_player_attack: bool):
 func calculate_damage(attacker, _target) -> int:
 	# 基础伤害计算
 	var base_damage = 10
-	
-	# 获取攻击者的力量属性
-	var strength = 10
-	if attacker.has_method("get"):
-		# 修仙者对象，直接访问属性
-		strength = attacker.strength
-	else:
-		# 普通字典
-		strength = attacker.get("strength", 10)
-	
-	# 使用力量属性计算伤害
-	base_damage = strength * 2
-	
 	# 随机波动 ±20%
 	var random_factor = randf_range(0.8, 1.2)
 	return int(base_damage * random_factor)
@@ -401,7 +431,7 @@ func check_team_alive(team_data: Array) -> bool:
 		var hp = 0
 		if character.has_method("get"):
 			# 修仙者对象
-			hp = character.current_hp
+			hp = character.get_current_hp()
 		else:
 			# 普通字典
 			hp = character.get("hp", 0)
@@ -416,7 +446,7 @@ func get_first_alive_character(team_data: Array):
 		var hp = 0
 		if character.has_method("get"):
 			# 修仙者对象
-			hp = character.current_hp
+			hp = character.get_current_hp()
 		else:
 			# 普通字典
 			hp = character.get("hp", 0)
@@ -433,7 +463,7 @@ func get_random_alive_character(team_data: Array):
 		var hp = 0
 		if character.has_method("get"):
 			# 修仙者对象
-			hp = character.current_hp
+			hp = character.get_current_hp()
 		else:
 			# 普通字典
 			hp = character.get("hp", 0)
@@ -532,7 +562,7 @@ func count_alive_characters(team_data: Array) -> int:
 	for character in team_data:
 		var hp = 0
 		if character.has_method("get"):
-			hp = character.current_hp
+			hp = character.get_current_hp()
 		else:
 			hp = character.get("hp", 0)
 		
@@ -542,8 +572,8 @@ func count_alive_characters(team_data: Array) -> int:
 
 # 使用技能攻击（扩展功能）
 func use_skill_attack(attacker, target, skill_name: String, is_player_attack: bool):
-	var attacker_name = attacker.name if attacker.has_method("get") else attacker.get("name", "未知")
-	var _target_name = target.name if attacker.has_method("get") else target.get("name", "未知")
+	var attacker_name = attacker.name_str if attacker.has_method("get") else attacker.get("name", "未知")
+	var _target_name = target.name_str if attacker.has_method("get") else target.get("name", "未知")
 	
 	# 检查技能是否存在
 	var skill_found = false
@@ -564,15 +594,9 @@ func use_skill_attack(attacker, target, skill_name: String, is_player_attack: bo
 		add_battle_log(attacker_name + " 尝试使用技能 " + skill_name + " 但失败了！", "red")
 		return false
 	
-	# 检查法力值
-	var current_mp = attacker.mp if attacker.has_method("get") else attacker.get("mp", 0)
-	if current_mp < skill_cost:
-		add_battle_log(attacker_name + " 法力值不足，无法使用 " + skill_name + "！", "red")
-		return false
-	
-	# 消耗法力值
-	if attacker.has_method("get"):
-		attacker.set("mp", current_mp - skill_cost)
+	# 注意：BaseCultivation类不再使用MP属性，此功能可能需要进一步调整
+	# 暂时跳过MP检查，直接执行技能
+	add_battle_log("技能系统已简化，跳过MP检查", "yellow")
 	
 	# 执行技能效果
 	if skill_damage > 0:
@@ -588,22 +612,24 @@ func use_skill_attack(attacker, target, skill_name: String, is_player_attack: bo
 
 # 执行带固定伤害的攻击
 func execute_attack_with_damage(attacker, target, damage: int, is_player_attack: bool):
-	var attacker_name = attacker.name if attacker.has_method("get") else attacker.get("name", "未知")
-	var target_name = target.name if target.has_method("get") else target.get("name", "未知")
+	var attacker_name = attacker.name_str if attacker.has_method("get") else attacker.get("name", "未知")
+	var target_name = target.name_str if target.has_method("get") else target.get("name", "未知")
 	
 	# 应用伤害
 	if is_player_attack:
 		var enemy_index = find_character_index(enemy_team_data, target)
 		if enemy_index != -1:
 			var enemy = enemy_team_data[enemy_index] as Base修仙者
-			enemy.current_hp = max(0, enemy.current_hp - damage)
-			update_enemy_character_hp(enemy_index, enemy.current_hp)
+			var new_hp = max(0, enemy.get_current_hp() - damage)
+			enemy.set_current_hp(new_hp)
+			update_enemy_character_hp(enemy_index, new_hp)
 	else:
 		var player_index = find_character_index(player_team_data, target)
 		if player_index != -1:
 			var player = player_team_data[player_index] as Base修仙者
-			player.current_hp = max(0, player.current_hp - damage)
-			update_player_character_hp(player_index, player.current_hp)
+			var new_hp = max(0, player.get_current_hp() - damage)
+			player.set_current_hp(new_hp)
+			update_player_character_hp(player_index, new_hp)
 	
 	# 记录战斗日志
 	var color = "blue" if is_player_attack else "red"
@@ -625,8 +651,8 @@ func execute_heal(healer, heal_amount: int, is_player_heal: bool):
 			var character_name = ""
 			
 			if player_team_data[i].has_method("get"):
-				hp = player_team_data[i].current_hp
-				max_hp = player_team_data[i].max_hp
+				hp = player_team_data[i].get_current_hp()
+				max_hp = player_team_data[i].hp_stats.max_value
 				character_name = player_team_data[i].name_str
 			else:
 				hp = player_team_data[i].get("hp", 0)
@@ -638,7 +664,7 @@ func execute_heal(healer, heal_amount: int, is_player_heal: bool):
 				var new_hp = min(max_hp, hp + heal_amount)
 				
 				if player_team_data[i].has_method("get"):
-					player_team_data[i].current_hp = new_hp
+					player_team_data[i].set_current_hp(new_hp)
 					update_player_character_hp(i, new_hp)
 				else:
 					player_team_data[i].hp = new_hp
@@ -654,20 +680,20 @@ func execute_heal(healer, heal_amount: int, is_player_heal: bool):
 			var character_name = ""
 			
 			if enemy_team_data[i].has_method("get"):
-				hp = enemy_team_data[i].current_hp
-				max_hp = enemy_team_data[i].max_hp
-				name = enemy_team_data[i].name_str
+				hp = enemy_team_data[i].get_current_hp()
+				max_hp = enemy_team_data[i].hp_stats.max_value
+				character_name = enemy_team_data[i].name_str
 			else:
 				hp = enemy_team_data[i].get("hp", 0)
 				max_hp = enemy_team_data[i].get("max_hp", 100)
-				name = enemy_team_data[i].get("name", "未知")
+				character_name = enemy_team_data[i].get("name", "未知")
 			
 			if hp > 0:
 				var old_hp = hp
 				var new_hp = min(max_hp, hp + heal_amount)
 				
 				if enemy_team_data[i].has_method("get"):
-					enemy_team_data[i].current_hp = new_hp
+					enemy_team_data[i].set_current_hp(new_hp)
 					update_enemy_character_hp(i, new_hp)
 				else:
 					enemy_team_data[i].hp = new_hp
@@ -697,8 +723,8 @@ func create_character_component(character_data, parent_container: VBoxContainer,
 	if character_data.has_method("get"):
 		# 修仙者对象
 		character_name = character_data.name_str
-		hp = character_data.current_hp
-		max_hp = character_data.max_hp
+		hp = character_data.get_current_hp()
+		max_hp = character_data.hp_stats.max_value
 	else:
 		# 普通字典
 		character_name = character_data.get("name", "未知")
@@ -719,18 +745,41 @@ func clear_team_components():
 		if is_instance_valid(component):
 			component.queue_free()
 
+# 战斗日志配置
+var MAX_LOG_ENTRIES = 100  # 最大日志条目数
+var _log_entries = []  # 日志条目数组
+
 # 初始化战斗日志
 func initialize_battle_log():
 	battle_log_content.text = ""
-	pass
+	_log_entries.clear()
 
 # 添加战斗日志条目
 func add_battle_log(message: String, color: String = "white"):
 	var log_entry = "[color=" + color + "]" + message + "[/color]\n"
-	battle_log_content.text += log_entry
 	
-	# 自动滚动到底部
-	await get_tree().process_frame
+	# 添加到日志条目数组
+	_log_entries.append(log_entry)
+	
+	# 限制日志条目数量
+	if _log_entries.size() > MAX_LOG_ENTRIES:
+		_log_entries = _log_entries.slice(-MAX_LOG_ENTRIES)
+	
+	# 更新日志内容
+	update_battle_log_display()
+
+# 更新战斗日志显示
+func update_battle_log_display():
+	# 一次性构建日志内容
+	var log_text = ""
+	for entry in _log_entries:
+		log_text += entry
+	
+	# 批量更新日志文本
+	battle_log_content.text = log_text
+	
+	# 滚动到底部
+	# 不使用await避免额外的帧等待
 	battle_log_content.scroll_to_line(battle_log_content.get_line_count() - 1)
 
 # 更新玩家队伍中指定成员的生命值
@@ -738,9 +787,9 @@ func update_player_character_hp(character_index: int, current_hp: int, max_hp: i
 	if character_index >= 0 and character_index < player_team_data.size():
 		if player_team_data[character_index].has_method("get"):
 			# 修仙者对象
-			player_team_data[character_index].current_hp = current_hp
+			player_team_data[character_index].set_current_hp(current_hp)
 			if max_hp != -1:
-				player_team_data[character_index].max_hp = max_hp
+				player_team_data[character_index].hp_stats.max_value = max_hp
 		else:
 			# 普通字典
 			player_team_data[character_index].hp = current_hp
@@ -756,9 +805,9 @@ func update_enemy_character_hp(character_index: int, current_hp: int, max_hp: in
 	if character_index >= 0 and character_index < enemy_team_data.size():
 		if enemy_team_data[character_index].has_method("get"):
 			# 修仙者对象
-			enemy_team_data[character_index].current_hp = current_hp
+			enemy_team_data[character_index].set_current_hp(current_hp)
 			if max_hp != -1:
-				enemy_team_data[character_index].max_hp = max_hp
+				enemy_team_data[character_index].hp_stats.max_value = max_hp
 		else:
 			# 普通字典
 			enemy_team_data[character_index].hp = current_hp
@@ -847,7 +896,7 @@ func initialize_speed_queue():
 		var character = player_team_data[i]
 		var hp = 0
 		if character.has_method("get"):
-			hp = character.current_hp
+			hp = character.get_current_hp()
 		else:
 			hp = character.get("hp", 0)
 		
@@ -858,7 +907,7 @@ func initialize_speed_queue():
 		var character = enemy_team_data[i]
 		var hp = 0
 		if character.has_method("get"):
-			hp = character.current_hp
+			hp = character.get_current_hp()
 		else:
 			hp = character.get("hp", 0)
 		
@@ -918,38 +967,86 @@ func add_character_to_speed_queue(character, is_player: bool, team_index: int):
 func _on_speed_queue_timer_timeout():
 	update_speed_queue()
 
+# 速度队列更新计数器
+var _speed_queue_update_counter = 0
+
 # 更新速度队列
 func update_speed_queue():
 	if battle_state == BattleState.BATTLE_END:
 		return
 	
+	# 增加更新计数器
+	_speed_queue_update_counter += 1
+	
 	var queue_width = character_names_container.size.x
 	var finish_line_x = queue_width - 20  # 终点线位置
+	var update_interval = speed_queue_timer.wait_time
 	
+	# 优化：在高速战斗时减少UI更新频率
+	var should_update_ui = true
+	if battle_speed > 3.0 and _speed_queue_update_counter % 2 != 0:
+		should_update_ui = false
+	elif battle_speed > 5.0 and _speed_queue_update_counter % 3 != 0:
+		should_update_ui = false
+	
+	# 检查是否有角色准备就绪
+	var has_new_ready_character = false
+	var has_any_ready_character = false
+	
+	# 首先检查是否有已经准备就绪的角色
+	for item in speed_queue_items:
+		if item.ready:
+			has_any_ready_character = true
+			break
+	
+	# 更新角色进度
 	for item in speed_queue_items:
 		if item.ready:
 			continue  # 已经准备就绪的角色跳过
 		
+		# 保存旧进度用于比较
+		var old_progress = item.progress
+		
 		# 更新进度（基于速度和战斗倍速）
 		var speed_factor = item.speed / 30.0  # 将速度标准化到0-1
-		item.progress += speed_factor * speed_queue_update_interval * 0.5 * battle_speed
+		item.progress += speed_factor * update_interval * 0.5 * battle_speed
 		
 		# 限制进度在0-1之间
 		item.progress = clamp(item.progress, 0.0, 1.0)
 		
-		# 更新位置
-		var target_x = 10 + (finish_line_x - 10) * item.progress
-		item.name_label.position.x = target_x
-		item.background.position.x = target_x
-		
 		# 检查是否到达终点
-		if item.progress >= 1.0:
+		if item.progress >= 1.0 and old_progress < 1.0:
 			item.ready = true
+			has_new_ready_character = true
+			has_any_ready_character = true
+			
+			# 更新UI（无论是否应该更新UI，新准备就绪的角色必须更新）
 			item.name_label.add_theme_color_override("font_color", Color.YELLOW)
 			add_battle_log(get_character_name(item.character) + " 准备就绪！", "yellow")
 	
-	# 检查是否有角色准备就绪，如果有则执行行动
-	execute_ready_character_action()
+	# 只有在需要时才更新UI位置
+	if should_update_ui or has_new_ready_character:
+		_update_queue_ui_positions(finish_line_x)
+	
+	# 重置计数器
+	if _speed_queue_update_counter >= 100:
+		_speed_queue_update_counter = 0
+	
+	# 修改：如果有任何准备就绪的角色，都检查执行行动
+	if has_any_ready_character:
+		execute_ready_character_action()
+
+# 批量更新队列UI位置
+func _update_queue_ui_positions(finish_line_x):
+	for item in speed_queue_items:
+		if item.ready:
+			continue
+		
+		# 只有当进度足够明显时才更新位置
+		var target_x = 10 + (finish_line_x - 10) * item.progress
+		if abs(item.name_label.position.x - target_x) > 2.0:  # 更大的阈值减少UI更新
+			item.name_label.position.x = target_x
+			item.background.position.x = target_x
 
 # 获取下一个可以行动的角色
 func get_next_ready_character():
@@ -990,7 +1087,7 @@ func execute_ready_character_action():
 	# 检查角色是否还存活
 	var hp = 0
 	if ready_item.character.has_method("get"):
-		hp = ready_item.character.current_hp
+		hp = ready_item.character.get_current_hp()
 	else:
 		hp = ready_item.character.get("hp", 0)
 	
@@ -1027,7 +1124,8 @@ func execute_ready_character_action():
 		var team_type = "玩家" if ready_item.is_player else "敌人"
 		add_battle_log(team_type + " " + attacker_name + " 没有找到可攻击的目标", "gray")
 	
-	# 重置角色到起点
+	# 关键修复：角色执行完行动后，必须重置其在队列中的状态
+	# 这样角色才能重新开始积累进度并再次行动
 	reset_character_in_queue(ready_item.character)
 
 # 设置玩家队伍数据
@@ -1080,11 +1178,13 @@ func update_speed_display(speed: float):
 func apply_battle_speed():
 	# 更新战斗计时器
 	if battle_timer:
-		battle_timer.wait_time = 2.0 / battle_speed
+		battle_timer.wait_time = max(0.1, 2.0 / battle_speed)  # 限制最小等待时间
 	
-	# 速度队列计时器保持固定间隔，通过倍速系数影响进度
+	# 根据战斗速度动态调整速度队列计时器间隔
+	# 高速时降低更新频率以提高性能
 	if speed_queue_timer:
-		speed_queue_timer.wait_time = speed_queue_update_interval
+		var target_interval = base_update_interval / battle_speed
+		speed_queue_timer.wait_time = clamp(target_interval, min_update_interval, base_update_interval)
 	
 	add_battle_log("战斗倍速设置为 " + str(battle_speed) + "x", "cyan")
 

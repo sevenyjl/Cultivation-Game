@@ -1,6 +1,8 @@
 extends Node
 class_name BaseCultivation
 
+# 引入成长相关类
+
 # 修仙者基础类
 # 包含所有修仙者的基本属性和方法
 
@@ -11,13 +13,11 @@ class_name BaseCultivation
 @export var realm_level: int = 1  # 境界内等级（层）
 @export var experience: int = 0  # 经验值
 
-# 生命值系统
-@export var max_hp: int = 100
-@export var current_hp: int = 100
-# 体质（影响生命值的成长）
-@export var constitution: int = 10
+# 生命值系统（使用范围值类管理）
+var hp_stats: RangedValue
 
-@export var speed: int = 10     # 速度（影响攻击顺序）
+# 速度系统（使用固定值类管理）
+var speed_stats: FixedValue
 
 # 修炼境界
 enum CultivationRealm {
@@ -34,6 +34,40 @@ enum CultivationRealm {
 }
 
 @export var realm: CultivationRealm = CultivationRealm.FANREN
+
+func _init() -> void:
+	if hp_stats == null:
+		hp_stats = RangedValue.new(0, 100, 100, 20, 50, 10)
+	if speed_stats == null:
+		speed_stats = FixedValue.new(10, 5, 15, 5)
+
+# 获取当前生命值
+func get_current_hp() -> float:
+	if hp_stats != null:
+		return hp_stats.get_value()
+	return 0
+
+# 设置当前生命值
+func set_current_hp(value: float) -> void:
+	if hp_stats != null:
+		hp_stats.set_value(value)
+
+# 获取最大生命值
+func get_max_hp() -> float:
+	if hp_stats != null:
+		return hp_stats.max_value
+	return 0
+
+# 获取速度值
+func get_speed() -> float:
+	if speed_stats != null:
+		return speed_stats.get_value()
+	return 10
+
+# 设置速度值
+func set_speed(value: float) -> void:
+	if speed_stats != null:
+		speed_stats.set_value(value)
 
 # 获取境界名称
 func get_realm_name() -> String:
@@ -74,7 +108,7 @@ func die():
 
 # 检查是否存活
 func is_alive() -> bool:
-	return current_hp > 0
+	return get_current_hp() > 0
 
 # 升级
 func level_up():
@@ -89,11 +123,11 @@ func level_up():
 	realm_level += 1
 	
 	# 境界内升级时小幅提升属性
-	max_hp += constitution * 3
-	speed += 1
+	hp_stats.grow()  # 生命值随机成长
+	speed_stats.grow()  # 速度随机成长
 	
-	# 恢复生命值和法力值
-	current_hp = max_hp
+	# 恢复生命值
+	set_current_hp(get_max_hp())
 	
 	print(name_str + " 修炼到 " + get_full_realm_name() + "！")
 
@@ -142,12 +176,20 @@ func breakthrough_realm():
 		
 		# 境界突破时大幅提升属性（比升级提升更多）
 		var breakthrough_multiplier = get_breakthrough_multiplier()
-		max_hp += constitution * 15 * breakthrough_multiplier
-		constitution += 8 * breakthrough_multiplier
-		speed += 5 * breakthrough_multiplier
+		# 使用新的生命值系统
+		for i in range(15 * breakthrough_multiplier):
+			hp_stats.grow()
+		
+		# 速度大幅提升
+		var base_speed_increase = 5 * breakthrough_multiplier
+		set_speed(get_speed() + base_speed_increase)
+		
+		# 额外多次成长
+		for i in range(int(3 * breakthrough_multiplier)):
+			speed_stats.grow()
 		
 		# 恢复生命值
-		current_hp = max_hp
+		set_current_hp(get_max_hp())
 		
 		print("境界突破！属性大幅提升！")
 
