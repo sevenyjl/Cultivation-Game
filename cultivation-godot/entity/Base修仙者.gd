@@ -200,3 +200,6 @@ func get_realm_name_by_realm(target_realm: CultivationRealm) -> String:
 			return "渡劫期"
 		_:
 			return "未知境界"
+
+static func 随机生成修仙者()->BaseCultivation:
+	return null
