@@ -87,16 +87,7 @@ func 初始化战斗(player_data:Array, enemy_data:Array):
 	
 	# 创建敌人队伍组件
 	for i in range(enemy_team_data.size()):
-		var character_visible = true
-		if enemy_team_data[i].has_method("get"):
-			# 修仙者对象
-			character_visible = enemy_team_data[i].visible
-		else:
-			# 普通字典
-			character_visible = enemy_team_data[i].get("visible", true)
-		
-		if character_visible:
-			create_character_component(enemy_team_data[i], enemy_team_list, enemy_components)
+		create_character_component(enemy_team_data[i], enemy_team_list, enemy_components)
 			
 	initialize_battle_log()
 	
@@ -778,13 +769,6 @@ func update_enemy_character_hp(character_index: int, current_hp: int, max_hp: in
 		if character_index < enemy_components.size() and is_instance_valid(enemy_components[character_index]):
 			enemy_components[character_index].update_hp(current_hp, max_hp)
 
-# 显示/隐藏敌人
-func set_enemy_visibility(enemy_index: int, enemy_visible: bool):
-	if enemy_index >= 0 and enemy_index < enemy_team_data.size():
-		var enemy = enemy_team_data[enemy_index] as Base修仙者
-		enemy.visible = enemy_visible
-		# 重新初始化敌人队伍显示
-		refresh_enemy_team()
 
 # 刷新敌人队伍显示
 func refresh_enemy_team():
@@ -794,18 +778,8 @@ func refresh_enemy_team():
 			component.queue_free()
 	enemy_components.clear()
 	
-	# 重新创建可见的敌人组件
 	for i in range(enemy_team_data.size()):
-		var character_visible = true
-		if enemy_team_data[i].has_method("get"):
-			# 修仙者对象
-			character_visible = enemy_team_data[i].visible
-		else:
-			# 普通字典
-			character_visible = enemy_team_data[i].get("visible", true)
-		
-		if character_visible:
-			create_character_component(enemy_team_data[i], enemy_team_list, enemy_components)
+		create_character_component(enemy_team_data[i], enemy_team_list, enemy_components)
 
 # 添加玩家队伍成员
 func add_player_character(character_name: String, hp: int, max_hp: int):
@@ -823,11 +797,9 @@ func add_enemy_character(character_name: String, hp: int, max_hp: int, enemy_vis
 		"name": character_name,
 		"hp": hp,
 		"max_hp": max_hp,
-		"visible": enemy_visible
 	}
 	enemy_team_data.append(new_character)
-	if enemy_visible:
-		create_character_component(new_character, enemy_team_list, enemy_components)
+	create_character_component(new_character, enemy_team_list, enemy_components)
 
 # 移除玩家队伍成员
 func remove_player_character(character_index: int):
