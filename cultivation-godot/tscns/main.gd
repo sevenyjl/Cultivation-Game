@@ -148,8 +148,6 @@ func create_enemy_team() -> Array:
 	shadow_demon.learn_skill("暗影传送", "瞬间移动到敌人身后", 25)
 	shadow_demon.learn_technique("暗影心法", "提升暗影系技能威力")
 	
-	# 设置为隐藏状态（在战斗UI中不显示）
-	shadow_demon.visible = false
 	team.append(shadow_demon)
 	
 	return team

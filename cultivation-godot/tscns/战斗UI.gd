@@ -17,7 +17,12 @@ const CHARACTER_COMPONENT_SCENE = preload("uid://ch5ft504adcxv")
 @onready var battle_log_content = $MainContainer/BattleLogPanel/BattleLogContainer/BattleLogContent
 
 # 速度队列节点引用
-@onready var character_names_container = $MainContainer/SpeedQueuePanel/SpeedQueueContainer/SpeedQueueBar/CharacterNamesContainer
+@onready var character_names_container = $MainContainer/HBoxContainer/SpeedQueuePanel/SpeedQueueContainer/SpeedQueueBar/CharacterNamesContainer
+
+# 战斗倍速控制节点引用
+@onready var speed_slider = $MainContainer/HBoxContainer/BattleSpeedPanel/BattleSpeedContainer/BattleSpeedControls/SpeedSlider
+@onready var speed_input = $MainContainer/HBoxContainer/BattleSpeedPanel/BattleSpeedContainer/HBoxContainer/SpeedInput
+@onready var speed_reset_button = $MainContainer/HBoxContainer/BattleSpeedPanel/BattleSpeedContainer/HBoxContainer/SpeedResetButton
 
 # 存储当前显示的人员组件
 var player_components = []
@@ -67,6 +72,9 @@ func _ready():
 	speed_queue_timer.timeout.connect(_on_speed_queue_timer_timeout)
 	speed_queue_timer.autostart = true
 	add_child(speed_queue_timer)
+	
+	# 初始化倍速控制
+	initialize_battle_speed_controls()
 
 func 初始化战斗(player_data:Array, enemy_data:Array):
 	self.player_team_data = player_data
@@ -475,8 +483,8 @@ func _on_battle_timer_timeout():
 	elif battle_state == BattleState.ENEMY_TURN:
 		start_next_turn()
 
-# 设置战斗速度
-func set_battle_speed(speed: float):
+# 设置战斗速度（已废弃，使用新的set_battle_speed函数）
+func set_battle_speed_old(speed: float):
 	battle_speed = speed
 	battle_timer.wait_time = 2.0 / speed
 
@@ -950,9 +958,9 @@ func update_speed_queue():
 		if item.ready:
 			continue  # 已经准备就绪的角色跳过
 		
-		# 更新进度（基于速度）
+		# 更新进度（基于速度和战斗倍速）
 		var speed_factor = item.speed / 30.0  # 将速度标准化到0-1
-		item.progress += speed_factor * speed_queue_update_interval * 0.5
+		item.progress += speed_factor * speed_queue_update_interval * 0.5 * battle_speed
 		
 		# 限制进度在0-1之间
 		item.progress = clamp(item.progress, 0.0, 1.0)
@@ -1059,3 +1067,67 @@ func set_player_team_data(new_team_data: Array):
 func set_enemy_team_data(new_team_data: Array):
 	enemy_team_data = new_team_data
 	refresh_enemy_team()
+
+# ==================== 战斗倍速控制相关函数 ====================
+
+# 初始化战斗倍速控制
+func initialize_battle_speed_controls():
+	# 连接信号
+	speed_slider.value_changed.connect(_on_speed_slider_changed)
+	speed_input.value_changed.connect(_on_speed_input_changed)
+	speed_reset_button.pressed.connect(_on_speed_reset_pressed)
+	
+	# 设置初始值
+	update_speed_display(battle_speed)
+
+# 滑块值改变回调
+func _on_speed_slider_changed(value: float):
+	battle_speed = value
+	speed_input.value = value
+	apply_battle_speed()
+
+# 输入框值改变回调
+func _on_speed_input_changed(value: float):
+	battle_speed = value
+	speed_slider.value = value
+	apply_battle_speed()
+
+# 重置按钮回调
+func _on_speed_reset_pressed():
+	battle_speed = 1.0
+	update_speed_display(battle_speed)
+	apply_battle_speed()
+	add_battle_log("战斗倍速已重置为 1.0x", "yellow")
+
+# 更新速度显示
+func update_speed_display(speed: float):
+	speed_slider.value = speed
+	speed_input.value = speed
+
+# 应用战斗倍速
+func apply_battle_speed():
+	# 更新战斗计时器
+	if battle_timer:
+		battle_timer.wait_time = 2.0 / battle_speed
+	
+	# 速度队列计时器保持固定间隔，通过倍速系数影响进度
+	if speed_queue_timer:
+		speed_queue_timer.wait_time = speed_queue_update_interval
+	
+	add_battle_log("战斗倍速设置为 " + str(battle_speed) + "x", "cyan")
+
+# 获取当前战斗倍速
+func get_battle_speed() -> float:
+	return battle_speed
+
+# 设置战斗倍速（外部调用）
+func set_battle_speed(speed: float):
+	# 限制倍速范围
+	speed = clamp(speed, 0.5, 10.0)
+	
+	# 确保是0.5的倍数
+	speed = round(speed * 2.0) / 2.0
+	
+	battle_speed = speed
+	update_speed_display(battle_speed)
+	apply_battle_speed()
