@@ -91,12 +91,10 @@ func 开始攻击(character_data):
 		var enemy_component = enemies[0]
 		# 创建攻击动画
 		创建攻击动画(attacker_component, enemy_component)
-		# 等待动画完成（1秒）
-		await get_tree().create_timer(1.0).timeout
 	else:
 		# 如果没有敌人，等待0.5秒
 		await get_tree().create_timer(0.5).timeout
-	_是否处理速度队列=true
+		_是否处理速度队列=true
 	# print("攻击结束")
 
 # 创建攻击动画
@@ -113,28 +111,91 @@ func 创建攻击动画(attacker_component:Control, target_component:Control):
 	# 添加到场景根节点（确保能覆盖所有UI元素）
 	add_child(attack_label)
 	
-	# 计算攻击者和目标的世界坐标中心
-	var attacker_global_pos = attacker_component.global_position
-	var attacker_center = attacker_global_pos + Vector2(attacker_component.size.x / 2, attacker_component.size.y / 2)
+	# 计算攻击者和目标的可见位置，考虑滚动容器的可视区域
+	var start_pos = _get_visible_position(attacker_component)
+	var end_pos = _get_visible_position(target_component)
 	
-	var target_global_pos = target_component.global_position
-	var target_center = target_global_pos + Vector2(target_component.size.x / 2, target_component.size.y / 2)
+	# 设置攻击标签的初始位置
+	attack_label.global_position = start_pos - Vector2(attack_label.size.x / 2, attack_label.size.y / 2)
 	
-	# 转换为本地坐标并设置攻击标签的初始位置（使用Control节点的global_position转换）
-	attack_label.global_position = attacker_center - Vector2(attack_label.size.x / 2, attack_label.size.y / 2)
-	
-	# 创建Tween动画
+	# 创建Tween动画 - 攻击移动动画
 	var tween = create_tween()
-	tween.tween_property(attack_label, "global_position", target_center - Vector2(attack_label.size.x / 2, attack_label.size.y / 2), 1.0)
-	# 使用tween.delay()方法添加延迟，然后再添加淡出效果
-	tween.tween_interval(0.8)
-	tween.tween_property(attack_label, "modulate:a", 0.0, 0.2).from(1.0) # 添加淡出效果
 	
-	# 动画完成后移除节点
-	tween.finished.connect(func():
-		if is_instance_valid(attack_label):
-			attack_label.queue_free()
+	# 攻击动画：移动效果 - 先执行移动
+	tween.tween_property(attack_label, "global_position", end_pos - Vector2(attack_label.size.x / 2, attack_label.size.y / 2), 0.5)
+	
+	# 移动完成后，触发回调函数执行并行的淡出和抖动动画
+	tween.tween_callback(func():
+		# 创建淡出动画
+		var fade_tween = create_tween()
+		fade_tween.tween_property(attack_label, "modulate:a", 0.0, 0.2).from(1.0)
+		
+		# 创建抖动动画 - 与淡出并行执行
+		var shake_tween = create_tween()
+		
+		# 保存目标原始位置
+		var original_position = target_component.position
+		
+		# 快速抖动效果：左右上下小幅度移动
+		shake_tween.tween_property(target_component, "position", original_position + Vector2(5, 0), 0.05) # 右移
+		shake_tween.tween_property(target_component, "position", original_position + Vector2(-8, 0), 0.05) # 左移
+		shake_tween.tween_property(target_component, "position", original_position + Vector2(5, 0), 0.05) # 右移
+		shake_tween.tween_property(target_component, "position", original_position + Vector2(0, -3), 0.05) # 上移
+		shake_tween.tween_property(target_component, "position", original_position + Vector2(0, 3), 0.05) # 下移
+		shake_tween.tween_property(target_component, "position", original_position, 0.05) # 恢复原位
+		
+		# 监听淡出动画完成
+		fade_tween.finished.connect(func():
+			# 等待淡出动画完成后移除节点
+			if is_instance_valid(attack_label):
+				attack_label.queue_free()
+			
+			# 标记可以处理下一个动画
+			_是否处理速度队列 = true
+		)
 	)
+	
+
+# 获取考虑滚动容器可视区域的组件位置
+func _get_visible_position(component: Control) -> Vector2:
+	# 获取组件的全局位置中心
+	var component_global_pos = component.global_position
+	var component_center = component_global_pos + Vector2(component.size.x / 2, component.size.y / 2)
+	
+	# 检查组件是否在玩家队伍或敌人队伍中（这些可能是滚动容器）
+	if _is_in_scroll_container(component):
+		var scroll_container = _get_scroll_container(component)
+		if scroll_container:
+			# 获取滚动容器的可视区域
+			var scroll_rect = scroll_container.get_rect()
+			var scroll_container_global_pos = scroll_container.global_position
+			var viewport_rect = Rect2(scroll_container_global_pos, scroll_rect.size)
+			
+			# 检查组件中心是否在滚动容器的可视区域内
+			if not viewport_rect.has_point(component_center):
+				# 如果不在可视区域内，返回滚动容器的中心点作为替代
+				return scroll_container_global_pos + Vector2(scroll_rect.size.x / 2, scroll_rect.size.y / 2)
+	
+	# 如果在可视区域内或没有滚动容器，返回组件的实际中心位置
+	return component_center
+
+# 检查组件是否在滚动容器内
+func _is_in_scroll_container(component: Control) -> bool:
+	var parent = component.get_parent()
+	while parent:
+		if parent is ScrollContainer:
+			return true
+		parent = parent.get_parent()
+	return false
+
+# 获取组件所在的滚动容器
+func _get_scroll_container(component: Control) -> ScrollContainer:
+	var parent = component.get_parent()
+	while parent:
+		if parent is ScrollContainer:
+			return parent
+		parent = parent.get_parent()
+	return null
 
 func _process(delta: float) -> void:
 	_速度队列处理(delta)
