@@ -21,123 +21,143 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.2, 0.2, 0.2, 1)
 
-[node name="MainContainer" type="VBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = 20.0
-offset_right = -20.0
-offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TopContainer" type="HBoxContainer" parent="MainContainer"]
+[node name="MainContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TopContainer" type="HBoxContainer" parent="HBoxContainer/MainContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="PlayerTeamPanel" type="Panel" parent="MainContainer/TopContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="PlayerTeamContainer" type="VBoxContainer" parent="MainContainer/TopContainer/PlayerTeamPanel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = -10.0
-offset_bottom = -10.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="PlayerTeamTitle" type="Label" parent="MainContainer/TopContainer/PlayerTeamPanel/PlayerTeamContainer"]
-layout_mode = 2
-text = "玩家队伍"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="PlayerTeamScrollContainer" type="ScrollContainer" parent="MainContainer/TopContainer/PlayerTeamPanel/PlayerTeamContainer"]
+[node name="PlayerTeamPanel" type="PanelContainer" parent="HBoxContainer/MainContainer/TopContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="PlayerTeamList" type="VBoxContainer" parent="MainContainer/TopContainer/PlayerTeamPanel/PlayerTeamContainer/PlayerTeamScrollContainer"]
+[node name="PlayerTeamList" type="GridContainer" parent="HBoxContainer/MainContainer/TopContainer/PlayerTeamPanel"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+columns = 3
 
-[node name="人员战斗信息组件" parent="MainContainer/TopContainer/PlayerTeamPanel/PlayerTeamContainer/PlayerTeamScrollContainer/PlayerTeamList" instance=ExtResource("2_3x4k5")]
+[node name="人员战斗信息组件" parent="HBoxContainer/MainContainer/TopContainer/PlayerTeamPanel/PlayerTeamList" instance=ExtResource("2_3x4k5")]
 layout_mode = 2
 
-[node name="人员战斗信息组件2" parent="MainContainer/TopContainer/PlayerTeamPanel/PlayerTeamContainer/PlayerTeamScrollContainer/PlayerTeamList" instance=ExtResource("2_3x4k5")]
+[node name="人员战斗信息组件2" parent="HBoxContainer/MainContainer/TopContainer/PlayerTeamPanel/PlayerTeamList" instance=ExtResource("2_3x4k5")]
 layout_mode = 2
 
-[node name="Spacer" type="Control" parent="MainContainer/TopContainer"]
+[node name="人员战斗信息组件3" parent="HBoxContainer/MainContainer/TopContainer/PlayerTeamPanel/PlayerTeamList" instance=ExtResource("2_3x4k5")]
+layout_mode = 2
+
+[node name="人员战斗信息组件4" parent="HBoxContainer/MainContainer/TopContainer/PlayerTeamPanel/PlayerTeamList" instance=ExtResource("2_3x4k5")]
+layout_mode = 2
+
+[node name="人员战斗信息组件5" parent="HBoxContainer/MainContainer/TopContainer/PlayerTeamPanel/PlayerTeamList" instance=ExtResource("2_3x4k5")]
+layout_mode = 2
+
+[node name="人员战斗信息组件6" parent="HBoxContainer/MainContainer/TopContainer/PlayerTeamPanel/PlayerTeamList" instance=ExtResource("2_3x4k5")]
+layout_mode = 2
+
+[node name="人员战斗信息组件7" parent="HBoxContainer/MainContainer/TopContainer/PlayerTeamPanel/PlayerTeamList" instance=ExtResource("2_3x4k5")]
+layout_mode = 2
+
+[node name="人员战斗信息组件8" parent="HBoxContainer/MainContainer/TopContainer/PlayerTeamPanel/PlayerTeamList" instance=ExtResource("2_3x4k5")]
+layout_mode = 2
+
+[node name="人员战斗信息组件9" parent="HBoxContainer/MainContainer/TopContainer/PlayerTeamPanel/PlayerTeamList" instance=ExtResource("2_3x4k5")]
+layout_mode = 2
+
+[node name="人员战斗信息组件10" parent="HBoxContainer/MainContainer/TopContainer/PlayerTeamPanel/PlayerTeamList" instance=ExtResource("2_3x4k5")]
+layout_mode = 2
+
+[node name="人员战斗信息组件11" parent="HBoxContainer/MainContainer/TopContainer/PlayerTeamPanel/PlayerTeamList" instance=ExtResource("2_3x4k5")]
+layout_mode = 2
+
+[node name="人员战斗信息组件12" parent="HBoxContainer/MainContainer/TopContainer/PlayerTeamPanel/PlayerTeamList" instance=ExtResource("2_3x4k5")]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="HBoxContainer/MainContainer/TopContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="EnemyTeamPanel" type="Panel" parent="MainContainer/TopContainer"]
+[node name="EnemyTeamPanel" type="PanelContainer" parent="HBoxContainer/MainContainer/TopContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="EnemyTeamContainer" type="VBoxContainer" parent="MainContainer/TopContainer/EnemyTeamPanel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = -10.0
-offset_bottom = -10.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="EnemyTeamTitle" type="Label" parent="MainContainer/TopContainer/EnemyTeamPanel/EnemyTeamContainer"]
-layout_mode = 2
-text = "敌人队伍"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="EnemyTeamScrollContainer" type="ScrollContainer" parent="MainContainer/TopContainer/EnemyTeamPanel/EnemyTeamContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="EnemyTeamList" type="VBoxContainer" parent="MainContainer/TopContainer/EnemyTeamPanel/EnemyTeamContainer/EnemyTeamScrollContainer"]
+[node name="EnemyTeamList" type="GridContainer" parent="HBoxContainer/MainContainer/TopContainer/EnemyTeamPanel"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+columns = 3
 
-[node name="人员战斗信息组件2" parent="MainContainer/TopContainer/EnemyTeamPanel/EnemyTeamContainer/EnemyTeamScrollContainer/EnemyTeamList" instance=ExtResource("2_3x4k5")]
+[node name="人员战斗信息组件2" parent="HBoxContainer/MainContainer/TopContainer/EnemyTeamPanel/EnemyTeamList" instance=ExtResource("2_3x4k5")]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer"]
+[node name="人员战斗信息组件3" parent="HBoxContainer/MainContainer/TopContainer/EnemyTeamPanel/EnemyTeamList" instance=ExtResource("2_3x4k5")]
 layout_mode = 2
 
-[node name="SpeedQueuePanel" type="PanelContainer" parent="MainContainer/HBoxContainer"]
+[node name="人员战斗信息组件4" parent="HBoxContainer/MainContainer/TopContainer/EnemyTeamPanel/EnemyTeamList" instance=ExtResource("2_3x4k5")]
+layout_mode = 2
+
+[node name="人员战斗信息组件5" parent="HBoxContainer/MainContainer/TopContainer/EnemyTeamPanel/EnemyTeamList" instance=ExtResource("2_3x4k5")]
+layout_mode = 2
+
+[node name="人员战斗信息组件6" parent="HBoxContainer/MainContainer/TopContainer/EnemyTeamPanel/EnemyTeamList" instance=ExtResource("2_3x4k5")]
+layout_mode = 2
+
+[node name="人员战斗信息组件7" parent="HBoxContainer/MainContainer/TopContainer/EnemyTeamPanel/EnemyTeamList" instance=ExtResource("2_3x4k5")]
+layout_mode = 2
+
+[node name="人员战斗信息组件8" parent="HBoxContainer/MainContainer/TopContainer/EnemyTeamPanel/EnemyTeamList" instance=ExtResource("2_3x4k5")]
+layout_mode = 2
+
+[node name="人员战斗信息组件9" parent="HBoxContainer/MainContainer/TopContainer/EnemyTeamPanel/EnemyTeamList" instance=ExtResource("2_3x4k5")]
+layout_mode = 2
+
+[node name="人员战斗信息组件10" parent="HBoxContainer/MainContainer/TopContainer/EnemyTeamPanel/EnemyTeamList" instance=ExtResource("2_3x4k5")]
+layout_mode = 2
+
+[node name="人员战斗信息组件11" parent="HBoxContainer/MainContainer/TopContainer/EnemyTeamPanel/EnemyTeamList" instance=ExtResource("2_3x4k5")]
+layout_mode = 2
+
+[node name="人员战斗信息组件12" parent="HBoxContainer/MainContainer/TopContainer/EnemyTeamPanel/EnemyTeamList" instance=ExtResource("2_3x4k5")]
+layout_mode = 2
+
+[node name="人员战斗信息组件" parent="HBoxContainer/MainContainer/TopContainer/EnemyTeamPanel/EnemyTeamList" instance=ExtResource("2_3x4k5")]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/MainContainer"]
+layout_mode = 2
+
+[node name="SpeedQueuePanel" type="PanelContainer" parent="HBoxContainer/MainContainer/HBoxContainer"]
 custom_minimum_size = Vector2(900, 20)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="SpeedQueueContainer" type="VBoxContainer" parent="MainContainer/HBoxContainer/SpeedQueuePanel"]
+[node name="SpeedQueueContainer" type="VBoxContainer" parent="HBoxContainer/MainContainer/HBoxContainer/SpeedQueuePanel"]
 layout_mode = 2
 
-[node name="SpeedQueueTitle" type="Label" parent="MainContainer/HBoxContainer/SpeedQueuePanel/SpeedQueueContainer"]
+[node name="SpeedQueueTitle" type="Label" parent="HBoxContainer/MainContainer/HBoxContainer/SpeedQueuePanel/SpeedQueueContainer"]
 layout_mode = 2
 text = "速度队列"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SpeedQueueBar" type="Control" parent="MainContainer/HBoxContainer/SpeedQueuePanel/SpeedQueueContainer"]
+[node name="SpeedQueueBar" type="Control" parent="HBoxContainer/MainContainer/HBoxContainer/SpeedQueuePanel/SpeedQueueContainer"]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="SpeedQueueBackground" type="ColorRect" parent="MainContainer/HBoxContainer/SpeedQueuePanel/SpeedQueueContainer/SpeedQueueBar"]
+[node name="SpeedQueueBackground" type="ColorRect" parent="HBoxContainer/MainContainer/HBoxContainer/SpeedQueuePanel/SpeedQueueContainer/SpeedQueueBar"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -146,7 +166,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.39607844, 0.101960786, 0.101960786, 0.8)
 
-[node name="SpeedQueueTrack" type="ColorRect" parent="MainContainer/HBoxContainer/SpeedQueuePanel/SpeedQueueContainer/SpeedQueueBar"]
+[node name="SpeedQueueTrack" type="ColorRect" parent="HBoxContainer/MainContainer/HBoxContainer/SpeedQueuePanel/SpeedQueueContainer/SpeedQueueBar"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -155,7 +175,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.3, 0.3, 0.3, 0.5)
 
-[node name="SpeedQueueFinishLine" type="ColorRect" parent="MainContainer/HBoxContainer/SpeedQueuePanel/SpeedQueueContainer/SpeedQueueBar"]
+[node name="SpeedQueueFinishLine" type="ColorRect" parent="HBoxContainer/MainContainer/HBoxContainer/SpeedQueuePanel/SpeedQueueContainer/SpeedQueueBar"]
 custom_minimum_size = Vector2(5, 0)
 layout_mode = 1
 anchors_preset = 11
@@ -166,7 +186,7 @@ grow_horizontal = 0
 grow_vertical = 2
 color = Color(1, 1, 0, 0.8)
 
-[node name="CharacterNamesContainer" type="Control" parent="MainContainer/HBoxContainer/SpeedQueuePanel/SpeedQueueContainer/SpeedQueueBar"]
+[node name="CharacterNamesContainer" type="Control" parent="HBoxContainer/MainContainer/HBoxContainer/SpeedQueuePanel/SpeedQueueContainer/SpeedQueueBar"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -175,7 +195,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="MainContainer/HBoxContainer/SpeedQueuePanel/SpeedQueueContainer/SpeedQueueBar/CharacterNamesContainer"]
+[node name="Label" type="Label" parent="HBoxContainer/MainContainer/HBoxContainer/SpeedQueuePanel/SpeedQueueContainer/SpeedQueueBar/CharacterNamesContainer"]
 layout_mode = 0
 offset_left = 7.0
 offset_top = 20.0
@@ -183,35 +203,25 @@ offset_right = 71.0
 offset_bottom = 43.0
 text = "速度队列"
 
-[node name="BattleSpeedPanel" type="PanelContainer" parent="MainContainer/HBoxContainer"]
+[node name="BattleSpeedPanel" type="PanelContainer" parent="HBoxContainer/MainContainer/HBoxContainer"]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="BattleSpeedContainer" type="VBoxContainer" parent="MainContainer/HBoxContainer/BattleSpeedPanel"]
+[node name="BattleSpeedContainer" type="VBoxContainer" parent="HBoxContainer/MainContainer/HBoxContainer/BattleSpeedPanel"]
 layout_mode = 2
 
-[node name="BattleSpeedTitle" type="Label" parent="MainContainer/HBoxContainer/BattleSpeedPanel/BattleSpeedContainer"]
+[node name="BattleSpeedTitle" type="Label" parent="HBoxContainer/MainContainer/HBoxContainer/BattleSpeedPanel/BattleSpeedContainer"]
 layout_mode = 2
 text = "战斗倍速控制"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BattleSpeedControls" type="VBoxContainer" parent="MainContainer/HBoxContainer/BattleSpeedPanel/BattleSpeedContainer"]
+[node name="BattleSpeedControls" type="VBoxContainer" parent="HBoxContainer/MainContainer/HBoxContainer/BattleSpeedPanel/BattleSpeedContainer"]
 layout_mode = 2
 
-[node name="SpeedSlider" type="HSlider" parent="MainContainer/HBoxContainer/BattleSpeedPanel/BattleSpeedContainer/BattleSpeedControls"]
-layout_mode = 2
-size_flags_horizontal = 3
-min_value = 0.5
-max_value = 10.0
-step = 0.5
-value = 1.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/HBoxContainer/BattleSpeedPanel/BattleSpeedContainer"]
-layout_mode = 2
-
-[node name="SpeedInput" type="SpinBox" parent="MainContainer/HBoxContainer/BattleSpeedPanel/BattleSpeedContainer/HBoxContainer"]
+[node name="SpeedSlider" type="HSlider" parent="HBoxContainer/MainContainer/HBoxContainer/BattleSpeedPanel/BattleSpeedContainer/BattleSpeedControls"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 min_value = 0.5
@@ -219,26 +229,40 @@ max_value = 10.0
 step = 0.5
 value = 1.0
 
-[node name="SpeedResetButton" type="Button" parent="MainContainer/HBoxContainer/BattleSpeedPanel/BattleSpeedContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/MainContainer/HBoxContainer/BattleSpeedPanel/BattleSpeedContainer"]
+layout_mode = 2
+
+[node name="SpeedInput" type="SpinBox" parent="HBoxContainer/MainContainer/HBoxContainer/BattleSpeedPanel/BattleSpeedContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.5
+max_value = 10.0
+step = 0.5
+value = 1.0
+
+[node name="SpeedResetButton" type="Button" parent="HBoxContainer/MainContainer/HBoxContainer/BattleSpeedPanel/BattleSpeedContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "重置"
 
-[node name="BattleLogPanel" type="PanelContainer" parent="MainContainer"]
+[node name="BattleLogPanel" type="PanelContainer" parent="HBoxContainer/MainContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="BattleLogContainer" type="VBoxContainer" parent="MainContainer/BattleLogPanel"]
+[node name="BattleLogContainer" type="VBoxContainer" parent="HBoxContainer/MainContainer/BattleLogPanel"]
 layout_mode = 2
 
-[node name="BattleLogTitle" type="Label" parent="MainContainer/BattleLogPanel/BattleLogContainer"]
+[node name="BattleLogTitle" type="Label" parent="HBoxContainer/MainContainer/BattleLogPanel/BattleLogContainer"]
 layout_mode = 2
 text = "战斗日志"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BattleLogContent" type="RichTextLabel" parent="MainContainer/BattleLogPanel/BattleLogContainer"]
+[node name="BattleLogContent" type="RichTextLabel" parent="HBoxContainer/MainContainer/BattleLogPanel/BattleLogContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 bbcode_enabled = true

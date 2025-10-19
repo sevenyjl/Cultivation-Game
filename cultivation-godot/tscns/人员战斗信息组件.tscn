@@ -19,9 +19,9 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
 [node name="人员战斗信息组件" type="PanelContainer"]
-custom_minimum_size = Vector2(300, 100)
-offset_right = 300.0
-offset_bottom = 100.0
+custom_minimum_size = Vector2(150, 100)
+offset_right = 180.0
+offset_bottom = 150.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_frd7m")
@@ -30,9 +30,17 @@ script = ExtResource("1_2x3k4")
 [node name="MainContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="MainContainer"]
+[node name="NameContainer" type="HBoxContainer" parent="MainContainer"]
 layout_mode = 2
-text = "名称: 未设置"
+
+[node name="NameLabel" type="Label" parent="MainContainer/NameContainer"]
+layout_mode = 2
+text = "名称: "
+vertical_alignment = 1
+
+[node name="value" type="Label" parent="MainContainer/NameContainer"]
+layout_mode = 2
+text = "名称: "
 vertical_alignment = 1
 
 [node name="HPContainer" type="HBoxContainer" parent="MainContainer"]
@@ -43,7 +51,7 @@ layout_mode = 2
 text = "生命值:"
 vertical_alignment = 1
 
-[node name="HPProgressBar" type="ProgressBar" parent="MainContainer/HPContainer"]
+[node name="value" type="ProgressBar" parent="MainContainer/HPContainer"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 size_flags_horizontal = 3

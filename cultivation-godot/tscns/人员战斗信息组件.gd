@@ -3,9 +3,8 @@ extends PanelContainer
 # 人员战斗信息组件
 # 用于显示单个战斗人员的基本信息
 
-@onready var name_label = $MainContainer/NameLabel
-@onready var hp_label = $MainContainer/HPContainer/HPLabel
-@onready var hp_progress_bar = $MainContainer/HPContainer/HPProgressBar
+@onready var name_label = $MainContainer/NameContainer/value
+@onready var hp_progress_bar = $MainContainer/HPContainer/value
 
 # 人员数据
 var character_data:BaseCultivation
@@ -13,8 +12,7 @@ var character_data:BaseCultivation
 func _process(delta):
 	if character_data == null:
 		return
-	name_label.text = character_data.name
-	hp_label.text = "生命值: " + str(character_data.hp_stats.current_value) + "/" + str(character_data.hp_stats.max_value)
+	name_label.text = character_data.name_str
 	# 更新进度条
 	if character_data.hp_stats.max_value > 0:
 		hp_progress_bar.value = (float(character_data.hp_stats.current_value) / float(character_data.hp_stats.max_value)) * 100.0
