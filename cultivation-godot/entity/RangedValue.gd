@@ -18,6 +18,10 @@ func _init(min_val: float = 0.0, max_val: float = 100.0, current_val: float = 10
 func get_value() -> float:
 	return current_value
 
+# 随机获取范围内的值
+func get_random_value() -> float:
+	return roundf(randf_range(min_value, max_value) * 100) / 100
+
 # 设置当前值（保持在min和max之间）
 func set_value(value: float):
 	current_value = clamp(roundf(value * 100) / 100, min_value, max_value)
