@@ -215,7 +215,8 @@ func 初始化速度队列(character_component):
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	# 使用字典存储name_label和character_component的映射
 	character_component_map[name_label] = character_component
-	var speed = character_data.speed_stats.get_value()
+	var speed_stats=character_data.speed_stats as RandomValue
+	var speed = speed_stats.get_current_value()
 	if 基础速度 == 0:
 		基础速度 = speed
 	else:
@@ -260,7 +261,7 @@ func _速度队列处理(delta: float):
 					# 触发攻击
 					开始攻击(character_data)
 					# 重置速度
-					i.set_meta("speed_data", character_data.speed_stats.get_value())
+					i.set_meta("speed_data", character_data.speed_stats.get_current_value())
 					# 重置位置到左边起点
 					i.position.x = CharacterNamesContainer.position.x
 

@@ -14,8 +14,9 @@ func _process(delta):
 		return
 	name_label.text = character_data.name_str
 	# 更新进度条
-	if character_data.hp_stats.max_value > 0:
-		hp_progress_bar.value = (float(character_data.hp_stats.current_value) / float(character_data.hp_stats.max_value)) * 100.0
+	var hp_stats = character_data.hp_stats as RangedValue
+	if hp_stats.max_value > 0:
+		hp_progress_bar.value = (float(hp_stats.get_current_value()) / float(hp_stats.max_value)) * 100.0
 	else:
 		hp_progress_bar.value = 0.0
 

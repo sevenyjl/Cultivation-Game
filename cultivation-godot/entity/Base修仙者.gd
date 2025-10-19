@@ -17,7 +17,7 @@ class_name BaseCultivation
 var hp_stats: RangedValue
 
 # 速度系统（使用固定值类管理）
-var speed_stats: FixedValue
+var speed_stats: RandomValue
 
 # 修炼境界
 enum CultivationRealm {
@@ -37,37 +37,21 @@ enum CultivationRealm {
 
 func _init() -> void:
 	if hp_stats == null:
-		hp_stats = RangedValue.new(0, 100, 100, 20, 50, 10)
+		hp_stats = RangedValue.new()
+		hp_stats.min_value = 0
+		hp_stats.max_value = 100
+		hp_stats.current_value = 100
+		hp_stats.min_growth = 20
+		hp_stats.max_growth = 50
+		hp_stats.growth_factor = 10
 	if speed_stats == null:
-		speed_stats = FixedValue.new(10, 5, 15, 5)
+		speed_stats = RandomValue.new()
+		speed_stats.min_value = 10
+		speed_stats.max_value = 15
+		speed_stats.min_growth = 5
+		speed_stats.max_growth = 10
+		speed_stats.growth_factor = 5
 
-# 获取当前生命值
-func get_current_hp() -> float:
-	if hp_stats != null:
-		return hp_stats.get_value()
-	return 0
-
-# 设置当前生命值
-func set_current_hp(value: float) -> void:
-	if hp_stats != null:
-		hp_stats.set_value(value)
-
-# 获取最大生命值
-func get_max_hp() -> float:
-	if hp_stats != null:
-		return hp_stats.max_value
-	return 0
-
-# 获取速度值
-func get_speed() -> float:
-	if speed_stats != null:
-		return speed_stats.get_value()
-	return 10
-
-# 设置速度值
-func set_speed(value: float) -> void:
-	if speed_stats != null:
-		speed_stats.set_value(value)
 
 # 获取境界名称
 func get_realm_name() -> String:
@@ -108,7 +92,7 @@ func die():
 
 # 检查是否存活
 func is_alive() -> bool:
-	return get_current_hp() > 0
+	return hp_stats.get_current_value() > 0
 
 # 升级
 func level_up():
@@ -126,8 +110,8 @@ func level_up():
 	hp_stats.grow()  # 生命值随机成长
 	speed_stats.grow()  # 速度随机成长
 	
-	# 恢复生命值
-	set_current_hp(get_max_hp())
+	# 生命值恢复到最大
+	hp_stats.current_value = hp_stats.max_value
 	
 	print(name_str + " 修炼到 " + get_full_realm_name() + "！")
 
@@ -179,18 +163,9 @@ func breakthrough_realm():
 		# 使用新的生命值系统
 		for i in range(15 * breakthrough_multiplier):
 			hp_stats.grow()
-		
-		# 速度大幅提升
-		var base_speed_increase = 5 * breakthrough_multiplier
-		set_speed(get_speed() + base_speed_increase)
-		
 		# 额外多次成长
 		for i in range(int(3 * breakthrough_multiplier)):
 			speed_stats.grow()
-		
-		# 恢复生命值
-		set_current_hp(get_max_hp())
-		
 		print("境界突破！属性大幅提升！")
 
 # 获取境界突破的属性提升倍数
