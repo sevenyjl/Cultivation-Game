@@ -19,6 +19,12 @@ var hp_stats: RangedValue
 # 速度系统（使用固定值类管理）
 var speed_stats: RandomValue
 
+# 攻击力
+var attack_stats: RandomValue
+
+# 防御力
+var defense_stats: RandomValue
+
 # 修炼境界
 enum CultivationRealm {
 	FANREN,      # 凡人
@@ -34,6 +40,8 @@ enum CultivationRealm {
 }
 
 @export var realm: CultivationRealm = CultivationRealm.FANREN
+
+signal 死亡(攻击角色:BaseCultivation,死亡角色:BaseCultivation)
 
 func _init() -> void:
 	if hp_stats == null:
@@ -51,7 +59,20 @@ func _init() -> void:
 		speed_stats.min_growth = 5
 		speed_stats.max_growth = 10
 		speed_stats.growth_factor = 5
-
+	if attack_stats == null:
+		attack_stats = RandomValue.new()
+		attack_stats.min_value = 20
+		attack_stats.max_value = 30
+		attack_stats.min_growth = 5
+		attack_stats.max_growth = 10
+		attack_stats.growth_factor = 5
+	if defense_stats == null:
+		defense_stats = RandomValue.new()
+		defense_stats.min_value = 0
+		defense_stats.max_value = 10
+		defense_stats.min_growth = 1
+		defense_stats.max_growth = 3
+		defense_stats.growth_factor = 2
 
 # 获取境界名称
 func get_realm_name() -> String:
@@ -85,14 +106,6 @@ func get_full_realm_name() -> String:
 		return "凡人"
 	else:
 		return get_realm_name() + "第" + str(realm_level) + "层"
-
-# 死亡
-func die():
-	print(name_str + " 已死亡！")
-
-# 检查是否存活
-func is_alive() -> bool:
-	return hp_stats.get_current_value() > 0
 
 # 升级
 func level_up():
@@ -220,3 +233,18 @@ func get_realm_name_by_realm(target_realm: CultivationRealm) -> String:
 
 static func 随机生成修仙者()->BaseCultivation:
 	return null
+
+#region 属性变化方法
+func 应用伤害(damage: float,造成角色:BaseCultivation):
+	# 应用伤害到目标
+	hp_stats.current_value=(hp_stats.get_current_value() - damage)
+	if !是否存活():
+		死亡.emit(造成角色,self)
+
+
+#endregion 属性变化方法
+#region 相关判断方法
+# 检查是否存活
+func 是否存活() -> bool:
+	return hp_stats.get_current_value() > 0
+#endregion 相关判断方法
