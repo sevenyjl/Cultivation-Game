@@ -1,5 +1,8 @@
 extends Control
 
+# 定义战斗结束信号
+signal 战斗结束(结果)
+
 # 引用人员战斗信息组件场景
 const CHARACTER_COMPONENT_SCENE = preload("uid://ch5ft504adcxv")
 
@@ -9,6 +12,8 @@ var 倍速:float=1.0
 # 存储character_component和character_data的映射关系
 var character_component_map: Dictionary = {}
 var character_data_map: Dictionary = {}
+# 战斗是否正在进行中
+var _战斗进行中:bool = true
 # 战斗日志配置
 const MAX_BATTLE_LOG_LINES = 1000 # 最大战斗日志行数，超过将移除最早的日志
 
@@ -34,7 +39,7 @@ func _ready() -> void:
 	
 	# 初始化战斗日志
 	BattleLogContent.bbcode_enabled = true
-	BattleLogContent.text = "战斗开始！"
+	BattleLogContent.text = "" # 初始为空，在初始化战斗时添加战斗开始日志
 
 # 战斗方阵常量 - GridContainer 实现，一行3个，共4行
 const ROWS = 4
@@ -45,6 +50,7 @@ func 初始化战斗(player_formation:Array, enemy_formation:Array):
 	character_component_map.clear()
 	character_data_map.clear()
 	基础速度 = 0
+	_战斗进行中 = true
 	# 使用缓存的节点引用
 	for i in PlayerTeamList.get_children():
 		i.queue_free()
@@ -59,6 +65,9 @@ func 初始化战斗(player_formation:Array, enemy_formation:Array):
 	
 	# 创建敌人队伍组件（3x4方阵）
 	_process_formation(enemy_formation, EnemyTeamList)
+	
+	# 初始化战斗日志
+	添加战斗日志("战斗开始！")
 
 func _process_formation(formation:Array, team_list:Control):
 	# 处理方阵数据 - 确保每个GridContainer位置都有组件
@@ -98,6 +107,9 @@ func create_empty_component(team_list:Control) -> Control:
 func _on_死亡_sinal(攻击者:BaseCultivation,死亡者:BaseCultivation):
 	# 从速度队列中移除死亡者
 	_移除速度队列(死亡者)
+	
+	# 检查战斗是否结束
+	检查战斗结束()
 	pass
 
 func _信号移除(character_data:BaseCultivation):
@@ -279,7 +291,7 @@ func _移除速度队列(character_data:BaseCultivation):
 			break
 
 func _速度队列处理(delta: float):
-	if not _是否处理速度队列:
+	if not _是否处理速度队列 or not _战斗进行中:
 		return
 	# 基础速度的运行时间是 5秒。就是从CharacterNamesContainer的左边开始，到右边的耗时5秒
 	# 其他的速度就是基于这个基数计算，速度越快，耗时越短
@@ -350,6 +362,52 @@ func 添加战斗日志(text: String) -> void:
 	
 	# 自动滚动到底部，确保最新的日志可见
 	BattleLogContent.scroll_to_line(BattleLogContent.get_line_count() - 1)
+
+func 检查战斗结束():
+	# 如果战斗已经结束，不再检查
+	if not _战斗进行中:
+		return
+	
+	# 检查玩家和敌人的存活情况
+	var 玩家存活数 = 0
+	var 敌人存活数 = 0
+	
+	# 统计玩家存活数
+	for i in PlayerTeamList.get_children():
+		if i.has_meta("is_occupied") and i.get_meta("is_occupied") and character_data_map.has(i):
+			var player_data = character_data_map[i]
+			if player_data.hp_stats.get_current_value() > 0:
+				玩家存活数 += 1
+	
+	# 统计敌人存活数
+	for i in EnemyTeamList.get_children():
+		if i.has_meta("is_occupied") and i.get_meta("is_occupied") and character_data_map.has(i):
+			var enemy_data = character_data_map[i]
+			if enemy_data.hp_stats.get_current_value() > 0:
+				敌人存活数 += 1
+	
+	# 判断战斗结果
+	if 玩家存活数 == 0:
+		# 玩家全灭，战斗失败
+		_战斗结束("失败")
+	elif 敌人存活数 == 0:
+		# 敌人全灭，战斗胜利
+		_战斗结束("胜利")
+
+func _战斗结束(结果:String):
+	# 标记战斗结束
+	_战斗进行中 = false
+	# 停止速度队列处理
+	_是否处理速度队列 = false
+	
+	# 根据结果添加战斗日志
+	if 结果 == "胜利":
+		添加战斗日志("[color=#00FF00]战斗胜利！[/color]")
+	else:
+		添加战斗日志("[color=#FF0000]战斗失败！[/color]")
+	
+	# 发射战斗结束信号
+	战斗结束.emit(结果)
 
 #endregion
 

@@ -35,9 +35,16 @@ layout_mode = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息"]
 layout_mode = 2
 
-[node name="名称" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
+[node name="名称" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
 layout_mode = 2
-text = "名称：张三"
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/名称"]
+layout_mode = 2
+text = "名称："
+
+[node name="value" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/名称"]
+layout_mode = 2
+text = "张三"
 
 [node name="等级" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
 layout_mode = 2
@@ -50,7 +57,7 @@ layout_mode = 2
 layout_mode = 2
 text = "生命值："
 
-[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/生命值"]
+[node name="value" type="ProgressBar" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/生命值"]
 layout_mode = 2
 size_flags_horizontal = 3
 

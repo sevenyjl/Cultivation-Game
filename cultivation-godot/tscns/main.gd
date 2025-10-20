@@ -4,14 +4,19 @@ extends Control
 const BaseCultivation = preload("res://entity/Base修仙者.gd")
 
 func _ready() -> void:
-	# 创建玩家队伍（3x4修仙者方阵）
-	var player_formation = create_player_formation()
+	## 创建玩家队伍（3x4修仙者方阵）
+	#var player_formation = create_player_formation()
+	#
+	## 创建敌人队伍（3x4修仙者方阵）
+	#var enemy_formation = create_enemy_formation()
+	#
+	## 初始化战斗
+	#$"战斗UI".初始化战斗(player_formation, enemy_formation)
+	# 主玩家 - 修仙者（放置在方阵位置）
 	
-	# 创建敌人队伍（3x4修仙者方阵）
-	var enemy_formation = create_enemy_formation()
-	
-	# 初始化战斗
-	$"战斗UI".初始化战斗(player_formation, enemy_formation)
+	GameData.游戏初始化()
+	$"修炼ui".初始化()
+	pass
 
 # 创建玩家队伍（4x3方阵）
 func create_player_formation() -> Array:
@@ -25,7 +30,6 @@ func create_player_formation() -> Array:
 	# 主玩家 - 修仙者（放置在方阵位置）
 	var player = BaseCultivation.new()
 	player.name_str = "张三"
-	player.realm = BaseCultivation.CultivationRealm.LIANQI
 	
 	# 初始化并设置生命值
 	for i in 3:
@@ -89,19 +93,3 @@ func create_enemy_formation() -> Array:
 	formation[2][1] = shadow_demon  # 第三排中间位置
 	
 	return formation
-
-# 创建修仙者对象的辅助方法
-func create_cultivator(character_name: String, level: int, hp: int, constitution: int, speed: int, realm: BaseCultivation.CultivationRealm) -> BaseCultivation:
-	var cultivator = BaseCultivation.new()
-	cultivator.name_str = character_name
-	cultivator.level = level
-	cultivator.constitution = constitution
-	cultivator.speed = speed
-	cultivator.realm = realm
-	
-	# 初始化并设置生命值
-	cultivator._ready()
-	cultivator.hp_stats.max_value = hp
-	cultivator.set_current_hp(hp)
-	
-	return cultivator

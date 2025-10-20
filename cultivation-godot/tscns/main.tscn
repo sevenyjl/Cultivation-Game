@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://d3r87tepgl6qf"]
+[gd_scene load_steps=4 format=3 uid="uid://d3r87tepgl6qf"]
 
 [ext_resource type="Script" uid="uid://btdwy6e4hkax7" path="res://tscns/main.gd" id="1_gpgin"]
 [ext_resource type="PackedScene" uid="uid://c4g6jg0gt6hbr" path="res://tscns/战斗UI.tscn" id="1_guqoi"]
+[ext_resource type="PackedScene" uid="uid://cuy6w40kc1t83" path="res://tscns/修炼UI.tscn" id="3_mrkoo"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -13,4 +14,8 @@ grow_vertical = 2
 script = ExtResource("1_gpgin")
 
 [node name="战斗UI" parent="." instance=ExtResource("1_guqoi")]
+visible = false
+layout_mode = 1
+
+[node name="修炼ui" parent="." instance=ExtResource("3_mrkoo")]
 layout_mode = 1

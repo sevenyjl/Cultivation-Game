@@ -59,6 +59,14 @@ func _ready():
 	# 初始化Tab显示
 	switch_tab(1)
 
+func _初始化玩家信息():
+	update_cultivator_info(GameData.player)
+	pass
+
+func 初始化():
+	_初始化玩家信息()
+	pass
+
 # Tab1按钮回调
 func _on_tab1_pressed():
 	switch_tab(1)
@@ -122,7 +130,7 @@ func update_cultivator_info(cultivator: BaseCultivation):
 	level_label.text = "境界：" + cultivator.get_full_realm_name()
 	
 	# 更新生命值进度条
-	hp_progress.value = (float(cultivator.current_hp) / float(cultivator.max_hp)) * 100.0
+	hp_progress.value = (float(cultivator.hp_stats.get_current_value()) / float(cultivator.hp_stats.max_value)) * 100.0
 	
 	# 更新属性
 	strength_label.text = "力量：" + str(cultivator.strength)

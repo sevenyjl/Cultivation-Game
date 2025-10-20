@@ -9,7 +9,9 @@ var player: BaseCultivation
 var save_directory: String = "user://saves/"
 
 func 游戏初始化():
-    # 先随机生成玩家
-    player = BaseCultivation.new()
-    
-    pass
+	# 先随机生成玩家
+	player = BaseCultivation.new()
+	player.name_str = "张三"
+	for i in 3:
+		player.level_up()
+	pass
