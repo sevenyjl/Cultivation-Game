@@ -16,13 +16,12 @@ extends Control
 @onready var achievements_content = $VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/成就系统内容
 
 # 修仙者信息节点引用
-@onready var name_label = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/名称
-@onready var level_label = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/等级
-@onready var hp_progress = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/生命值/ProgressBar
-@onready var strength_label = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/力量
-@onready var agility_label = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/敏捷
-@onready var intelligence_label = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/智力
-@onready var speed_label = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/速度
+@onready var name_value = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/名称/value
+@onready var realm_value = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/境界/value
+@onready var hp_progress = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/生命值/value
+@onready var attack_value = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/攻击力/value
+@onready var defense_value = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/防御力/value
+@onready var speed_value = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/速度/value
 
 # 操作按钮节点引用
 @onready var cultivation_button = $VBoxContainer/HBoxContainer/侧边栏/操作/VBoxContainer/打坐修炼
@@ -126,17 +125,19 @@ func _on_adventure_pressed():
 
 # 更新修仙者信息
 func update_cultivator_info(cultivator: BaseCultivation):
-	name_label.text = "名称：" + cultivator.name_str
-	level_label.text = "境界：" + cultivator.get_full_realm_name()
+	# 更新名称
+	name_value.text = cultivator.name_str
+	
+	# 更新境界
+	realm_value.text = cultivator.get_full_realm_name()
 	
 	# 更新生命值进度条
 	hp_progress.value = (float(cultivator.hp_stats.get_current_value()) / float(cultivator.hp_stats.max_value)) * 100.0
 	
-	# 更新属性
-	strength_label.text = "力量：" + str(cultivator.strength)
-	agility_label.text = "敏捷：" + str(cultivator.agility)
-	intelligence_label.text = "智力：" + str(cultivator.intelligence)
-	speed_label.text = "速度：" + str(cultivator.speed)
+	# 更新属性范围显示（RandomValue类型，显示min_value-max_value范围）
+	attack_value.text = str(cultivator.attack_stats.min_value) + "-" + str(cultivator.attack_stats.max_value)
+	defense_value.text = str(cultivator.defense_stats.min_value) + "-" + str(cultivator.defense_stats.max_value)
+	speed_value.text = str(cultivator.speed_stats.min_value) + "-" + str(cultivator.speed_stats.max_value)
 
 # 添加功法到列表
 func add_cultivation_technique(technique_name: String, _description: String = ""):

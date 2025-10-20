@@ -46,9 +46,16 @@ text = "名称："
 layout_mode = 2
 text = "张三"
 
-[node name="等级" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
+[node name="境界" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
 layout_mode = 2
-text = "境界：练气期一层"
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/境界"]
+layout_mode = 2
+text = "境界："
+
+[node name="value" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/境界"]
+layout_mode = 2
+text = "练气期一层"
 
 [node name="生命值" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
 layout_mode = 2
@@ -61,21 +68,38 @@ text = "生命值："
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="力量" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
+[node name="攻击力" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
 layout_mode = 2
-text = "力量："
 
-[node name="敏捷" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/攻击力"]
 layout_mode = 2
-text = "敏捷："
+text = "攻击力："
 
-[node name="智力" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
+[node name="value" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/攻击力"]
 layout_mode = 2
-text = "智力："
+text = "20-30"
 
-[node name="速度" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
+[node name="防御力" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/防御力"]
+layout_mode = 2
+text = "防御力："
+
+[node name="value" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/防御力"]
+layout_mode = 2
+text = "0-10"
+
+[node name="速度" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/速度"]
 layout_mode = 2
 text = "速度："
+
+[node name="value" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/速度"]
+layout_mode = 2
+text = "10-15"
 
 [node name="空" type="PanelContainer" parent="VBoxContainer/HBoxContainer/侧边栏"]
 layout_mode = 2

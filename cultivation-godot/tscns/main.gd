@@ -40,21 +40,14 @@ func create_player_formation() -> Array:
 	# 队友1 - 修仙者
 	var teammate1 = BaseCultivation.new()
 	teammate1.name_str = "李四"
-	teammate1.realm = BaseCultivation.CultivationRealm.LIANQI
-	
-	# 初始化并设置生命值
-	for i in 2:
-		teammate1.level_up()
+	teammate1.level = 12  # 对应炼气期第2层
 	
 	formation[1][0] = teammate1  # 第二排左侧
 	
 	# 队友2 - 修仙者
 	var teammate2 = BaseCultivation.new()
 	teammate2.name_str = "王五"
-	teammate2.realm = BaseCultivation.CultivationRealm.FANREN
-	
-	for i in 2:
-		teammate2.level_up()
+	teammate2.level = 5  # 对应凡人第5层
 	formation[1][2] = teammate2  # 第二排右侧
 	
 	return formation
@@ -71,25 +64,19 @@ func create_enemy_formation() -> Array:
 	# 敌人1 - 野狼（妖兽）
 	var wolf = BaseCultivation.new()
 	wolf.name_str = "野狼"
-	
-	# 初始化并设置生命值
-	wolf.realm = BaseCultivation.CultivationRealm.FANREN
-	for i in 2:
-		wolf.level_up()
+	wolf.level = 3  # 对应凡人第3层
 	formation[0][2] = wolf  # 第一排右侧位置
 	
 	# 敌人2 - 哥布林（魔物）
 	var goblin = BaseCultivation.new()
 	goblin.name_str = "哥布林"
-	goblin.realm = BaseCultivation.CultivationRealm.FANREN
+	goblin.level = 2  # 对应凡人第2层
 	
 	formation[1][1] = goblin  # 第二排中间位置
 	
 	# 敌人3 - 暗影魔（隐藏Boss）
 	var shadow_demon = BaseCultivation.new()
-	shadow_demon.realm = BaseCultivation.CultivationRealm.ZHUJI
-	for i in 3:
-		shadow_demon.level_up()
+	shadow_demon.level = 22  # 对应筑基期第2层
 	formation[2][1] = shadow_demon  # 第三排中间位置
 	
 	return formation

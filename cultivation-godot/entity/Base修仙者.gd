@@ -10,7 +10,6 @@ class_name BaseCultivation
 @export var id: String = ""
 @export var name_str: String = "未命名修仙者"
 @export var level: int = 1  # 修炼等级
-@export var realm_level: int = 1  # 境界内等级（层）
 @export var experience: int = 0  # 经验值
 
 # 生命值系统（使用范围值类管理）
@@ -39,7 +38,7 @@ enum CultivationRealm {
 	DUDIE        # 渡劫期
 }
 
-@export var realm: CultivationRealm = CultivationRealm.FANREN
+# 移除了直接的realm属性，改为通过等级动态计算
 
 signal 死亡(攻击角色:BaseCultivation,死亡角色:BaseCultivation)
 
@@ -74,9 +73,48 @@ func _init() -> void:
 		defense_stats.max_growth = 3
 		defense_stats.growth_factor = 2
 
+# 根据等级获取当前境界
+func get_current_realm() -> CultivationRealm:
+	if level < 10:
+		return CultivationRealm.FANREN
+	elif level < 20:
+		return CultivationRealm.LIANQI
+	elif level < 35:
+		return CultivationRealm.ZHUJI
+	elif level < 50:
+		return CultivationRealm.JINDAN
+	elif level < 70:
+		return CultivationRealm.YUANYING
+	elif level < 90:
+		return CultivationRealm.HUASHEN
+	elif level < 110:
+		return CultivationRealm.LIANXU
+	elif level < 130:
+		return CultivationRealm.HEHE
+	elif level < 150:
+		return CultivationRealm.DACHENG
+	else:
+		return CultivationRealm.DUDIE
+
+# 获取境界内的层数
+func get_realm_level() -> int:
+	var current_realm = get_current_realm()
+	var start_level = get_required_level_for_realm(current_realm)
+	
+	# 对于凡人，层数从1开始计算
+	if current_realm == CultivationRealm.FANREN:
+		return level
+	else:
+		# 其他境界，层数从1开始计算
+		return level - start_level + 1
+
 # 获取境界名称
 func get_realm_name() -> String:
-	match realm:
+	return get_realm_name_by_realm(get_current_realm())
+
+# 根据境界枚举获取对应的境界名称
+func get_realm_name_by_realm(target_realm: CultivationRealm) -> String:
+	match target_realm:
 		CultivationRealm.FANREN:
 			return "凡人"
 		CultivationRealm.LIANQI:
@@ -102,40 +140,80 @@ func get_realm_name() -> String:
 
 # 获取完整的境界显示名称（包含层数）
 func get_full_realm_name() -> String:
-	if realm == CultivationRealm.FANREN:
-		return "凡人"
-	else:
-		return get_realm_name() + "第" + str(realm_level) + "层"
+	var current_realm = get_current_realm()
+	var realm_level = get_realm_level()
+	
+	# 凡人也显示层数
+	return get_realm_name_by_realm(current_realm) + "第" + str(realm_level) + "层"
 
 # 升级
 func level_up():
 	level += 1
 	experience = 0
 	
-	# 检查是否需要突破境界
-	if check_realm_breakthrough():
-		return  # 如果突破了境界，就不执行境界内升级
+	# 检查是否刚刚突破了境界
+	var previous_realm = get_realm_by_level(level - 1)
+	var current_realm = get_current_realm()
 	
-	# 境界内升级（提升层数）
-	realm_level += 1
-	
-	# 境界内升级时小幅提升属性
-	hp_stats.grow()  # 生命值随机成长
-	speed_stats.grow()  # 速度随机成长
-	
-	# 生命值恢复到最大
-	hp_stats.current_value = hp_stats.max_value
+	if previous_realm != current_realm:
+		# 境界突破，执行突破逻辑
+		_on_realm_breakthrough(previous_realm, current_realm)
+	else:
+		# 境界内升级
+		# 境界内升级时小幅提升属性
+		hp_stats.grow()  # 生命值随机成长
+		speed_stats.grow()  # 速度随机成长
+		attack_stats.grow()  # 攻击力随机成长
+		defense_stats.grow()  # 防御力随机成长
+		
+		# 生命值恢复到最大
+		hp_stats.current_value = hp_stats.max_value
 	
 	print(name_str + " 修炼到 " + get_full_realm_name() + "！")
 
 
-# 检查是否需要突破境界
-func check_realm_breakthrough() -> bool:
-	var required_level = get_required_level_for_realm(realm + 1)
-	if level >= required_level and realm < CultivationRealm.DUDIE:
-		breakthrough_realm()
-		return true
-	return false
+# 根据等级获取对应的境界
+func get_realm_by_level(target_level: int) -> CultivationRealm:
+	if target_level < 10:
+		return CultivationRealm.FANREN
+	elif target_level < 20:
+		return CultivationRealm.LIANQI
+	elif target_level < 35:
+		return CultivationRealm.ZHUJI
+	elif target_level < 50:
+		return CultivationRealm.JINDAN
+	elif target_level < 70:
+		return CultivationRealm.YUANYING
+	elif target_level < 90:
+		return CultivationRealm.HUASHEN
+	elif target_level < 110:
+		return CultivationRealm.LIANXU
+	elif target_level < 130:
+		return CultivationRealm.HEHE
+	elif target_level < 150:
+		return CultivationRealm.DACHENG
+	else:
+		return CultivationRealm.DUDIE
+
+# 境界突破处理
+func _on_realm_breakthrough(old_realm: CultivationRealm, new_realm: CultivationRealm):
+	print(name_str + " 从 " + get_realm_name_by_realm(old_realm) + " 突破到 " + get_full_realm_name() + "！")
+	
+	# 境界突破时大幅提升属性（比升级提升更多）
+	var breakthrough_multiplier = get_breakthrough_multiplier(new_realm)
+	# 使用新的生命值系统
+	for i in range(int(15 * breakthrough_multiplier)):
+		hp_stats.grow()
+	# 额外多次成长
+	for i in range(int(3 * breakthrough_multiplier)):
+		speed_stats.grow()
+	for i in range(int(3 * breakthrough_multiplier)):
+		attack_stats.grow()
+	for i in range(int(breakthrough_multiplier)):
+		defense_stats.grow()
+	# 生命值恢复到最大
+	hp_stats.current_value = hp_stats.max_value
+	print("境界突破！属性大幅提升！")
 
 # 获取境界对应的等级要求
 func get_required_level_for_realm(target_realm: CultivationRealm) -> int:
@@ -163,27 +241,11 @@ func get_required_level_for_realm(target_realm: CultivationRealm) -> int:
 		_:
 			return 999
 
-# 突破境界
-func breakthrough_realm():
-	if realm < CultivationRealm.DUDIE:
-		var old_realm = realm
-		realm = (realm + 1) as CultivationRealm
-		realm_level = 1  # 突破后重置为第一层
-		print(name_str + " 从 " + get_realm_name_by_realm(old_realm) + " 突破到 " + get_full_realm_name() + "！")
-		
-		# 境界突破时大幅提升属性（比升级提升更多）
-		var breakthrough_multiplier = get_breakthrough_multiplier()
-		# 使用新的生命值系统
-		for i in range(15 * breakthrough_multiplier):
-			hp_stats.grow()
-		# 额外多次成长
-		for i in range(int(3 * breakthrough_multiplier)):
-			speed_stats.grow()
-		print("境界突破！属性大幅提升！")
+# breakthrough_realm()方法已移除，境界突破现在通过升级时自动检测和处理
 
 # 获取境界突破的属性提升倍数
-func get_breakthrough_multiplier() -> float:
-	match realm:
+func get_breakthrough_multiplier(target_realm: CultivationRealm) -> float:
+	match target_realm:
 		CultivationRealm.LIANQI:
 			return 1.0    # 炼气期突破，基础倍数
 		CultivationRealm.ZHUJI:
@@ -204,32 +266,6 @@ func get_breakthrough_multiplier() -> float:
 			return 5.0    # 渡劫期突破，5倍
 		_:
 			return 1.0
-
-# 根据境界枚举获取境界名称
-func get_realm_name_by_realm(target_realm: CultivationRealm) -> String:
-	match target_realm:
-		CultivationRealm.FANREN:
-			return "凡人"
-		CultivationRealm.LIANQI:
-			return "炼气期"
-		CultivationRealm.ZHUJI:
-			return "筑基期"
-		CultivationRealm.JINDAN:
-			return "金丹期"
-		CultivationRealm.YUANYING:
-			return "元婴期"
-		CultivationRealm.HUASHEN:
-			return "化神期"
-		CultivationRealm.LIANXU:
-			return "炼虚期"
-		CultivationRealm.HEHE:
-			return "合体期"
-		CultivationRealm.DACHENG:
-			return "大乘期"
-		CultivationRealm.DUDIE:
-			return "渡劫期"
-		_:
-			return "未知境界"
 
 static func 随机生成修仙者()->BaseCultivation:
 	return null
