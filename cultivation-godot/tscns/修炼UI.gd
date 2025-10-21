@@ -4,16 +4,10 @@ extends Control
 # 负责管理修炼界面的显示和Tab切换功能
 
 # Tab按钮节点引用
-@onready var tab1_button = $VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab标签/Tab1
-@onready var tab2_button = $VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab标签/Tab2
-@onready var tab3_button = $VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab标签/Tab3
-@onready var tab4_button = $VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab标签/Tab4
+@onready var 修炼_button = $"VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab标签/修炼"
 
 # Tab内容节点引用
-@onready var cultivation_content = $VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/修炼功法内容
-@onready var equipment_content = $VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/装备道具内容
-@onready var skills_content = $VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/技能天赋内容
-@onready var achievements_content = $VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/成就系统内容
+@onready var cultivation_content = $VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/修炼内容
 
 # 修仙者信息节点引用
 @onready var name_value = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/名称/value
@@ -31,8 +25,6 @@ extends Control
 # 当前选中的Tab
 var current_tab: int = 1
 
-# Tab内容数组
-var tab_contents: Array = []
 
 # 信号
 signal tab_changed(tab_index: int)
@@ -41,15 +33,6 @@ signal recovery_started()
 signal adventure_started()
 
 func _ready():
-	# 初始化Tab内容数组
-	tab_contents = [cultivation_content, equipment_content, skills_content, achievements_content]
-	
-	# 连接Tab按钮信号
-	tab1_button.pressed.connect(_on_tab1_pressed)
-	tab2_button.pressed.connect(_on_tab2_pressed)
-	tab3_button.pressed.connect(_on_tab3_pressed)
-	tab4_button.pressed.connect(_on_tab4_pressed)
-	
 	# 连接操作按钮信号
 	cultivation_button.pressed.connect(_on_cultivation_pressed)
 	recovery_button.pressed.connect(_on_recovery_pressed)
@@ -88,6 +71,7 @@ func switch_tab(tab_index: int):
 	current_tab = tab_index
 	
 	# 隐藏所有Tab内容
+	var tab_contents=$VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器.get_children()
 	for content in tab_contents:
 		content.visible = false
 	

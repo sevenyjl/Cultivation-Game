@@ -136,174 +136,57 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Tab1" type="Button" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab标签"]
+[node name="修炼" type="Button" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab标签"]
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
 button_pressed = true
 text = "修炼功法"
 
-[node name="Tab2" type="Button" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab标签"]
-layout_mode = 2
-size_flags_horizontal = 3
-toggle_mode = true
-text = "装备道具"
-
-[node name="Tab3" type="Button" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab标签"]
-layout_mode = 2
-size_flags_horizontal = 3
-toggle_mode = true
-text = "技能天赋"
-
-[node name="Tab4" type="Button" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab标签"]
-layout_mode = 2
-size_flags_horizontal = 3
-toggle_mode = true
-text = "成就系统"
-
 [node name="Tab容器" type="PanelContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Tab内容" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器"]
-layout_mode = 2
-
-[node name="修炼功法内容" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容"]
+[node name="修炼内容" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="功法标题" type="Label" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/修炼功法内容"]
+[node name="功法标题" type="Label" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/修炼内容"]
 layout_mode = 2
 text = "修炼功法"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="功法列表" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/修炼功法内容"]
+[node name="功法列表" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/修炼内容"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="功法列表容器" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/修炼功法内容/功法列表"]
+[node name="功法列表容器" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/修炼内容/功法列表"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="功法1" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/修炼功法内容/功法列表/功法列表容器"]
+[node name="功法1" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/修炼内容/功法列表/功法列表容器"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="功法名称" type="Label" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/修炼功法内容/功法列表/功法列表容器/功法1"]
+[node name="功法名称" type="Label" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/修炼内容/功法列表/功法列表容器/功法1"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "基础吐纳术"
 
-[node name="修炼按钮" type="Button" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/修炼功法内容/功法列表/功法列表容器/功法1"]
+[node name="修炼按钮" type="Button" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/修炼内容/功法列表/功法列表容器/功法1"]
 layout_mode = 2
 text = "修炼"
 
-[node name="功法2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/修炼功法内容/功法列表/功法列表容器"]
+[node name="功法2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/修炼内容/功法列表/功法列表容器"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="功法名称" type="Label" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/修炼功法内容/功法列表/功法列表容器/功法2"]
+[node name="功法名称" type="Label" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/修炼内容/功法列表/功法列表容器/功法2"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "九阳神功"
 
-[node name="修炼按钮" type="Button" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/修炼功法内容/功法列表/功法列表容器/功法2"]
+[node name="修炼按钮" type="Button" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/修炼内容/功法列表/功法列表容器/功法2"]
 layout_mode = 2
 text = "修炼"
-
-[node name="装备道具内容" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容"]
-visible = false
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="装备标题" type="Label" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/装备道具内容"]
-layout_mode = 2
-text = "装备道具"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="装备列表" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/装备道具内容"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="装备列表容器" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/装备道具内容/装备列表"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="装备1" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/装备道具内容/装备列表/装备列表容器"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="装备名称" type="Label" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/装备道具内容/装备列表/装备列表容器/装备1"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "青钢剑"
-
-[node name="装备按钮" type="Button" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/装备道具内容/装备列表/装备列表容器/装备1"]
-layout_mode = 2
-text = "装备"
-
-[node name="技能天赋内容" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容"]
-visible = false
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="技能标题" type="Label" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/技能天赋内容"]
-layout_mode = 2
-text = "技能天赋"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="技能列表" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/技能天赋内容"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="技能列表容器" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/技能天赋内容/技能列表"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="技能1" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/技能天赋内容/技能列表/技能列表容器"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="技能名称" type="Label" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/技能天赋内容/技能列表/技能列表容器/技能1"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "火球术"
-
-[node name="学习按钮" type="Button" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/技能天赋内容/技能列表/技能列表容器/技能1"]
-layout_mode = 2
-text = "学习"
-
-[node name="成就系统内容" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容"]
-visible = false
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="成就标题" type="Label" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/成就系统内容"]
-layout_mode = 2
-text = "成就系统"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="成就列表" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/成就系统内容"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="成就列表容器" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/成就系统内容/成就列表"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="成就1" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/成就系统内容/成就列表/成就列表容器"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="成就名称" type="Label" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/成就系统内容/成就列表/成就列表容器/成就1"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "初入修仙"
-
-[node name="成就状态" type="Label" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/Tab内容/成就系统内容/成就列表/成就列表容器/成就1"]
-layout_mode = 2
-text = "已完成"
