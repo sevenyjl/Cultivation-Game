@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://ch5ft504adcxv"]
 
-[ext_resource type="Script" uid="uid://cwjneodgoqiti" path="res://tscns/人员战斗信息组件.gd" id="1_2x3k4"]
+[ext_resource type="Script" uid="uid://cwjneodgoqiti" path="res://tscns/组件/人员战斗信息组件.gd" id="1_2x3k4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_frd7m"]
 content_margin_left = 5.0

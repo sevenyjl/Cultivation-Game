@@ -1,3 +1,4 @@
+@tool
 extends PanelContainer
 class_name AutoClickButton
 
@@ -13,11 +14,12 @@ signal 点击按钮
 
 # 预览效果
 func _notification(what: int) -> void:
-	if what==NOTIFICATION_EDITOR_POST_SAVE :
+	if what==NOTIFICATION_EDITOR_POST_SAVE or what==NOTIFICATION_EDITOR_PRE_SAVE:
 		按钮.text=button_text
 	pass
 
 func _ready() -> void:
+	按钮.text=button_text
 	pass
 
 func _process(delta: float) -> void:

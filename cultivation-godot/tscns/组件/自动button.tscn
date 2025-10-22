@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://d0tli8lfobiys"]
 
-[ext_resource type="Script" uid="uid://clfk6ors107cv" path="res://tscns/自动button.gd" id="1_ilgqp"]
+[ext_resource type="Script" uid="uid://clfk6ors107cv" path="res://tscns/组件/自动button.gd" id="1_ilgqp"]
 
 [node name="自动Button" type="PanelContainer"]
 offset_right = 168.0

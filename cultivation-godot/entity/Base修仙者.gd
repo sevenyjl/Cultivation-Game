@@ -67,8 +67,10 @@ func _init() -> void:
 		spiritual_energy.min_value = 0
 		# 初始最大灵气设置为升级所需值
 		spiritual_energy.max_value = 100
+		absorption_rate.min_growth = 1
+		absorption_rate.max_growth = 5
+		absorption_rate.growth_factor = 10
 		spiritual_energy.current_value = 0
-	
 	# 初始化灵气吸收速度
 	if absorption_rate == null:
 		absorption_rate = RandomValue.new()
@@ -197,6 +199,8 @@ func level_up():
 		_on_realm_breakthrough(previous_realm, current_realm)
 	for i in _获取成长属性列表():
 		i.grow()
+	# 灵气归零
+	spiritual_energy.current_value=0
 	print(name_str + " 修炼到 " + get_full_realm_name() + "！")
 
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://b7rxrpg6ouh75"]
 
-[ext_resource type="PackedScene" uid="uid://d0tli8lfobiys" path="res://tscns/自动button.tscn" id="1_85qb5"]
+[ext_resource type="PackedScene" uid="uid://d0tli8lfobiys" path="res://tscns/组件/自动button.tscn" id="1_85qb5"]
 [ext_resource type="Script" uid="uid://b7tvembe0akwk" path="res://tscns/修炼面板.gd" id="1_fb52a"]
 
 [node name="修炼内容" type="PanelContainer"]
@@ -21,3 +21,4 @@ button_text = "修炼"
 unique_name_in_owner = true
 layout_mode = 2
 button_text = "突破"
+"冷却时间" = 100.0

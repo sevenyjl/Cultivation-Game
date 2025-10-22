@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c4g6jg0gt6hbr"]
 
 [ext_resource type="Script" uid="uid://dvb1nbi7vsqn6" path="res://tscns/战斗UI.gd" id="1_0x8k9"]
-[ext_resource type="PackedScene" uid="uid://ch5ft504adcxv" path="res://tscns/人员战斗信息组件.tscn" id="2_3x4k5"]
+[ext_resource type="PackedScene" uid="uid://ch5ft504adcxv" path="res://tscns/组件/人员战斗信息组件.tscn" id="2_3x4k5"]
 
 [node name="战斗UI" type="Control"]
 layout_mode = 3

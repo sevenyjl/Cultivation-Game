@@ -184,6 +184,7 @@ size_flags_vertical = 3
 layout_mode = 2
 
 [node name="背包" type="PanelContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器"]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/背包"]
