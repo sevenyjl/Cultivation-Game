@@ -12,6 +12,10 @@ var current_value:float  # 当前值
 func get_current_value() -> float:
 	return current_value
 
+# 成长因子成长
+func grow_factor_grow():
+	growth_factor += randf_range(0, growth_factor)
+
 # 成长方法（需要子类实现具体逻辑）
 func grow() -> void:
 	# 生成随机数：0 到 成长因子的一半

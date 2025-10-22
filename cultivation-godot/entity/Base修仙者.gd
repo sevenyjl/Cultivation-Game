@@ -10,7 +10,16 @@ class_name BaseCultivation
 @export var id: String = ""
 @export var name_str: String = "未命名修仙者"
 @export var level: int = 1  # 修炼等级
-@export var experience: int = 0  # 经验值
+
+# 灵气系统（使用范围值类管理）
+var spiritual_energy: RangedValue
+
+# 灵气吸收速度（使用随机值类管理，表示每次吸收的灵气范围）
+var absorption_rate: RandomValue
+
+# 灵气吸收冷却时间（使用随机值类管理，表示吸收间隔的时间范围，单位：秒）
+var absorption_cooldown: RandomValue
+
 
 # 生命值系统（使用范围值类管理）
 var hp_stats: RangedValue
@@ -51,6 +60,33 @@ func _init() -> void:
 		hp_stats.min_growth = 20
 		hp_stats.max_growth = 50
 		hp_stats.growth_factor = 10
+	
+	# 初始化灵气系统
+	if spiritual_energy == null:
+		spiritual_energy = RangedValue.new()
+		spiritual_energy.min_value = 0
+		# 初始最大灵气设置为升级所需值
+		spiritual_energy.max_value = 100
+		spiritual_energy.current_value = 0
+	
+	# 初始化灵气吸收速度
+	if absorption_rate == null:
+		absorption_rate = RandomValue.new()
+		absorption_rate.min_value = 5
+		absorption_rate.max_value = 15
+		absorption_rate.min_growth = 1
+		absorption_rate.max_growth = 3
+		absorption_rate.growth_factor = 2
+	
+	# 初始化灵气吸收冷却时间
+	if absorption_cooldown == null:
+		absorption_cooldown = RandomValue.new()
+		absorption_cooldown.min_value = 10.0
+		absorption_cooldown.max_value = 30.0
+		# 注意：冷却时间的成长应该是减少的，所以使用负数
+		absorption_cooldown.min_growth = -0.1
+		absorption_cooldown.max_growth = -0.05
+		absorption_cooldown.growth_factor = 1
 	if speed_stats == null:
 		speed_stats = RandomValue.new()
 		speed_stats.min_value = 10
@@ -72,6 +108,9 @@ func _init() -> void:
 		defense_stats.min_growth = 1
 		defense_stats.max_growth = 3
 		defense_stats.growth_factor = 2
+
+func _获取成长属性列表() -> Array:
+	return [hp_stats, spiritual_energy, absorption_rate, absorption_cooldown, speed_stats, attack_stats, defense_stats]
 
 # 根据等级获取当前境界
 func get_current_realm() -> CultivationRealm:
@@ -149,8 +188,6 @@ func get_full_realm_name() -> String:
 # 升级
 func level_up():
 	level += 1
-	experience = 0
-	
 	# 检查是否刚刚突破了境界
 	var previous_realm = get_realm_by_level(level - 1)
 	var current_realm = get_current_realm()
@@ -158,17 +195,8 @@ func level_up():
 	if previous_realm != current_realm:
 		# 境界突破，执行突破逻辑
 		_on_realm_breakthrough(previous_realm, current_realm)
-	else:
-		# 境界内升级
-		# 境界内升级时小幅提升属性
-		hp_stats.grow()  # 生命值随机成长
-		speed_stats.grow()  # 速度随机成长
-		attack_stats.grow()  # 攻击力随机成长
-		defense_stats.grow()  # 防御力随机成长
-		
-		# 生命值恢复到最大
-		hp_stats.current_value = hp_stats.max_value
-	
+	for i in _获取成长属性列表():
+		i.grow()
 	print(name_str + " 修炼到 " + get_full_realm_name() + "！")
 
 
@@ -195,25 +223,13 @@ func get_realm_by_level(target_level: int) -> CultivationRealm:
 	else:
 		return CultivationRealm.DUDIE
 
-# 境界突破处理
+# 境界突破处理(提升成长因子)
 func _on_realm_breakthrough(old_realm: CultivationRealm, new_realm: CultivationRealm):
 	print(name_str + " 从 " + get_realm_name_by_realm(old_realm) + " 突破到 " + get_full_realm_name() + "！")
-	
-	# 境界突破时大幅提升属性（比升级提升更多）
-	var breakthrough_multiplier = get_breakthrough_multiplier(new_realm)
-	# 使用新的生命值系统
-	for i in range(int(15 * breakthrough_multiplier)):
-		hp_stats.grow()
-	# 额外多次成长
-	for i in range(int(3 * breakthrough_multiplier)):
-		speed_stats.grow()
-	for i in range(int(3 * breakthrough_multiplier)):
-		attack_stats.grow()
-	for i in range(int(breakthrough_multiplier)):
-		defense_stats.grow()
-	# 生命值恢复到最大
-	hp_stats.current_value = hp_stats.max_value
-	print("境界突破！属性大幅提升！")
+	# 提升成长因子
+	for i in _获取成长属性列表():
+		i.grow_factor_grow()
+		i.grow()
 
 # 获取境界对应的等级要求
 func get_required_level_for_realm(target_realm: CultivationRealm) -> int:
@@ -241,35 +257,6 @@ func get_required_level_for_realm(target_realm: CultivationRealm) -> int:
 		_:
 			return 999
 
-# breakthrough_realm()方法已移除，境界突破现在通过升级时自动检测和处理
-
-# 获取境界突破的属性提升倍数
-func get_breakthrough_multiplier(target_realm: CultivationRealm) -> float:
-	match target_realm:
-		CultivationRealm.LIANQI:
-			return 1.0    # 炼气期突破，基础倍数
-		CultivationRealm.ZHUJI:
-			return 1.2    # 筑基期突破，1.2倍
-		CultivationRealm.JINDAN:
-			return 1.5    # 金丹期突破，1.5倍
-		CultivationRealm.YUANYING:
-			return 2.0    # 元婴期突破，2倍
-		CultivationRealm.HUASHEN:
-			return 2.5    # 化神期突破，2.5倍
-		CultivationRealm.LIANXU:
-			return 3.0    # 炼虚期突破，3倍
-		CultivationRealm.HEHE:
-			return 3.5    # 合体期突破，3.5倍
-		CultivationRealm.DACHENG:
-			return 4.0    # 大乘期突破，4倍
-		CultivationRealm.DUDIE:
-			return 5.0    # 渡劫期突破，5倍
-		_:
-			return 1.0
-
-static func 随机生成修仙者()->BaseCultivation:
-	return null
-
 #region 属性变化方法
 func 应用伤害(damage: float,造成角色:BaseCultivation):
 	# 应用伤害到目标
@@ -277,6 +264,12 @@ func 应用伤害(damage: float,造成角色:BaseCultivation):
 	if !是否存活():
 		死亡.emit(造成角色,self)
 
+# 吸收灵气（多余的灵气无法溢出）
+func 吸收灵气进入体内(num:float):
+	spiritual_energy.current_value += num
+	# 检查是否超过最大灵气
+	if spiritual_energy.current_value > spiritual_energy.max_value:
+		spiritual_energy.current_value = spiritual_energy.max_value
 
 #endregion 属性变化方法
 #region 相关判断方法
