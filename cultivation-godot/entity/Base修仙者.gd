@@ -67,9 +67,9 @@ func _init() -> void:
 		spiritual_energy.min_value = 0
 		# 初始最大灵气设置为升级所需值
 		spiritual_energy.max_value = 100
-		absorption_rate.min_growth = 1
-		absorption_rate.max_growth = 5
-		absorption_rate.growth_factor = 10
+		spiritual_energy.min_growth = 10
+		spiritual_energy.max_growth = 100
+		spiritual_energy.growth_factor = 100
 		spiritual_energy.current_value = 0
 	# 初始化灵气吸收速度
 	if absorption_rate == null:
@@ -87,7 +87,7 @@ func _init() -> void:
 		absorption_cooldown.max_value = 30.0
 		# 注意：冷却时间的成长应该是减少的，所以使用负数
 		absorption_cooldown.min_growth = -0.1
-		absorption_cooldown.max_growth = -0.05
+		absorption_cooldown.max_growth = 0
 		absorption_cooldown.growth_factor = 1
 	if speed_stats == null:
 		speed_stats = RandomValue.new()

@@ -20,7 +20,3 @@ func grow() -> void:
 		max_value = roundf((max_value + growth_amount - tempData) * 100) / 100
 	else:
 		max_value = roundf((max_value + growth_amount) * 100) / 100
-	
-	# 更新当前值（按比例增长）
-	var ratio = current_value / (max_value - growth_amount) if (max_value - growth_amount) != 0 else 1
-	current_value = roundf((max_value * ratio) * 100) / 100
