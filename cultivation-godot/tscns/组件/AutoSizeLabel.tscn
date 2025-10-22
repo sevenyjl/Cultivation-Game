@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://b3kbhvbk5en6d"]
+
+[ext_resource type="Script" uid="uid://p8vsc76745n8" path="res://tscns/组件/auto_size_label.gd" id="1_j3pml"]
+
+[node name="AutoSizeLabel" type="Label"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 16
+text = "测试"
+script = ExtResource("1_j3pml")
