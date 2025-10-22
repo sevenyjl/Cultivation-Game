@@ -5,6 +5,9 @@ extends Node
 
 var player: BaseCultivation
 
+# 最大倍速10倍速，最小1倍速
+var 全局倍速:int=1
+
 # 存档文件路径
 var save_directory: String = "user://saves/"
 

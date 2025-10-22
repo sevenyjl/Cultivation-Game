@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3 uid="uid://c25dgi5fjgy8a"]
+
+[ext_resource type="Script" uid="uid://5agumg72irnn" path="res://tscns/全局倍速.gd" id="1_1mjpr"]
+
+[node name="全局倍速" type="HBoxContainer"]
+script = ExtResource("1_1mjpr")
+
+[node name="SpinBox" type="SpinBox" parent="."]
+layout_mode = 2
+min_value = 1.0
+max_value = 10.0
+value = 1.0
+suffix = "倍速"
+
+[node name="HSlider" type="HSlider" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+min_value = 1.0
+max_value = 10.0
+value = 1.0
+
+[connection signal="value_changed" from="SpinBox" to="." method="_on_spin_box_value_changed"]
+[connection signal="value_changed" from="HSlider" to="." method="_on_h_slider_value_changed"]

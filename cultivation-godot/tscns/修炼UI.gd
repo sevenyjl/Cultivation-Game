@@ -16,13 +16,16 @@ extends Control
 @onready var attack_value = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/攻击力/value
 @onready var defense_value = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/防御力/value
 @onready var speed_value = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/速度/value
+@onready var spiritual_energy_progress = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/灵气/value
+@onready var absorption_rate_value = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/灵气吸收速度/value
+@onready var absorption_cooldown_value = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/灵气吸收冷却/value
 
 # 当前选中的Tab
 var current_tab: int = 0
 # 信号
 signal tab_changed(tab_index: int)
 
-
+var _当前选择的玩家:BaseCultivation
 func _ready():
 	var tab_button=$"VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab标签".get_children()
 	for i in tab_button.size():
@@ -31,12 +34,18 @@ func _ready():
 	# 初始化Tab显示
 	switch_tab(0)
 
+func _process(delta: float) -> void:
+	if _当前选择的玩家:
+		update_cultivator_info(_当前选择的玩家)
+	pass
+
 func _初始化玩家信息():
-	update_cultivator_info(GameData.player)
+	_当前选择的玩家=GameData.player
 	pass
 
 func 初始化():
 	_初始化玩家信息()
+	$"VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/修炼内容".初始化()
 	pass
 
 # 切换Tab
@@ -63,12 +72,18 @@ func update_cultivator_info(cultivator: BaseCultivation):
 	realm_value.text = cultivator.get_full_realm_name()
 	
 	# 更新生命值进度条
-	hp_progress.value = (float(cultivator.hp_stats.get_current_value()) / float(cultivator.hp_stats.max_value)) * 100.0
+	hp_progress.value = cultivator.hp_stats.get_current_value()
 	
 	# 更新属性范围显示（RandomValue类型，显示min_value-max_value范围）
 	attack_value.text = str(cultivator.attack_stats.min_value) + "-" + str(cultivator.attack_stats.max_value)
 	defense_value.text = str(cultivator.defense_stats.min_value) + "-" + str(cultivator.defense_stats.max_value)
 	speed_value.text = str(cultivator.speed_stats.min_value) + "-" + str(cultivator.speed_stats.max_value)
-
-func _on_打坐修炼_pressed() -> void:
-	pass # Replace with function body.
+	
+	# 更新灵气进度条
+	spiritual_energy_progress.value = cultivator.spiritual_energy.get_current_value()
+	
+	# 更新灵气吸收速度
+	absorption_rate_value.text = str(cultivator.absorption_rate.min_value) + "-" + str(cultivator.absorption_rate.max_value)
+	
+	# 更新灵气吸收冷却时间
+	absorption_cooldown_value.text = str(cultivator.absorption_cooldown.min_value) + "-" + str(cultivator.absorption_cooldown.max_value) + "秒"

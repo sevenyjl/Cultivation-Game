@@ -1,6 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://cuy6w40kc1t83"]
+[gd_scene load_steps=5 format=3 uid="uid://cuy6w40kc1t83"]
 
 [ext_resource type="Script" uid="uid://cdcwli7mja4vg" path="res://tscns/修炼UI.gd" id="1_om3im"]
+[ext_resource type="PackedScene" uid="uid://c25dgi5fjgy8a" path="res://tscns/全局倍速.tscn" id="2_c2lfu"]
+[ext_resource type="PackedScene" uid="uid://b7rxrpg6ouh75" path="res://tscns/修炼面板.tscn" id="2_tiv2u"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hgdpn"]
 
@@ -57,6 +59,17 @@ text = "境界："
 layout_mode = 2
 text = "练气期一层"
 
+[node name="灵气" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/灵气"]
+layout_mode = 2
+text = "灵气："
+
+[node name="value" type="ProgressBar" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/灵气"]
+layout_mode = 2
+size_flags_horizontal = 3
+
 [node name="生命值" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
 layout_mode = 2
 
@@ -101,6 +114,28 @@ text = "速度："
 layout_mode = 2
 text = "10-15"
 
+[node name="灵气吸收速度" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/灵气吸收速度"]
+layout_mode = 2
+text = "灵气吸收速度："
+
+[node name="value" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/灵气吸收速度"]
+layout_mode = 2
+text = "5-15"
+
+[node name="灵气吸收冷却" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/灵气吸收冷却"]
+layout_mode = 2
+text = "灵气吸收冷却："
+
+[node name="value" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/灵气吸收冷却"]
+layout_mode = 2
+text = "10.0-30.0秒"
+
 [node name="空" type="PanelContainer" parent="VBoxContainer/HBoxContainer/侧边栏"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -112,17 +147,8 @@ layout_mode = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/操作"]
 layout_mode = 2
 
-[node name="打坐修炼" type="Button" parent="VBoxContainer/HBoxContainer/侧边栏/操作/VBoxContainer"]
+[node name="全局倍速" parent="VBoxContainer/HBoxContainer/侧边栏/操作/VBoxContainer" instance=ExtResource("2_c2lfu")]
 layout_mode = 2
-text = "打坐修炼"
-
-[node name="打坐恢复" type="Button" parent="VBoxContainer/HBoxContainer/侧边栏/操作/VBoxContainer"]
-layout_mode = 2
-text = "打坐恢复"
-
-[node name="外出探险" type="Button" parent="VBoxContainer/HBoxContainer/侧边栏/操作/VBoxContainer"]
-layout_mode = 2
-text = "外出探险"
 
 [node name="主容器" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -154,13 +180,8 @@ text = "背包"
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="修炼内容" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器"]
+[node name="修炼内容" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器" instance=ExtResource("2_tiv2u")]
 layout_mode = 2
-size_flags_vertical = 3
-
-[node name="打坐修炼" type="Button" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/修炼内容"]
-layout_mode = 2
-text = "打坐修炼"
 
 [node name="背包" type="PanelContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器"]
 layout_mode = 2
@@ -168,5 +189,3 @@ layout_mode = 2
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/背包"]
 layout_mode = 2
 text = "背包"
-
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/修炼内容/打坐修炼" to="." method="_on_打坐修炼_pressed"]

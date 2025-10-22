@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=3 uid="uid://d0tli8lfobiys"]
+
+[ext_resource type="Script" uid="uid://clfk6ors107cv" path="res://tscns/自动button.gd" id="1_ilgqp"]
+
+[node name="自动Button" type="PanelContainer"]
+offset_right = 168.0
+offset_bottom = 31.0
+script = ExtResource("1_ilgqp")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="CheckBox" type="CheckBox" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Button" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "按钮名称"
+
+[node name="进度条背景" type="ColorRect" parent="HBoxContainer/Button"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0.44705883)
+
+[connection signal="pressed" from="HBoxContainer/CheckBox" to="." method="_on_check_box_pressed"]
+[connection signal="pressed" from="HBoxContainer/Button" to="." method="_on_打坐修炼_pressed"]

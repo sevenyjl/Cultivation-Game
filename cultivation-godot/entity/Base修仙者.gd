@@ -266,6 +266,7 @@ func 应用伤害(damage: float,造成角色:BaseCultivation):
 
 # 吸收灵气（多余的灵气无法溢出）
 func 吸收灵气进入体内(num:float):
+	print("吸收灵气")
 	spiritual_energy.current_value += num
 	# 检查是否超过最大灵气
 	if spiritual_energy.current_value > spiritual_energy.max_value:
