@@ -73,17 +73,19 @@ func update_cultivator_info(cultivator: BaseCultivation):
 	
 	# 更新生命值进度条
 	hp_progress.value = cultivator.hp_stats.get_current_value()
+	hp_progress.max_value=cultivator.hp_stats.max_value
 	
 	# 更新属性范围显示（RandomValue类型，显示min_value-max_value范围）
-	attack_value.text = str(cultivator.attack_stats.min_value) + "-" + str(cultivator.attack_stats.max_value)
-	defense_value.text = str(cultivator.defense_stats.min_value) + "-" + str(cultivator.defense_stats.max_value)
-	speed_value.text = str(cultivator.speed_stats.min_value) + "-" + str(cultivator.speed_stats.max_value)
+	attack_value.text = str(cultivator.attack_stats.min_value) + "~" + str(cultivator.attack_stats.max_value)
+	defense_value.text = str(cultivator.defense_stats.min_value) + "~" + str(cultivator.defense_stats.max_value)
+	speed_value.text = str(cultivator.speed_stats.min_value) + "~" + str(cultivator.speed_stats.max_value)
 	
 	# 更新灵气进度条
 	spiritual_energy_progress.value = cultivator.spiritual_energy.get_current_value()
+	spiritual_energy_progress.max_value=cultivator.spiritual_energy.max_value
 	
 	# 更新灵气吸收速度
-	absorption_rate_value.text = str(cultivator.absorption_rate.min_value) + "-" + str(cultivator.absorption_rate.max_value)
+	absorption_rate_value.text = str(cultivator.absorption_rate.min_value) + "~" + str(cultivator.absorption_rate.max_value)
 	
 	# 更新灵气吸收冷却时间
-	absorption_cooldown_value.text = str(cultivator.absorption_cooldown.min_value) + "-" + str(cultivator.absorption_cooldown.max_value) + "秒"
+	absorption_cooldown_value.text = str(cultivator.absorption_cooldown.min_value) + "~" + str(cultivator.absorption_cooldown.max_value) + "秒"

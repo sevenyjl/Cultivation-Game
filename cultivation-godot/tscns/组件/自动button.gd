@@ -7,8 +7,11 @@ class_name AutoClickButton
 @onready var 按钮:Button = %"Button"
 @export var button_text:String="按钮名称"
 @export var 冷却时间:float=0.1
+@export var disable:bool=false
 # 冷却相关变量
 var 当前冷却:float=0  # 当前剩余冷却时间（秒）
+# 记录上一帧的disable状态
+var 上次_disable:bool=false
 
 signal 点击按钮
 
@@ -20,9 +23,20 @@ func _notification(what: int) -> void:
 
 func _ready() -> void:
 	按钮.text=button_text
+	上次_disable=disable
 	pass
 
 func _process(delta: float) -> void:
+	if 按钮:
+		按钮.disabled = self.disable
+		
+	# 检查disable状态变化：从true变为false，且checkBox被勾选，且不在冷却中
+	if 上次_disable and not disable and checkBox.is_pressed() and 当前冷却 <= 0:
+		_on_pressed()
+		
+	# 更新上次disable状态
+	上次_disable = disable
+		
 	# 更新冷却时间
 	if 当前冷却 > 0:
 		当前冷却 -= delta*GameData.全局倍速
@@ -40,8 +54,8 @@ func _process(delta: float) -> void:
 			按钮.text = button_text+" (%.1f秒)" % 当前冷却
 		else:
 			# 如果 checkBox 勾选了 则进行点击按钮
-			if checkBox.is_pressed():
-				_on_打坐修炼_pressed()
+			if checkBox.is_pressed() and not disable:
+				_on_pressed()
 			else:
 				重置按钮()
 
@@ -60,13 +74,13 @@ func 开始冷却() -> void:
 	按钮.text = button_text+" (%.1f秒)" % 当前冷却
 
 func _on_check_box_pressed() -> void:
-	if 当前冷却>0:
+	if 当前冷却>0 or disable:
 		return
 	开始冷却()
 	pass # 暂时保留，等待用户的第二个功能要求
 
-func _on_打坐修炼_pressed() -> void:
-	if 当前冷却>0:
+func _on_pressed() -> void:
+	if 当前冷却>0 or disable:
 		return
 	点击按钮.emit()
 	开始冷却()

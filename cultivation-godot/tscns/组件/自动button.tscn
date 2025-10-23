@@ -6,6 +6,7 @@
 offset_right = 168.0
 offset_bottom = 31.0
 script = ExtResource("1_ilgqp")
+disable = null
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2

@@ -187,8 +187,13 @@ func get_full_realm_name() -> String:
 	# 凡人也显示层数
 	return get_realm_name_by_realm(current_realm) + "第" + str(realm_level) + "层"
 
+func can_level_up()->bool:
+	return spiritual_energy.current_value >= spiritual_energy.max_value
+
 # 升级
 func level_up():
+	if not can_level_up():
+		return
 	level += 1
 	# 检查是否刚刚突破了境界
 	var previous_realm = get_realm_by_level(level - 1)

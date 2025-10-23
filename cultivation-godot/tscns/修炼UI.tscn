@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://cuy6w40kc1t83"]
+[gd_scene load_steps=6 format=3 uid="uid://cuy6w40kc1t83"]
 
 [ext_resource type="Script" uid="uid://cdcwli7mja4vg" path="res://tscns/修炼UI.gd" id="1_om3im"]
 [ext_resource type="PackedScene" uid="uid://c25dgi5fjgy8a" path="res://tscns/全局倍速.tscn" id="2_c2lfu"]
 [ext_resource type="PackedScene" uid="uid://b7rxrpg6ouh75" path="res://tscns/修炼面板.tscn" id="2_tiv2u"]
+[ext_resource type="PackedScene" uid="uid://dv5a4n3wg22sb" path="res://tscns/组件/进度条组件.tscn" id="2_xluu2"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hgdpn"]
 
@@ -66,9 +67,12 @@ layout_mode = 2
 layout_mode = 2
 text = "灵气："
 
-[node name="value" type="ProgressBar" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/灵气"]
+[node name="value" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/灵气" instance=ExtResource("2_xluu2")]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 14
+show_percentage = false
 
 [node name="生命值" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
 layout_mode = 2
