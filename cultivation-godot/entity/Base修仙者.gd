@@ -198,12 +198,13 @@ func level_up():
 	# 检查是否刚刚突破了境界
 	var previous_realm = get_realm_by_level(level - 1)
 	var current_realm = get_current_realm()
-	
+	print("升级前的吸收冷却时间：%s~%s" % [absorption_cooldown.min_value, absorption_cooldown.max_value])
 	if previous_realm != current_realm:
 		# 境界突破，执行突破逻辑
 		_on_realm_breakthrough(previous_realm, current_realm)
 	for i in _获取成长属性列表():
 		i.grow()
+	print("升级后的吸收冷却时间：%s~%s" % [absorption_cooldown.min_value, absorption_cooldown.max_value])
 	# 灵气归零
 	spiritual_energy.current_value=0
 	print(name_str + " 修炼到 " + get_full_realm_name() + "！")

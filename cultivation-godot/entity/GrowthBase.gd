@@ -22,10 +22,11 @@ func grow() -> void:
 	var random_factor = randf_range(0, growth_factor / 2)
 
 	# 更新成长范围，考虑负数情况
-	if min_growth < 0 and max_growth < 0:
-		# 如果都是负数，则向负数方向成长（减小值）
-		min_growth = roundf((min_growth - random_factor) * 100) / 100
-		max_growth = roundf((max_growth - (growth_factor - random_factor)) * 100) / 100
+	# 如果min_growth小于0（不管max_growth是多少），则视为需要减小的值
+	if min_growth < 0:
+		# 向负数方向成长（减小值）
+		min_growth = roundf((min_growth - (growth_factor - random_factor)) * 100) / 100
+		max_growth = roundf((max_growth - random_factor) * 100) / 100
 	else:
 		# 正常情况，向正数方向成长
 		min_growth = roundf((min_growth + random_factor) * 100) / 100
