@@ -19,6 +19,8 @@ extends Control
 @onready var spiritual_energy_progress = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/灵气/value
 @onready var absorption_rate_value = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/灵气吸收速度/value
 @onready var absorption_cooldown_value = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/灵气吸收冷却/value
+@onready var health_regen_rate_value = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/生命恢复速度/value
+@onready var health_regen_cooldown_value = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/生命恢复冷却/value
 
 # 当前选中的Tab
 var current_tab: int = 0
@@ -89,3 +91,9 @@ func update_cultivator_info(cultivator: BaseCultivation):
 	
 	# 更新灵气吸收冷却时间
 	absorption_cooldown_value.text = str(cultivator.absorption_cooldown.min_value) + "~" + str(cultivator.absorption_cooldown.max_value) + "秒"
+	
+	# 更新生命恢复速度
+	health_regen_rate_value.text = str(cultivator.health_regen_rate.min_value) + "~" + str(cultivator.health_regen_rate.max_value)
+	
+	# 更新生命恢复冷却时间
+	health_regen_cooldown_value.text = str(cultivator.health_regen_cooldown.min_value) + "~" + str(cultivator.health_regen_cooldown.max_value) + "秒"

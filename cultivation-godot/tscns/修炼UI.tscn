@@ -81,9 +81,12 @@ layout_mode = 2
 layout_mode = 2
 text = "生命值："
 
-[node name="value" type="ProgressBar" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/生命值"]
+[node name="value" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/生命值" instance=ExtResource("2_xluu2")]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 14
+show_percentage = false
 
 [node name="攻击力" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
 layout_mode = 2
@@ -139,6 +142,28 @@ text = "灵气吸收冷却："
 [node name="value" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/灵气吸收冷却"]
 layout_mode = 2
 text = "10.0-30.0秒"
+
+[node name="生命恢复速度" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/生命恢复速度"]
+layout_mode = 2
+text = "生命恢复速度："
+
+[node name="value" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/生命恢复速度"]
+layout_mode = 2
+text = "1-5"
+
+[node name="生命恢复冷却" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/生命恢复冷却"]
+layout_mode = 2
+text = "生命恢复冷却："
+
+[node name="value" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/生命恢复冷却"]
+layout_mode = 2
+text = "5.0-15.0秒"
 
 [node name="空" type="PanelContainer" parent="VBoxContainer/HBoxContainer/侧边栏"]
 layout_mode = 2

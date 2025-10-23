@@ -14,12 +14,11 @@ class_name BaseCultivation
 # 灵气系统（使用范围值类管理）
 var spiritual_energy: RangedValue
 
-# 灵气吸收速度（使用随机值类管理，表示每次吸收的灵气范围）
+# 灵气吸收速度 （使用随机值类管理，表示每次吸收的灵气范围）
 var absorption_rate: RandomValue
 
-# 灵气吸收冷却时间（使用随机值类管理，表示吸收间隔的时间范围，单位：秒）
+# 灵气吸收冷却时间 （使用随机值类管理，表示吸收间隔的时间范围，单位：秒）
 var absorption_cooldown: RandomValue
-
 
 # 生命值系统（使用范围值类管理）
 var hp_stats: RangedValue
@@ -32,6 +31,12 @@ var attack_stats: RandomValue
 
 # 防御力
 var defense_stats: RandomValue
+
+# 生命恢复速度 （使用随机值类管理，表示每次恢复的生命值范围）
+var health_regen_rate: RandomValue
+
+# 生命恢复冷却时间 （使用随机值类管理，表示恢复间隔的时间范围，单位：秒）
+var health_regen_cooldown: RandomValue
 
 # 修炼境界
 enum CultivationRealm {
@@ -60,6 +65,25 @@ func _init() -> void:
 		hp_stats.min_growth = 20
 		hp_stats.max_growth = 50
 		hp_stats.growth_factor = 10
+	
+	# 初始化生命恢复速度
+	if health_regen_rate == null:
+		health_regen_rate = RandomValue.new()
+		health_regen_rate.min_value = 1
+		health_regen_rate.max_value = 5
+		health_regen_rate.min_growth = 0.5
+		health_regen_rate.max_growth = 1.5
+		health_regen_rate.growth_factor = 1.5
+	
+	# 初始化生命恢复冷却时间
+	if health_regen_cooldown == null:
+		health_regen_cooldown = RandomValue.new()
+		health_regen_cooldown.min_value = 10.0
+		health_regen_cooldown.max_value = 20.0
+		# 注意：冷却时间的成长应该是减少的，所以使用负数
+		health_regen_cooldown.min_growth = -0.1
+		health_regen_cooldown.max_growth = 0
+		health_regen_cooldown.growth_factor = 1
 	
 	# 初始化灵气系统
 	if spiritual_energy == null:
@@ -112,7 +136,7 @@ func _init() -> void:
 		defense_stats.growth_factor = 2
 
 func _获取成长属性列表() -> Array:
-	return [hp_stats, spiritual_energy, absorption_rate, absorption_cooldown, speed_stats, attack_stats, defense_stats]
+	return [hp_stats, spiritual_energy, absorption_rate, absorption_cooldown, speed_stats, attack_stats, defense_stats, health_regen_rate, health_regen_cooldown]
 
 # 根据等级获取当前境界
 func get_current_realm() -> CultivationRealm:
@@ -178,6 +202,15 @@ func get_realm_name_by_realm(target_realm: CultivationRealm) -> String:
 			return "渡劫期"
 		_:
 			return "未知境界"
+
+# 恢复生命值方法
+func 恢复生命(恢复量: float) -> void:
+	if hp_stats:
+		# 增加当前生命值，但不超过最大值
+		var new_health = hp_stats.current_value + 恢复量
+		hp_stats.current_value = min(new_health, hp_stats.max_value)
+		# 确保生命值不低于最小值（通常为0）
+		hp_stats.current_value = max(hp_stats.current_value, hp_stats.min_value)
 
 # 获取完整的境界显示名称（包含层数）
 func get_full_realm_name() -> String:
@@ -276,7 +309,6 @@ func 应用伤害(damage: float,造成角色:BaseCultivation):
 
 # 吸收灵气（多余的灵气无法溢出）
 func 吸收灵气进入体内(num:float):
-	print("吸收灵气")
 	spiritual_energy.current_value += num
 	# 检查是否超过最大灵气
 	if spiritual_energy.current_value > spiritual_energy.max_value:
