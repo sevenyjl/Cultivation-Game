@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://cuy6w40kc1t83"]
+[gd_scene load_steps=7 format=3 uid="uid://cuy6w40kc1t83"]
 
 [ext_resource type="Script" uid="uid://cdcwli7mja4vg" path="res://tscns/修炼UI.gd" id="1_om3im"]
 [ext_resource type="PackedScene" uid="uid://c25dgi5fjgy8a" path="res://tscns/全局倍速.tscn" id="2_c2lfu"]
 [ext_resource type="PackedScene" uid="uid://b7rxrpg6ouh75" path="res://tscns/修炼面板.tscn" id="2_tiv2u"]
 [ext_resource type="PackedScene" uid="uid://dv5a4n3wg22sb" path="res://tscns/组件/进度条组件.tscn" id="2_xluu2"]
+[ext_resource type="PackedScene" uid="uid://de5fogdnwysj0" path="res://tscns/冒险面板.tscn" id="5_4c2pr"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hgdpn"]
 
@@ -198,7 +199,7 @@ toggle_mode = true
 button_pressed = true
 text = "修炼功法"
 
-[node name="背包" type="Button" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab标签"]
+[node name="冒险" type="Button" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab标签"]
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
@@ -210,12 +211,8 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="修炼内容" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器" instance=ExtResource("2_tiv2u")]
-layout_mode = 2
-
-[node name="背包" type="PanelContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器"]
 visible = false
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/背包"]
+[node name="冒险" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器" instance=ExtResource("5_4c2pr")]
 layout_mode = 2
-text = "背包"

@@ -1,0 +1,135 @@
+[gd_scene load_steps=2 format=3 uid="uid://de5fogdnwysj0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kcnjw"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+
+[node name="冒险" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="主容器" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="左侧预留区域" type="PanelContainer" parent="主容器"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="路径显示区域" type="ScrollContainer" parent="主容器"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="路径择容器" type="PanelContainer" parent="主容器/路径显示区域"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_kcnjw")
+
+[node name="层数" type="VBoxContainer" parent="主容器/路径显示区域/路径择容器"]
+layout_mode = 2
+theme_override_constants/separation = 60
+alignment = 1
+
+[node name="第0层" type="HBoxContainer" parent="主容器/路径显示区域/路径择容器/层数"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="选项1" type="PanelContainer" parent="主容器/路径显示区域/路径择容器/层数/第0层"]
+custom_minimum_size = Vector2(150, 200)
+layout_mode = 2
+
+[node name="选项2" type="PanelContainer" parent="主容器/路径显示区域/路径择容器/层数/第0层"]
+custom_minimum_size = Vector2(150, 200)
+layout_mode = 2
+
+[node name="选项3" type="PanelContainer" parent="主容器/路径显示区域/路径择容器/层数/第0层"]
+custom_minimum_size = Vector2(150, 200)
+layout_mode = 2
+
+[node name="选项4" type="PanelContainer" parent="主容器/路径显示区域/路径择容器/层数/第0层"]
+custom_minimum_size = Vector2(150, 200)
+layout_mode = 2
+
+[node name="选项5" type="PanelContainer" parent="主容器/路径显示区域/路径择容器/层数/第0层"]
+custom_minimum_size = Vector2(150, 200)
+layout_mode = 2
+
+[node name="第1层" type="HBoxContainer" parent="主容器/路径显示区域/路径择容器/层数"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="选项1" type="PanelContainer" parent="主容器/路径显示区域/路径择容器/层数/第1层"]
+custom_minimum_size = Vector2(150, 200)
+layout_mode = 2
+
+[node name="选项2" type="PanelContainer" parent="主容器/路径显示区域/路径择容器/层数/第1层"]
+custom_minimum_size = Vector2(150, 200)
+layout_mode = 2
+
+[node name="选项3" type="PanelContainer" parent="主容器/路径显示区域/路径择容器/层数/第1层"]
+custom_minimum_size = Vector2(150, 200)
+layout_mode = 2
+
+[node name="选项4" type="PanelContainer" parent="主容器/路径显示区域/路径择容器/层数/第1层"]
+custom_minimum_size = Vector2(150, 200)
+layout_mode = 2
+
+[node name="选项5" type="PanelContainer" parent="主容器/路径显示区域/路径择容器/层数/第1层"]
+custom_minimum_size = Vector2(150, 200)
+layout_mode = 2
+
+[node name="第2层" type="HBoxContainer" parent="主容器/路径显示区域/路径择容器/层数"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="选项1" type="PanelContainer" parent="主容器/路径显示区域/路径择容器/层数/第2层"]
+custom_minimum_size = Vector2(150, 200)
+layout_mode = 2
+
+[node name="选项2" type="PanelContainer" parent="主容器/路径显示区域/路径择容器/层数/第2层"]
+custom_minimum_size = Vector2(150, 200)
+layout_mode = 2
+
+[node name="选项3" type="PanelContainer" parent="主容器/路径显示区域/路径择容器/层数/第2层"]
+custom_minimum_size = Vector2(150, 200)
+layout_mode = 2
+
+[node name="选项4" type="PanelContainer" parent="主容器/路径显示区域/路径择容器/层数/第2层"]
+custom_minimum_size = Vector2(150, 200)
+layout_mode = 2
+
+[node name="选项5" type="PanelContainer" parent="主容器/路径显示区域/路径择容器/层数/第2层"]
+custom_minimum_size = Vector2(150, 200)
+layout_mode = 2
+
+[node name="第3层" type="HBoxContainer" parent="主容器/路径显示区域/路径择容器/层数"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="选项1" type="PanelContainer" parent="主容器/路径显示区域/路径择容器/层数/第3层"]
+custom_minimum_size = Vector2(150, 200)
+layout_mode = 2
+
+[node name="选项2" type="PanelContainer" parent="主容器/路径显示区域/路径择容器/层数/第3层"]
+custom_minimum_size = Vector2(150, 200)
+layout_mode = 2
+
+[node name="选项3" type="PanelContainer" parent="主容器/路径显示区域/路径择容器/层数/第3层"]
+custom_minimum_size = Vector2(150, 200)
+layout_mode = 2
+
+[node name="选项4" type="PanelContainer" parent="主容器/路径显示区域/路径择容器/层数/第3层"]
+custom_minimum_size = Vector2(150, 200)
+layout_mode = 2
+
+[node name="选项5" type="PanelContainer" parent="主容器/路径显示区域/路径择容器/层数/第3层"]
+custom_minimum_size = Vector2(150, 200)
+layout_mode = 2
