@@ -61,3 +61,11 @@ func _on_node_selected(selected_node) -> void:
 			hBoxContainer.add_child(node)
 			# 连接节点选中信号
 			node.connect("node_selected", _on_node_selected)
+		
+	# 滚动到最底部显示最新层级
+	# 获取滚动容器（假设"路径择容器"是ScrollContainer类型）
+	var scroll_container = $"主容器/路径显示区域"
+	if scroll_container and scroll_container.is_class("ScrollContainer"):
+		# 使用call_deferred确保UI更新后再滚动
+		await get_tree().process_frame
+		scroll_container.set_deferred("scroll_vertical", scroll_container.get_v_scroll_bar().max_value)
