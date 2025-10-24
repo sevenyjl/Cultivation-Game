@@ -1,7 +1,9 @@
 extends PanelContainer
+class_name AdventurePathNode
 
 var _data:BasePathNode
 @onready var _label:Label=$VBoxContainer/Label
+@export var disable:bool=false
 var _selected: bool = false
 
 func _ready() -> void:
@@ -12,8 +14,8 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and _data and _data.can_selected:
 		_on_clicked()
 
-func 初始化(basePathNode:BasePathNode) -> void:
-	_data = basePathNode
+func 初始化(basePathNode) -> void:
+	_data = basePathNode as BasePathNode
 	# 更新标签文本
 	if _label and basePathNode.has_property("name_str"):
 		_label.text = basePathNode.name_str
