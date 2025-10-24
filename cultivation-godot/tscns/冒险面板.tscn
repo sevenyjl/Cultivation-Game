@@ -1,5 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://de5fogdnwysj0"]
+[gd_scene load_steps=4 format=3 uid="uid://de5fogdnwysj0"]
 
+[ext_resource type="Script" uid="uid://cogtsn7gsd5ud" path="res://tscns/冒险面板.gd" id="1_1a6dk"]
 [ext_resource type="PackedScene" uid="uid://d0gl3pojn7msb" path="res://tscns/组件/冒险路径节点.tscn" id="1_j1s73"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kcnjw"]
@@ -12,6 +13,7 @@ content_margin_bottom = 5.0
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource("1_1a6dk")
 
 [node name="主容器" type="HBoxContainer" parent="."]
 layout_mode = 2
