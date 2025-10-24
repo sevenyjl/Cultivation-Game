@@ -42,3 +42,22 @@ func _initialize_path_nodes() -> void:
 	layers_vbox.add_child(hBoxContainer)
 	for i in path_nodes:
 		hBoxContainer.add_child(i)
+		# 连接节点选中信号
+		i.connect("node_selected", _on_node_selected)
+
+func _on_node_selected(selected_node) -> void:
+	# 生成下一层节点
+	_current_level += 1
+	# 检查是否已经有下一层，如果有则不重复生成
+	var layers_vbox = $"主容器/路径显示区域/路径择容器/层数"
+	if layers_vbox.get_child_count() <= _current_level:
+		# 创建新的层级
+		var next_level_nodes = _create_path_node()
+		var hBoxContainer:HBoxContainer = HBoxContainer.new()
+		hBoxContainer.alignment = BoxContainer.ALIGNMENT_CENTER
+		hBoxContainer.add_theme_constant_override("separation", 10)
+		layers_vbox.add_child(hBoxContainer)
+		for node in next_level_nodes:
+			hBoxContainer.add_child(node)
+			# 连接节点选中信号
+			node.connect("node_selected", _on_node_selected)
