@@ -1,4 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://de5fogdnwysj0"]
+[gd_scene load_steps=3 format=3 uid="uid://de5fogdnwysj0"]
+
+[ext_resource type="PackedScene" uid="uid://d0gl3pojn7msb" path="res://tscns/组件/冒险路径节点.tscn" id="1_j1s73"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kcnjw"]
 content_margin_left = 5.0
@@ -39,8 +41,7 @@ layout_mode = 2
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="选项1" type="PanelContainer" parent="主容器/路径显示区域/路径择容器/层数/第0层"]
-custom_minimum_size = Vector2(150, 200)
+[node name="选项1" parent="主容器/路径显示区域/路径择容器/层数/第0层" instance=ExtResource("1_j1s73")]
 layout_mode = 2
 
 [node name="选项2" type="PanelContainer" parent="主容器/路径显示区域/路径择容器/层数/第0层"]
