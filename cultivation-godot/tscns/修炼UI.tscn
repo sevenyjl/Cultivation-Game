@@ -1,12 +1,19 @@
-[gd_scene load_steps=7 format=3 uid="uid://cuy6w40kc1t83"]
+[gd_scene load_steps=9 format=3 uid="uid://cuy6w40kc1t83"]
 
 [ext_resource type="Script" uid="uid://cdcwli7mja4vg" path="res://tscns/修炼UI.gd" id="1_om3im"]
 [ext_resource type="PackedScene" uid="uid://bwnrp7q050y52" path="res://tscns/组件/修仙者信息组件.tscn" id="2_4c2pr"]
 [ext_resource type="PackedScene" uid="uid://c25dgi5fjgy8a" path="res://tscns/全局倍速.tscn" id="2_c2lfu"]
 [ext_resource type="PackedScene" uid="uid://b7rxrpg6ouh75" path="res://tscns/修炼面板.tscn" id="2_tiv2u"]
 [ext_resource type="PackedScene" uid="uid://c2amkc6y8v3y2" path="res://tscns/外出节点/战斗节点.tscn" id="5_4c2pr"]
+[ext_resource type="PackedScene" uid="uid://ch5ft504adcxv" path="res://tscns/组件/人员战斗信息组件.tscn" id="6_qrxuh"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hgdpn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qrxuh"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
 
 [node name="修炼ui" type="Control"]
 layout_mode = 3
@@ -73,6 +80,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "外出"
 
+[node name="阵型" type="Button" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab标签"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "阵型"
+
 [node name="Tab容器" type="PanelContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -80,20 +92,66 @@ size_flags_vertical = 3
 [node name="修炼内容" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器" instance=ExtResource("2_tiv2u")]
 layout_mode = 2
 
-[node name="外出" type="PanelContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器"]
+[node name="外出内容" type="PanelContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/外出"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/外出内容"]
 layout_mode = 2
 theme_override_constants/separation = 30
 
-[node name="Fight1" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/外出/HBoxContainer" instance=ExtResource("5_4c2pr")]
+[node name="Fight1" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/外出内容/HBoxContainer" instance=ExtResource("5_4c2pr")]
 layout_mode = 2
 
-[node name="Fight2" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/外出/HBoxContainer" instance=ExtResource("5_4c2pr")]
+[node name="Fight2" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/外出内容/HBoxContainer" instance=ExtResource("5_4c2pr")]
 layout_mode = 2
 
-[node name="Fight3" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/外出/HBoxContainer" instance=ExtResource("5_4c2pr")]
+[node name="Fight3" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/外出内容/HBoxContainer" instance=ExtResource("5_4c2pr")]
+layout_mode = 2
+
+[node name="阵型内容" type="PanelContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qrxuh")
+
+[node name="PlayerTeamList" type="GridContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/阵型内容"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 3
+
+[node name="人员战斗信息组件" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/阵型内容/PlayerTeamList" instance=ExtResource("6_qrxuh")]
+layout_mode = 2
+
+[node name="人员战斗信息组件2" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/阵型内容/PlayerTeamList" instance=ExtResource("6_qrxuh")]
+layout_mode = 2
+
+[node name="人员战斗信息组件3" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/阵型内容/PlayerTeamList" instance=ExtResource("6_qrxuh")]
+layout_mode = 2
+
+[node name="人员战斗信息组件4" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/阵型内容/PlayerTeamList" instance=ExtResource("6_qrxuh")]
+layout_mode = 2
+
+[node name="人员战斗信息组件5" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/阵型内容/PlayerTeamList" instance=ExtResource("6_qrxuh")]
+layout_mode = 2
+
+[node name="人员战斗信息组件6" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/阵型内容/PlayerTeamList" instance=ExtResource("6_qrxuh")]
+layout_mode = 2
+
+[node name="人员战斗信息组件7" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/阵型内容/PlayerTeamList" instance=ExtResource("6_qrxuh")]
+layout_mode = 2
+
+[node name="人员战斗信息组件8" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/阵型内容/PlayerTeamList" instance=ExtResource("6_qrxuh")]
+layout_mode = 2
+
+[node name="人员战斗信息组件9" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/阵型内容/PlayerTeamList" instance=ExtResource("6_qrxuh")]
+layout_mode = 2
+
+[node name="人员战斗信息组件10" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/阵型内容/PlayerTeamList" instance=ExtResource("6_qrxuh")]
+layout_mode = 2
+
+[node name="人员战斗信息组件11" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/阵型内容/PlayerTeamList" instance=ExtResource("6_qrxuh")]
+layout_mode = 2
+
+[node name="人员战斗信息组件12" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/阵型内容/PlayerTeamList" instance=ExtResource("6_qrxuh")]
 layout_mode = 2
 
 [connection signal="开始冒险" from="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/修炼内容" to="." method="_on_修炼内容_开始冒险"]
