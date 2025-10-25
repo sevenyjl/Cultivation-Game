@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://cuy6w40kc1t83"]
 
 [ext_resource type="Script" uid="uid://cdcwli7mja4vg" path="res://tscns/修炼UI.gd" id="1_om3im"]
+[ext_resource type="PackedScene" uid="uid://bwnrp7q050y52" path="res://tscns/组件/修仙者信息组件.tscn" id="2_4c2pr"]
 [ext_resource type="PackedScene" uid="uid://c25dgi5fjgy8a" path="res://tscns/全局倍速.tscn" id="2_c2lfu"]
 [ext_resource type="PackedScene" uid="uid://b7rxrpg6ouh75" path="res://tscns/修炼面板.tscn" id="2_tiv2u"]
-[ext_resource type="PackedScene" uid="uid://dv5a4n3wg22sb" path="res://tscns/组件/进度条组件.tscn" id="2_xluu2"]
 [ext_resource type="PackedScene" uid="uid://de5fogdnwysj0" path="res://tscns/冒险面板.tscn" id="5_4c2pr"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hgdpn"]
@@ -32,139 +32,8 @@ size_flags_vertical = 3
 [node name="侧边栏" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="修仙者信息" type="PanelContainer" parent="VBoxContainer/HBoxContainer/侧边栏"]
-custom_minimum_size = Vector2(300, 0)
+[node name="修仙者信息" parent="VBoxContainer/HBoxContainer/侧边栏" instance=ExtResource("2_4c2pr")]
 layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息"]
-layout_mode = 2
-
-[node name="名称" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/名称"]
-layout_mode = 2
-text = "名称："
-
-[node name="value" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/名称"]
-layout_mode = 2
-text = "张三"
-
-[node name="境界" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/境界"]
-layout_mode = 2
-text = "境界："
-
-[node name="value" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/境界"]
-layout_mode = 2
-text = "练气期一层"
-
-[node name="灵气" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/灵气"]
-layout_mode = 2
-text = "灵气："
-
-[node name="value" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/灵气" instance=ExtResource("2_xluu2")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-theme_override_font_sizes/font_size = 14
-show_percentage = false
-
-[node name="生命值" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/生命值"]
-layout_mode = 2
-text = "生命值："
-
-[node name="value" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/生命值" instance=ExtResource("2_xluu2")]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-theme_override_font_sizes/font_size = 14
-show_percentage = false
-
-[node name="攻击力" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/攻击力"]
-layout_mode = 2
-text = "攻击力："
-
-[node name="value" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/攻击力"]
-layout_mode = 2
-text = "20-30"
-
-[node name="防御力" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/防御力"]
-layout_mode = 2
-text = "防御力："
-
-[node name="value" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/防御力"]
-layout_mode = 2
-text = "0-10"
-
-[node name="速度" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/速度"]
-layout_mode = 2
-text = "速度："
-
-[node name="value" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/速度"]
-layout_mode = 2
-text = "10-15"
-
-[node name="灵气吸收速度" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/灵气吸收速度"]
-layout_mode = 2
-text = "灵气吸收速度："
-
-[node name="value" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/灵气吸收速度"]
-layout_mode = 2
-text = "5-15"
-
-[node name="灵气吸收冷却" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/灵气吸收冷却"]
-layout_mode = 2
-text = "灵气吸收冷却："
-
-[node name="value" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/灵气吸收冷却"]
-layout_mode = 2
-text = "10.0-30.0秒"
-
-[node name="生命恢复速度" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/生命恢复速度"]
-layout_mode = 2
-text = "生命恢复速度："
-
-[node name="value" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/生命恢复速度"]
-layout_mode = 2
-text = "1-5"
-
-[node name="生命恢复冷却" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/生命恢复冷却"]
-layout_mode = 2
-text = "生命恢复冷却："
-
-[node name="value" type="Label" parent="VBoxContainer/HBoxContainer/侧边栏/修仙者信息/VBoxContainer/生命恢复冷却"]
-layout_mode = 2
-text = "5.0-15.0秒"
 
 [node name="空" type="PanelContainer" parent="VBoxContainer/HBoxContainer/侧边栏"]
 layout_mode = 2
@@ -216,3 +85,4 @@ layout_mode = 2
 
 [node name="冒险" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器" instance=ExtResource("5_4c2pr")]
 layout_mode = 2
+script = null

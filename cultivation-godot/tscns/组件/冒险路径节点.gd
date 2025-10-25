@@ -7,6 +7,8 @@ var _data:BasePathNode
 var _selected: bool = false
 
 func _ready() -> void:
+	if _data:
+		初始化(_data)
 	pass
 
 func _gui_input(event: InputEvent) -> void:
@@ -14,10 +16,16 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and _data and _data.can_selected:
 		_on_clicked()
 
+func _process(delta: float) -> void:
+	
+	pass
+
 func 初始化(basePathNode) -> void:
 	_data = basePathNode as BasePathNode
 	# 更新标签文本
-	if _label and basePathNode.has_property("name_str"):
+	if _label and basePathNode:
+		if basePathNode is BlockedPathNode:
+			pass
 		_label.text = basePathNode.name_str
 	# 应用节点的背景颜色
 	_apply_node_color()
@@ -46,7 +54,7 @@ func _apply_node_color() -> void:
 	add_theme_stylebox_override("panel",stylebox)
 
 func _on_clicked() -> void:
-	if _data and _data.can_selected:
+	if _data and _data.can_selected and !disable:
 		# 设置选中状态
 		_selected = true
 		_apply_node_color()
@@ -54,11 +62,11 @@ func _on_clicked() -> void:
 		if _data.has_method("click"):
 			_data.click()
 		# 发出选中信号
-		emit_signal("node_selected", self)
+		node_selected.emit(self)
 
 func set_selected(selected: bool) -> void:
 	_selected = selected
 	_apply_node_color()
 
 # 定义选中信号
-signal node_selected(node)
+signal node_selected(节点)

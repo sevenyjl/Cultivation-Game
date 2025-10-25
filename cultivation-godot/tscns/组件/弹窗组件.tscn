@@ -1,0 +1,73 @@
+[gd_scene load_steps=5 format=3 uid="uid://dvo5opdfesx1q"]
+
+[ext_resource type="Script" uid="uid://d3a8algai5y0g" path="res://tscns/组件/弹窗组件.gd" id="1_hpgx1"]
+[ext_resource type="PackedScene" uid="uid://bmbf8ud6lvsqm" path="res://entity/pathNode/休息.tscn" id="1_k11nq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qyb8d"]
+bg_color = Color(0.16078432, 0.16078432, 0.16078432, 0.7647059)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qt1eo"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.28485027, 0.28485027, 0.28485027, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.30692264, 0.30692273, 0.30692244, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="弹窗组件" type="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_qyb8d")
+script = ExtResource("1_hpgx1")
+
+[node name="弹窗" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(400, 300)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -36.0
+offset_top = -15.5
+offset_right = 36.0
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qt1eo")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="弹窗"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Slot" type="PanelContainer" parent="弹窗/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="休息" parent="弹窗/VBoxContainer/Slot" instance=ExtResource("1_k11nq")]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="弹窗/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="关闭弹窗" type="Button" parent="弹窗/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "关闭弹窗"
+
+[connection signal="pressed" from="弹窗/VBoxContainer/HBoxContainer/关闭弹窗" to="." method="_on_关闭弹窗_pressed"]

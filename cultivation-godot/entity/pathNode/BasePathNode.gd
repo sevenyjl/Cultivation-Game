@@ -3,6 +3,7 @@ class_name BasePathNode
 
 # 默认颜色
 @export var bg_color: Color = Color(0.8, 0.8, 0.8, 1.0)
+var _dilog:Node
 
 @export var id: String = ""
 # 路径节点名称

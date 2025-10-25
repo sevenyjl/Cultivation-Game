@@ -1,5 +1,5 @@
 extends BasePathNode
-class_name AdventurePathNode
+class_name EncounterPathNode
 
 # 奇遇事件类型
 enum EVENT_TYPE {
@@ -24,3 +24,9 @@ func click() -> void:
 	if can_selected:
 		print("点击了奇遇节点：" + name_str)
 		print("事件类型：" + EVENT_TYPE.keys()[事件类型] + "\n" + 事件描述)
+		_dilog=preload("res://entity/pathNode/奇遇.tscn").instantiate()
+		var label=_dilog.get_node("Label") as Label
+		if label:
+			label.text="事件类型：" + EVENT_TYPE.keys()[事件类型] + "\n" + 事件描述
+		else:
+			printerr("错误 zdgsdcvzxc")

@@ -1,10 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://de5fogdnwysj0"]
+[gd_scene load_steps=6 format=3 uid="uid://de5fogdnwysj0"]
 
 [ext_resource type="Script" uid="uid://cogtsn7gsd5ud" path="res://tscns/冒险面板.gd" id="1_1a6dk"]
 [ext_resource type="PackedScene" uid="uid://d0gl3pojn7msb" path="res://tscns/组件/冒险路径节点.tscn" id="1_j1s73"]
 [ext_resource type="PackedScene" uid="uid://bwnrp7q050y52" path="res://tscns/组件/修仙者信息组件.tscn" id="2_lvncg"]
 [ext_resource type="PackedScene" uid="uid://c4g6jg0gt6hbr" path="res://tscns/战斗UI.tscn" id="4_y0gtl"]
-[ext_resource type="PackedScene" uid="uid://dvo5opdfesx1q" path="res://tscns/组件/弹窗组件.tscn" id="5_qyb8d"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kcnjw"]
 content_margin_left = 5.0
@@ -144,9 +143,5 @@ custom_minimum_size = Vector2(150, 200)
 layout_mode = 2
 
 [node name="战斗UI" parent="." instance=ExtResource("4_y0gtl")]
-visible = false
-layout_mode = 2
-
-[node name="弹窗组件" parent="." instance=ExtResource("5_qyb8d")]
 visible = false
 layout_mode = 2
