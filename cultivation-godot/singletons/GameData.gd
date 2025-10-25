@@ -4,6 +4,7 @@ extends Node
 # 负责存储玩家数据，并提供存档和读档功能
 
 var player: BaseCultivation
+var mainNode:MainNode
 
 # 最大倍速10倍速，最小1倍速
 var 全局倍速:int=1

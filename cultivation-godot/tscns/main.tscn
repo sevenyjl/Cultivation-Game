@@ -14,7 +14,6 @@ grow_vertical = 2
 script = ExtResource("1_gpgin")
 
 [node name="战斗UI" parent="." instance=ExtResource("1_guqoi")]
-visible = false
 layout_mode = 1
 
 [node name="修炼ui" parent="." instance=ExtResource("3_mrkoo")]

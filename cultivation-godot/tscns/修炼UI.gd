@@ -1,4 +1,5 @@
 extends Control
+class_name MainNode
 
 # 修炼UI控制器
 # 负责管理修炼界面的显示和Tab切换功能
@@ -25,6 +26,7 @@ func _ready():
 		button.pressed.connect(switch_tab.bind(i))
 	# 初始化Tab显示
 	switch_tab(0)
+	GameData.mainNode=self
 
 func _process(delta: float) -> void:
 	if _当前选择的玩家:
@@ -56,6 +58,10 @@ func switch_tab(tab_index: int):
 	# 发送信号
 	tab_changed.emit(tab_index)
 
+func 结束冒险():
+	$VBoxContainer.visible=true
+	$"冒险".visible=false
+	pass
 
 func _on_修炼内容_开始冒险() -> void:
 	$VBoxContainer.visible=false

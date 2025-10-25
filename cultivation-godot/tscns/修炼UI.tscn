@@ -1,10 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://cuy6w40kc1t83"]
+[gd_scene load_steps=6 format=3 uid="uid://cuy6w40kc1t83"]
 
 [ext_resource type="Script" uid="uid://cdcwli7mja4vg" path="res://tscns/修炼UI.gd" id="1_om3im"]
 [ext_resource type="PackedScene" uid="uid://bwnrp7q050y52" path="res://tscns/组件/修仙者信息组件.tscn" id="2_4c2pr"]
 [ext_resource type="PackedScene" uid="uid://c25dgi5fjgy8a" path="res://tscns/全局倍速.tscn" id="2_c2lfu"]
 [ext_resource type="PackedScene" uid="uid://b7rxrpg6ouh75" path="res://tscns/修炼面板.tscn" id="2_tiv2u"]
-[ext_resource type="PackedScene" uid="uid://de5fogdnwysj0" path="res://tscns/冒险面板.tscn" id="5_4c2pr"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hgdpn"]
 
@@ -75,11 +74,5 @@ size_flags_vertical = 3
 [node name="修炼内容" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器" instance=ExtResource("2_tiv2u")]
 visible = false
 layout_mode = 2
-
-[node name="冒险" parent="." instance=ExtResource("5_4c2pr")]
-visible = false
-layout_mode = 1
-grow_horizontal = 2
-grow_vertical = 2
 
 [connection signal="开始冒险" from="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/修炼内容" to="." method="_on_修炼内容_开始冒险"]
