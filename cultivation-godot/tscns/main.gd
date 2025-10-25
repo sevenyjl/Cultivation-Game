@@ -1,4 +1,23 @@
 extends Control
+class_name MainNode
+
+#region 外部方法
+func 打开弹窗(node:PanelContainer):
+	$"弹窗/Slot".add_child(node)
+	$"弹窗".visible=true
+	pass
+
+func 关闭弹窗():
+	for i in $"弹窗/Slot".get_children():
+		i.queue_free()
+	$"弹窗".visible=false
+	pass
+
+func 进入战斗():
+	$"战斗UI".visible=true
+	$"修炼ui".visible=false
+	pass
+#endregion
 
 # 引用修仙者类
 const BaseCultivation = preload("res://entity/Base修仙者.gd")
@@ -16,6 +35,8 @@ func _ready() -> void:
 	
 	GameData.游戏初始化()
 	$"修炼ui".初始化()
+	GameData.mainNode=self
+
 	pass
 
 # 创建玩家队伍（4x3方阵）

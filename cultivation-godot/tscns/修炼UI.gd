@@ -1,5 +1,4 @@
 extends Control
-class_name MainNode
 
 # 修炼UI控制器
 # 负责管理修炼界面的显示和Tab切换功能
@@ -26,7 +25,6 @@ func _ready():
 		button.pressed.connect(switch_tab.bind(i))
 	# 初始化Tab显示
 	switch_tab(0)
-	GameData.mainNode=self
 
 func _process(delta: float) -> void:
 	if _当前选择的玩家:

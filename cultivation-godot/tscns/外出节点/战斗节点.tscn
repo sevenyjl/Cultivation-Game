@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=3 uid="uid://c2amkc6y8v3y2"]
+
+[ext_resource type="Script" uid="uid://b4usraikhapga" path="res://tscns/外出节点/战斗节点.gd" id="1_cflcw"]
+
+[node name="PanelContainer" type="PanelContainer"]
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 275.0
+grow_vertical = 2
+size_flags_horizontal = 3
+script = ExtResource("1_cflcw")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "名称xxxx"
+
+[node name="Empty" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="选择" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "选择"
+
+[connection signal="pressed" from="VBoxContainer/选择" to="." method="_on_选择_pressed"]
