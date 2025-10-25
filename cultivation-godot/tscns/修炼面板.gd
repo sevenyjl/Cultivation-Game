@@ -23,3 +23,8 @@ func 初始化() -> void:
 func _冷却完成(comp:AutoClickButton,属性:GrowthBase):
 	var 冷却时间 = 属性.get_current_value()
 	comp.冷却时间=冷却时间
+
+signal 开始冒险
+func _on_开始冒险_pressed() -> void:
+	开始冒险.emit()
+	pass # Replace with function body.

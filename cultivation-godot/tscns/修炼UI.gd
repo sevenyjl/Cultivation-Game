@@ -55,3 +55,9 @@ func switch_tab(tab_index: int):
 		tab_contents[tab_index].visible = true
 	# 发送信号
 	tab_changed.emit(tab_index)
+
+
+func _on_修炼内容_开始冒险() -> void:
+	$VBoxContainer.visible=false
+	$"冒险".visible=true
+	pass # Replace with function body.
