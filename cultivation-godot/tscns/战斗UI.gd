@@ -13,7 +13,7 @@ var 倍速:float=1.0
 var character_component_map: Dictionary = {}
 var character_data_map: Dictionary = {}
 # 战斗是否正在进行中
-var _战斗进行中:bool = true
+var _战斗进行中:bool = false
 # 战斗日志配置
 const MAX_BATTLE_LOG_LINES = 1000 # 最大战斗日志行数，超过将移除最早的日志
 
@@ -49,6 +49,7 @@ func 初始化战斗(player_formation:Array, enemy_formation:Array):
 	# 清空映射字典
 	character_component_map.clear()
 	character_data_map.clear()
+	BattleLogContent.text = ""
 	基础速度 = 0
 	_战斗进行中 = true
 	# 使用缓存的节点引用
@@ -107,7 +108,6 @@ func create_empty_component(team_list:Control) -> Control:
 func _on_死亡_sinal(攻击者:BaseCultivation,死亡者:BaseCultivation):
 	# 从速度队列中移除死亡者
 	_移除速度队列(死亡者)
-	
 	# 检查战斗是否结束
 	检查战斗结束()
 	pass
@@ -258,6 +258,7 @@ func _process(delta: float) -> void:
 var _是否处理速度队列:bool = true
 
 func 初始化速度队列(character_component):
+	_是否处理速度队列=true
 	# 从字典获取character_data
 	var character_data = character_data_map[character_component]
 	# 创建角色名称标签
@@ -291,7 +292,11 @@ func _移除速度队列(character_data:BaseCultivation):
 			break
 
 func _速度队列处理(delta: float):
-	if not _是否处理速度队列 or not _战斗进行中:
+	if not _是否处理速度队列:
+		return
+	if _战斗进行中:
+		检查战斗结束()
+	if not _战斗进行中:
 		return
 	# 基础速度的运行时间是 5秒。就是从CharacterNamesContainer的左边开始，到右边的耗时5秒
 	# 其他的速度就是基于这个基数计算，速度越快，耗时越短
@@ -366,6 +371,7 @@ func 添加战斗日志(text: String) -> void:
 func 检查战斗结束():
 	# 如果战斗已经结束，不再检查
 	if not _战斗进行中:
+		printerr("不应该没有结束呀")
 		return
 	
 	# 检查玩家和敌人的存活情况
@@ -400,12 +406,17 @@ func _战斗结束(结果:String):
 	# 停止速度队列处理
 	_是否处理速度队列 = false
 	
+	var 弹窗node=$PanelContainer.duplicate() as PanelContainer
+	弹窗node.visible=true
 	# 根据结果添加战斗日志
 	if 结果 == "胜利":
+		弹窗node.get_node("VBoxContainer/战斗胜利！").visible=true
 		添加战斗日志("[color=#00FF00]战斗胜利！[/color]")
 	else:
+		弹窗node.get_node("VBoxContainer/战斗失败！").visible=true
 		添加战斗日志("[color=#FF0000]战斗失败！[/color]")
 	
+	GameData.mainNode.打开弹窗(弹窗node)
 	# 发射战斗结束信号
 	战斗结束.emit(结果)
 
@@ -456,3 +467,8 @@ func _随机获取友队(character_component,number:int=1)->Array:
 	players.shuffle()
 	return players.slice(0, number)
 #endregion
+
+
+func _on_关闭弹窗_pressed() -> void:
+	GameData.mainNode.关闭弹窗()
+	GameData.mainNode.结束战斗()

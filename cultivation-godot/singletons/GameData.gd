@@ -4,8 +4,19 @@ extends Node
 # 负责存储玩家数据，并提供存档和读档功能
 
 var player: BaseCultivation
-var mainNode:MainNode
+var formation = \
+[
+	[null,null,null],
+	[null,null,null],
+	[null,null,null],
+	[null,null,null],
+]
 
+
+
+#region 其他信息
+var mainNode:MainNode
+#endregion
 # 最大倍速10倍速，最小1倍速
 var 全局倍速:int=1
 
@@ -18,4 +29,6 @@ func 游戏初始化():
 	player.name_str = "张三"
 	for i in 3:
 		player.level_up()
+	# 玩家初始化阵型位置
+	formation[0][0]=player
 	pass

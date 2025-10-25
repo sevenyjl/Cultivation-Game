@@ -270,3 +270,83 @@ text = "[color=white]战斗开始！[/color]
 [color=yellow]玩家对野狼造成了15点伤害[/color]
 [color=red]野狼对玩家造成了8点伤害[/color]
 [color=green]玩家使用了治疗术，恢复了20点生命值[/color]"
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+visible = false
+custom_minimum_size = Vector2(600, 400)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -31.5
+offset_right = 150.0
+offset_bottom = 31.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="战斗失败！" type="Label" parent="PanelContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0, 0.11083345, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 0.7970939, 0.7633204, 1)
+theme_override_constants/line_spacing = 5
+theme_override_constants/paragraph_spacing = 5
+theme_override_constants/shadow_offset_x = 5
+theme_override_constants/shadow_offset_y = 5
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 5
+theme_override_font_sizes/font_size = 64
+text = "战斗失败！"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="战斗胜利！" type="Label" parent="PanelContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.81666666, 0, 1)
+theme_override_colors/font_shadow_color = Color(0.61, 0.020333352, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = 5
+theme_override_constants/paragraph_spacing = 5
+theme_override_constants/shadow_offset_x = 5
+theme_override_constants/shadow_offset_y = 5
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 5
+theme_override_font_sizes/font_size = 64
+text = "战斗胜利！"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="逃跑成功！" type="Label" parent="PanelContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0.8156863, 0, 1)
+theme_override_colors/font_shadow_color = Color(2.5990605e-06, 0.35299248, 0.46467435, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = 5
+theme_override_constants/paragraph_spacing = 5
+theme_override_constants/shadow_offset_x = 5
+theme_override_constants/shadow_offset_y = 5
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 5
+theme_override_font_sizes/font_size = 64
+text = "逃跑成功！"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="关闭弹窗" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "关闭弹窗"
+
+[connection signal="pressed" from="PanelContainer/VBoxContainer/关闭弹窗" to="." method="_on_关闭弹窗_pressed"]

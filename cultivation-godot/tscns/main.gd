@@ -13,9 +13,15 @@ func 关闭弹窗():
 	$"弹窗".visible=false
 	pass
 
-func 进入战斗():
+func 进入战斗(enemy_formation:Array):
 	$"战斗UI".visible=true
 	$"修炼ui".visible=false
+	$"战斗UI".初始化战斗(GameData.formation, enemy_formation)
+	pass
+	
+func 结束战斗():
+	$"战斗UI".visible=false
+	$"修炼ui".visible=true
 	pass
 #endregion
 
@@ -23,16 +29,6 @@ func 进入战斗():
 const BaseCultivation = preload("res://entity/Base修仙者.gd")
 
 func _ready() -> void:
-	## 创建玩家队伍（3x4修仙者方阵）
-	#var player_formation = create_player_formation()
-	#
-	## 创建敌人队伍（3x4修仙者方阵）
-	#var enemy_formation = create_enemy_formation()
-	#
-	## 初始化战斗
-	#$"战斗UI".初始化战斗(player_formation, enemy_formation)
-	# 主玩家 - 修仙者（放置在方阵位置）
-	
 	GameData.游戏初始化()
 	$"修炼ui".初始化()
 	GameData.mainNode=self
