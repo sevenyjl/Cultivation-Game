@@ -1,0 +1,97 @@
+[gd_scene load_steps=7 format=3 uid="uid://bt443bqtku2n7"]
+
+[ext_resource type="Script" uid="uid://6ak2x6v5v5nm" path="res://tscns/内容/阵型内容.gd" id="1_hladt"]
+[ext_resource type="PackedScene" uid="uid://dgnr5ukarr26o" path="res://tscns/内容/阵容位置.tscn" id="2_hladt"]
+[ext_resource type="PackedScene" uid="uid://dgoeqxkxx8iln" path="res://tscns/内容/阵容队伍.tscn" id="3_er5s4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qrxuh"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tg5v1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hladt"]
+
+[node name="阵型内容" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -222.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qrxuh")
+script = ExtResource("1_hladt")
+
+[node name="VBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="PlayerTeamList" type="GridContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 20
+columns = 3
+
+[node name="00" parent="VBoxContainer/PlayerTeamList" instance=ExtResource("2_hladt")]
+layout_mode = 2
+
+[node name="01" parent="VBoxContainer/PlayerTeamList" instance=ExtResource("2_hladt")]
+layout_mode = 2
+
+[node name="02" parent="VBoxContainer/PlayerTeamList" instance=ExtResource("2_hladt")]
+layout_mode = 2
+
+[node name="03" parent="VBoxContainer/PlayerTeamList" instance=ExtResource("2_hladt")]
+layout_mode = 2
+
+[node name="04" parent="VBoxContainer/PlayerTeamList" instance=ExtResource("2_hladt")]
+layout_mode = 2
+
+[node name="05" parent="VBoxContainer/PlayerTeamList" instance=ExtResource("2_hladt")]
+layout_mode = 2
+
+[node name="06" parent="VBoxContainer/PlayerTeamList" instance=ExtResource("2_hladt")]
+layout_mode = 2
+
+[node name="07" parent="VBoxContainer/PlayerTeamList" instance=ExtResource("2_hladt")]
+layout_mode = 2
+
+[node name="08" parent="VBoxContainer/PlayerTeamList" instance=ExtResource("2_hladt")]
+layout_mode = 2
+
+[node name="09" parent="VBoxContainer/PlayerTeamList" instance=ExtResource("2_hladt")]
+layout_mode = 2
+
+[node name="10" parent="VBoxContainer/PlayerTeamList" instance=ExtResource("2_hladt")]
+layout_mode = 2
+
+[node name="11" parent="VBoxContainer/PlayerTeamList" instance=ExtResource("2_hladt")]
+layout_mode = 2
+
+[node name="Empty" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_tg5v1")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(120, 100)
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/ScrollContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hladt")
+
+[node name="All" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="PanelContainer" parent="VBoxContainer/ScrollContainer/PanelContainer/All" instance=ExtResource("3_er5s4")]
+layout_mode = 2

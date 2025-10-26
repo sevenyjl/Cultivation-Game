@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://dgnr5ukarr26o"]
+
+[ext_resource type="Script" uid="uid://csm7mgb4wm230" path="res://tscns/内容/阵容位置.gd" id="1_ngvqy"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tg5v1"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.27509055, 0.27509058, 0.27509046, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_size = 5
+anti_aliasing_size = 4.395
+
+[node name="00" type="PanelContainer"]
+custom_minimum_size = Vector2(200, 130)
+theme_override_styles/panel = SubResource("StyleBoxFlat_tg5v1")
+script = ExtResource("1_ngvqy")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 1
+text = "空"
+horizontal_alignment = 1
+vertical_alignment = 1

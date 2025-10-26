@@ -39,6 +39,7 @@ func _初始化玩家信息():
 func 初始化():
 	_初始化玩家信息()
 	$"VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/修炼内容".初始化()
+	$"VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/阵型内容".初始化()
 	pass
 
 # 切换Tab
