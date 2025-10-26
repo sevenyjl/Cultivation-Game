@@ -1,6 +1,8 @@
 extends Control
 class_name MainNode
 
+@onready var 修炼ui=$"修炼ui"
+
 #region 外部方法
 func 打开弹窗(node:PanelContainer):
 	$"弹窗/Slot".add_child(node)
@@ -22,6 +24,7 @@ func 进入战斗(enemy_formation:Array):
 func 结束战斗():
 	$"战斗UI".visible=false
 	$"修炼ui".visible=true
+	修炼ui.外出内容.重置选项()
 	pass
 #endregion
 

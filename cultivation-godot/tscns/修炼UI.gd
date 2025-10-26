@@ -12,6 +12,8 @@ extends Control
 # 修仙者信息组件引用
 @onready var cultivator_info_component = $VBoxContainer/HBoxContainer/侧边栏/修仙者信息
 
+@onready var 外出内容=$"VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/外出内容"
+
 # 当前选中的Tab
 var current_tab: int = 0
 # 信号
@@ -40,6 +42,7 @@ func 初始化():
 	_初始化玩家信息()
 	$"VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/修炼内容".初始化()
 	$"VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/阵型内容".初始化()
+	外出内容.重置选项()
 	pass
 
 # 切换Tab
