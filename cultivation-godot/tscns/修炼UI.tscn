@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bwnrp7q050y52" path="res://tscns/组件/修仙者信息组件.tscn" id="2_4c2pr"]
 [ext_resource type="PackedScene" uid="uid://c25dgi5fjgy8a" path="res://tscns/全局倍速.tscn" id="2_c2lfu"]
 [ext_resource type="PackedScene" uid="uid://b7rxrpg6ouh75" path="res://tscns/修炼面板.tscn" id="2_tiv2u"]
-[ext_resource type="PackedScene" uid="uid://c2amkc6y8v3y2" path="res://tscns/外出节点/战斗节点.tscn" id="5_4c2pr"]
+[ext_resource type="PackedScene" uid="uid://dsi2rmwaxk2tk" path="res://tscns/外出节点/外出内容.tscn" id="5_qrxuh"]
 [ext_resource type="PackedScene" uid="uid://bt443bqtku2n7" path="res://tscns/内容/阵型内容.tscn" id="6_qrxuh"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hgdpn"]
@@ -86,20 +86,7 @@ size_flags_vertical = 3
 [node name="修炼内容" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器" instance=ExtResource("2_tiv2u")]
 layout_mode = 2
 
-[node name="外出内容" type="PanelContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器"]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/外出内容"]
-layout_mode = 2
-theme_override_constants/separation = 30
-
-[node name="Fight1" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/外出内容/HBoxContainer" instance=ExtResource("5_4c2pr")]
-layout_mode = 2
-
-[node name="Fight2" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/外出内容/HBoxContainer" instance=ExtResource("5_4c2pr")]
-layout_mode = 2
-
-[node name="Fight3" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/外出内容/HBoxContainer" instance=ExtResource("5_4c2pr")]
+[node name="外出内容" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器" instance=ExtResource("5_qrxuh")]
 layout_mode = 2
 
 [node name="阵型内容" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器" instance=ExtResource("6_qrxuh")]

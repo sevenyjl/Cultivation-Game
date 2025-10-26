@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://dsi2rmwaxk2tk"]
+
+[ext_resource type="PackedScene" uid="uid://c2amkc6y8v3y2" path="res://tscns/外出节点/战斗节点.tscn" id="1_rjp1m"]
+[ext_resource type="Script" uid="uid://cqa2in1ac21t3" path="res://tscns/外出节点/外出内容.gd" id="1_yhjh5"]
+
+[node name="外出内容" type="PanelContainer"]
+script = ExtResource("1_yhjh5")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="Fight1" parent="HBoxContainer" instance=ExtResource("1_rjp1m")]
+layout_mode = 2
+
+[node name="Fight2" parent="HBoxContainer" instance=ExtResource("1_rjp1m")]
+layout_mode = 2
+
+[node name="Fight3" parent="HBoxContainer" instance=ExtResource("1_rjp1m")]
+layout_mode = 2
