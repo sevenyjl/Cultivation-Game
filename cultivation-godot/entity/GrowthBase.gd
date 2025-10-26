@@ -1,4 +1,4 @@
-class_name GrowthBase extends RefCounted
+class_name GrowthBase extends Node
 
 # 成长基类，用于处理具有成长机制的值类型
 # 所有需要成长机制的值类都应继承此类

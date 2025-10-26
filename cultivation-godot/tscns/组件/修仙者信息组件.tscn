@@ -1,7 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://bwnrp7q050y52"]
+[gd_scene load_steps=7 format=3 uid="uid://bwnrp7q050y52"]
 
 [ext_resource type="Script" uid="uid://lnyorw2uoqig" path="res://tscns/组件/修仙者信息组件.gd" id="1_cs4d1"]
 [ext_resource type="PackedScene" uid="uid://dv5a4n3wg22sb" path="res://tscns/组件/进度条组件.tscn" id="1_hfi2x"]
+[ext_resource type="PackedScene" uid="uid://q4dsd2o5ecm7" path="res://tscns/组件/装备带tips.tscn" id="3_frq14"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_frq14"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bv440"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cs4d1"]
 
 [node name="修仙者信息" type="PanelContainer"]
 custom_minimum_size = Vector2(300, 0)
@@ -136,3 +148,115 @@ text = "生命恢复冷却："
 [node name="value" type="Label" parent="VBoxContainer/生命恢复冷却"]
 layout_mode = 2
 text = "5.0-15.0秒"
+
+[node name="装备" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_frq14")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/装备"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/装备/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="法宝" parent="VBoxContainer/装备/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("tips") instance=ExtResource("3_frq14")]
+unique_name_in_owner = true
+layout_mode = 2
+default_name = "法宝"
+tips = NodePath("Tips")
+
+[node name="Tips" type="Node" parent="VBoxContainer/装备/VBoxContainer/HBoxContainer/法宝"]
+
+[node name="Panel" type="PanelContainer" parent="VBoxContainer/装备/VBoxContainer/HBoxContainer/法宝/Tips"]
+visible = false
+offset_left = 91.0
+offset_top = 39.0
+offset_right = 323.0
+offset_bottom = 143.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_bv440")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/装备/VBoxContainer/HBoxContainer/法宝/Tips/Panel"]
+layout_mode = 2
+
+[node name="名称" type="HBoxContainer" parent="VBoxContainer/装备/VBoxContainer/HBoxContainer/法宝/Tips/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/装备/VBoxContainer/HBoxContainer/法宝/Tips/Panel/VBoxContainer/名称"]
+layout_mode = 2
+text = "武器名称："
+
+[node name="Value" type="Label" parent="VBoxContainer/装备/VBoxContainer/HBoxContainer/法宝/Tips/Panel/VBoxContainer/名称"]
+layout_mode = 2
+text = "新手短剑"
+
+[node name="描述" type="HBoxContainer" parent="VBoxContainer/装备/VBoxContainer/HBoxContainer/法宝/Tips/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/装备/VBoxContainer/HBoxContainer/法宝/Tips/Panel/VBoxContainer/描述"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "描述："
+
+[node name="Value" type="RichTextLabel" parent="VBoxContainer/装备/VBoxContainer/HBoxContainer/法宝/Tips/Panel/VBoxContainer/描述"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "新手短剑新手短剑新手短剑新手短剑新手短剑新手短剑新手短剑新手短剑新手短剑新手短剑新手短剑"
+
+[node name="攻击力" type="HBoxContainer" parent="VBoxContainer/装备/VBoxContainer/HBoxContainer/法宝/Tips/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/装备/VBoxContainer/HBoxContainer/法宝/Tips/Panel/VBoxContainer/攻击力"]
+layout_mode = 2
+text = "攻击力："
+
+[node name="Value" type="Label" parent="VBoxContainer/装备/VBoxContainer/HBoxContainer/法宝/Tips/Panel/VBoxContainer/攻击力"]
+layout_mode = 2
+text = "1~10"
+
+[node name="Empty" type="PanelContainer" parent="VBoxContainer/装备/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_cs4d1")
+
+[node name="防具" parent="VBoxContainer/装备/VBoxContainer/HBoxContainer" instance=ExtResource("3_frq14")]
+unique_name_in_owner = true
+layout_mode = 2
+default_name = "防具"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/装备/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="饰品" parent="VBoxContainer/装备/VBoxContainer/HBoxContainer2" instance=ExtResource("3_frq14")]
+layout_mode = 2
+default_name = "饰品"
+
+[node name="Empty" type="PanelContainer" parent="VBoxContainer/装备/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_cs4d1")
+
+[node name="符箓" parent="VBoxContainer/装备/VBoxContainer/HBoxContainer2" instance=ExtResource("3_frq14")]
+layout_mode = 2
+default_name = "符箓"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/装备/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="阵盘" parent="VBoxContainer/装备/VBoxContainer/HBoxContainer3" instance=ExtResource("3_frq14")]
+layout_mode = 2
+default_name = "阵盘"
+
+[node name="Empty" type="PanelContainer" parent="VBoxContainer/装备/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_cs4d1")
+
+[node name="坐骑" parent="VBoxContainer/装备/VBoxContainer/HBoxContainer3" instance=ExtResource("3_frq14")]
+layout_mode = 2
+default_name = "坐骑"

@@ -36,4 +36,5 @@ func 游戏初始化():
 		player.level_up()
 	# 玩家初始化阵型位置
 	formation[0][0]=player
+	mainNode.add_child(player)
 	pass

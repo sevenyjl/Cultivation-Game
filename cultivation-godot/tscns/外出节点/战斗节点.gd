@@ -29,7 +29,6 @@ func generate_battle(is_boss: bool) -> void:
 		var array=_get_available_positions().pick_random()
 		if array!=null:
 			formation[array.y][array.x]=boss
-			add_child(boss)
 		敌人数量-=1
 		pass
 	else:
@@ -40,7 +39,6 @@ func generate_battle(is_boss: bool) -> void:
 		if array!=null:
 			var enemy=_create_enemy()
 			formation[array.y][array.x]=enemy
-			add_child(enemy)
 
 	# 更新UI显示
 	_update_ui_display()
@@ -52,6 +50,7 @@ func _generate_boss() -> BaseCultivation:
 	boss.name_str = "%s级BOSS" % lv
 	for i in lv:
 		boss.level_up()
+	add_child(boss)	
 	return boss
 
 # 创建普通敌人
@@ -61,6 +60,7 @@ func _create_enemy() -> BaseCultivation:
 	enemy.name_str = "怪物"
 	for i in lv:
 		enemy.level_up()
+	add_child(enemy)
 	return enemy
 
 # 获取可用位置

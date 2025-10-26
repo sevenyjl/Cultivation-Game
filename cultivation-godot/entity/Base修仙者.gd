@@ -38,6 +38,10 @@ var health_regen_rate: RandomValue
 # 生命恢复冷却时间 （使用随机值类管理，表示恢复间隔的时间范围，单位：秒）
 var health_regen_cooldown: RandomValue
 var 是否在阵型中:bool=false
+
+# 武器
+var wepoen:Wepoen
+
 # 修炼境界
 enum CultivationRealm {
 	FANREN,      # 凡人
@@ -57,6 +61,9 @@ enum CultivationRealm {
 signal 死亡(攻击角色:BaseCultivation,死亡角色:BaseCultivation)
 
 func _init() -> void:
+	if wepoen == null:
+		wepoen = Wepoen.new()
+		add_child(wepoen)
 	if hp_stats == null:
 		hp_stats = RangedValue.new()
 		hp_stats.min_value = 0
@@ -65,6 +72,7 @@ func _init() -> void:
 		hp_stats.min_growth = 20
 		hp_stats.max_growth = 50
 		hp_stats.growth_factor = 10
+		add_child(hp_stats)
 	
 	# 初始化生命恢复速度
 	if health_regen_rate == null:
@@ -74,6 +82,7 @@ func _init() -> void:
 		health_regen_rate.min_growth = 0.5
 		health_regen_rate.max_growth = 1.5
 		health_regen_rate.growth_factor = 1.5
+		add_child(health_regen_rate)
 	
 	# 初始化生命恢复冷却时间
 	if health_regen_cooldown == null:
@@ -84,6 +93,7 @@ func _init() -> void:
 		health_regen_cooldown.min_growth = -0.1
 		health_regen_cooldown.max_growth = 0
 		health_regen_cooldown.growth_factor = 1
+		add_child(health_regen_cooldown)
 	
 	# 初始化灵气系统
 	if spiritual_energy == null:
@@ -95,6 +105,7 @@ func _init() -> void:
 		spiritual_energy.max_growth = 100
 		spiritual_energy.growth_factor = 100
 		spiritual_energy.current_value = 0
+		add_child(spiritual_energy)
 	# 初始化灵气吸收速度
 	if absorption_rate == null:
 		absorption_rate = RandomValue.new()
@@ -103,6 +114,7 @@ func _init() -> void:
 		absorption_rate.min_growth = 1
 		absorption_rate.max_growth = 3
 		absorption_rate.growth_factor = 2
+		add_child(absorption_rate)
 	
 	# 初始化灵气吸收冷却时间
 	if absorption_cooldown == null:
@@ -113,6 +125,9 @@ func _init() -> void:
 		absorption_cooldown.min_growth = -0.1
 		absorption_cooldown.max_growth = 0
 		absorption_cooldown.growth_factor = 1
+		add_child(absorption_cooldown)
+	
+	# 初始化速度系统
 	if speed_stats == null:
 		speed_stats = RandomValue.new()
 		speed_stats.min_value = 10
@@ -120,6 +135,7 @@ func _init() -> void:
 		speed_stats.min_growth = 5
 		speed_stats.max_growth = 10
 		speed_stats.growth_factor = 5
+		add_child(speed_stats)
 	if attack_stats == null:
 		attack_stats = RandomValue.new()
 		attack_stats.min_value = 20
@@ -127,6 +143,7 @@ func _init() -> void:
 		attack_stats.min_growth = 5
 		attack_stats.max_growth = 10
 		attack_stats.growth_factor = 5
+		add_child(attack_stats)
 	if defense_stats == null:
 		defense_stats = RandomValue.new()
 		defense_stats.min_value = 0
@@ -134,6 +151,7 @@ func _init() -> void:
 		defense_stats.min_growth = 1
 		defense_stats.max_growth = 3
 		defense_stats.growth_factor = 2
+		add_child(defense_stats)
 
 func _获取成长属性列表() -> Array:
 	return [hp_stats, spiritual_energy, absorption_rate, absorption_cooldown, speed_stats, attack_stats, defense_stats, health_regen_rate, health_regen_cooldown]

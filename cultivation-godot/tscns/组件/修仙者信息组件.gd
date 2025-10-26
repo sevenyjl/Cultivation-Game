@@ -20,9 +20,10 @@ extends PanelContainer
 func _ready():
 	pass
 
+
 # 更新修仙者信息
 # @param cultivator: 修仙者对象，包含所有属性信息
-func update_cultivator_info(cultivator):
+func update_cultivator_info(cultivator:BaseCultivation):
 	# 更新名称
 	name_value.text = cultivator.name_str
 	
@@ -53,3 +54,5 @@ func update_cultivator_info(cultivator):
 	
 	# 更新生命恢复冷却时间
 	health_regen_cooldown_value.text = str(cultivator.health_regen_cooldown.min_value) + ".0-" + str(cultivator.health_regen_cooldown.max_value) + ".0秒"
+	# 更新武器
+	%"法宝".get_node("Label").text=cultivator.wepoen.name_str

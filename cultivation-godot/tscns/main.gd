@@ -28,75 +28,21 @@ func 结束战斗():
 	pass
 #endregion
 
-# 引用修仙者类
-const BaseCultivation = preload("res://entity/Base修仙者.gd")
 
 func _ready() -> void:
+	GameData.mainNode=self
 	GameData.游戏初始化()
 	$"修炼ui".初始化()
-	GameData.mainNode=self
-
 	pass
 
-# 创建玩家队伍（4x3方阵）
-func create_player_formation() -> Array:
-	# 初始化4x3的二维数组
-	var formation = []
-	for row in range(4):
-		formation.append([])
-		for col in range(3):
-			formation[row].append(null)
-	
-	# 主玩家 - 修仙者（放置在方阵位置）
-	var player = BaseCultivation.new()
-	player.name_str = "张三"
-	
-	# 初始化并设置生命值
-	for i in 3:
-		player.level_up()
-	
-	formation[0][1] = player  # 第一排中间位置
-	
-	# 队友1 - 修仙者
-	var teammate1 = BaseCultivation.new()
-	teammate1.name_str = "李四"
-	teammate1.level = 12  # 对应炼气期第2层
-	
-	formation[1][0] = teammate1  # 第二排左侧
-	
-	# 队友2 - 修仙者
-	var teammate2 = BaseCultivation.new()
-	teammate2.name_str = "王五"
-	teammate2.level = 5  # 对应凡人第5层
-	formation[1][2] = teammate2  # 第二排右侧
-	
-	return formation
-
-# 创建敌人队伍（4x3方阵）
-func create_enemy_formation() -> Array:
-	# 初始化4x3的二维数组
-	var formation = []
-	for row in range(4):
-		formation.append([])
-		for col in range(3):
-			formation[row].append(null)
-	
-	# 敌人1 - 野狼（妖兽）
-	var wolf = BaseCultivation.new()
-	wolf.name_str = "野狼"
-	wolf.level = 3  # 对应凡人第3层
-	formation[0][2] = wolf  # 第一排右侧位置
-	
-	# 敌人2 - 哥布林（魔物）
-	var goblin = BaseCultivation.new()
-	goblin.name_str = "哥布林"
-	goblin.level = 2  # 对应凡人第2层
-	
-	formation[1][1] = goblin  # 第二排中间位置
-	
-	# 敌人3 - 暗影魔（隐藏Boss）
-	var shadow_demon = BaseCultivation.new()
-	shadow_demon.level = 22  # 对应筑基期第2层
-	formation[2][1] = shadow_demon  # 第三排中间位置
-	
-	return formation
+#region 调试相关
+func _on_button_pressed() -> void:
+	var list=get_orphan_node_ids()
+	for id in list:
+		var obj=instance_from_id(id)
+		if obj:
+			prints(obj, obj.owner, obj.get_script())
+			if obj.get_script():
+				print(obj.get_script().resource_path)
+	pass # Replace with function body.
+#endregion
