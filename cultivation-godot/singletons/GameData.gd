@@ -11,8 +11,10 @@ var formation = \
 	[null,null,null],
 	[null,null,null],
 ]
+
 # 队友集合
-var team_members:Array[BaseCultivation] = []
+var team_members:Array[BaseCultivation] = [
+]
 
 
 

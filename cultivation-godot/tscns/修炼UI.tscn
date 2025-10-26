@@ -104,5 +104,3 @@ layout_mode = 2
 
 [node name="阵型内容" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器" instance=ExtResource("6_qrxuh")]
 layout_mode = 2
-
-[connection signal="开始冒险" from="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器/修炼内容" to="." method="_on_修炼内容_开始冒险"]

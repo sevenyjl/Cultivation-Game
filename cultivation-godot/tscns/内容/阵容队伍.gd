@@ -1,6 +1,6 @@
 extends PanelContainer
 var _baseCultivation:BaseCultivation
-var _is_dragging: bool = false
+
 
 func _ready() -> void:
 	# 启用鼠标和触摸检测
@@ -11,12 +11,45 @@ func 初始化(baseCultivation:BaseCultivation):
 	$VBoxContainer/Label.text=baseCultivation.name_str
 	pass
 
+func _process(delta: float) -> void:
+	_drag_process()
+	pass
+	
+#region 拖拽相关
+
+var dragging = false
+var drag_offset = Vector2.ZERO
+var old_parent
+signal 结束拖拽(panelContainer:PanelContainer)
+func _drag_process():
+	if dragging:
+		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+			global_position = get_global_mouse_position()+drag_offset
+		else:
+			_结束拖拽()
+
+# 处理用户输入事件
 func _on_gui_input(event: InputEvent) -> void:
-	# 处理鼠标拖拽
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed == true:
-		# 检测鼠标按下在本控件内
-		if self.get_global_rect().has_point(event.global_position):
-			if !get_viewport().gui_is_dragging():  # 仅当没有其他拖拽操作时才允许开始拖拽
-				_is_dragging = true
-				# 开始拖拽操作
-				set_drag_preview(self.duplicate())
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:  # 按下左键
+				if dragging:
+					return
+				old_parent=self.get_parent()
+				reparent(get_tree().root)
+				dragging = true
+				# 记录拖拽时的偏移
+				drag_offset = global_position - get_global_mouse_position()
+			else:  # 松开左键
+				_结束拖拽()
+
+func 回到原来位置(index:int=-1):
+	if old_parent:
+		reparent(old_parent)
+		if old_parent is Node:
+			old_parent.move_child(self,index)
+
+func _结束拖拽():
+	结束拖拽.emit(self)
+	dragging = false
+#endregion

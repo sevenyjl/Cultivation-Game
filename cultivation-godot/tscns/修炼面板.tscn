@@ -30,9 +30,3 @@ unique_name_in_owner = true
 layout_mode = 2
 button_text = "恢复"
 disable = false
-
-[node name="开始冒险" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-text = "开始冒险"
-
-[connection signal="pressed" from="VBoxContainer/开始冒险" to="." method="_on_开始冒险_pressed"]

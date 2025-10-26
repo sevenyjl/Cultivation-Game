@@ -37,7 +37,7 @@ var health_regen_rate: RandomValue
 
 # 生命恢复冷却时间 （使用随机值类管理，表示恢复间隔的时间范围，单位：秒）
 var health_regen_cooldown: RandomValue
-
+var 是否在阵型中:bool=false
 # 修炼境界
 enum CultivationRealm {
 	FANREN,      # 凡人
