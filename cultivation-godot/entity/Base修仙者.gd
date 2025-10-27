@@ -42,6 +42,7 @@ var 是否在阵型中:bool=false
 # 武器
 var wepoen:Wepoen
 # 背包
+var backpack:Backpack
 
 # 修炼境界
 enum CultivationRealm {
@@ -62,6 +63,9 @@ enum CultivationRealm {
 signal 死亡(攻击角色:BaseCultivation,死亡角色:BaseCultivation)
 
 func _init() -> void:
+	if backpack == null:
+		backpack = Backpack.new()
+		add_child(backpack)
 	if wepoen == null:
 		wepoen = Wepoen.new()
 		add_child(wepoen)
