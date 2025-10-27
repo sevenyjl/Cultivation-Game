@@ -18,10 +18,15 @@ config/icon="res://icon.svg"
 [autoload]
 
 GameData="*res://singletons/GameData.gd"
+Signal_Debugger="*res://addons/SignalVisualizer/Debugger/SignalDebugger.gd"
 
 [display]
 
 window/stretch/mode="canvas_items"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/SignalVisualizer/plugin.cfg", "res://addons/json_editor/plugin.cfg")
 
 [rendering]
 
