@@ -1,0 +1,225 @@
+[gd_scene load_steps=4 format=3 uid="uid://bwu6oueht6ysy"]
+
+[ext_resource type="Script" uid="uid://0b0jjqf8kdcg" path="res://tscns/内容/背包内容.gd" id="1_1x86m"]
+[ext_resource type="PackedScene" uid="uid://q4dsd2o5ecm7" path="res://tscns/组件/装备带tips.tscn" id="2_xpbv6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bag"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.4, 0.4, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="背包内容" type="PanelContainer"]
+custom_minimum_size = Vector2(650, 450)
+offset_right = 846.0
+offset_bottom = 450.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bag")
+script = ExtResource("1_1x86m")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 2
+
+[node name="ItemGrid" type="GridContainer" parent="ScrollContainer"]
+layout_mode = 2
+columns = 8
+
+[node name="武器" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器2" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器3" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器4" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器5" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器6" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器7" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器8" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器9" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器10" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器11" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器12" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器13" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器14" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器15" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器16" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器17" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器18" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器19" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器20" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器21" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器22" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器23" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器24" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器25" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器26" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器27" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器28" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器29" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器30" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器31" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器32" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器33" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器34" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器35" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器36" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器37" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器38" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器39" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器40" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器41" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器42" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器43" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器44" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器45" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器46" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器47" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器48" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器49" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器50" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器51" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器52" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器53" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器54" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器55" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器56" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器57" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器58" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器59" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器60" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器61" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器62" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器63" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2
+
+[node name="武器64" parent="ScrollContainer/ItemGrid" instance=ExtResource("2_xpbv6")]
+layout_mode = 2

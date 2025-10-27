@@ -41,6 +41,7 @@ var 是否在阵型中:bool=false
 
 # 武器
 var wepoen:Wepoen
+# 背包
 
 # 修炼境界
 enum CultivationRealm {

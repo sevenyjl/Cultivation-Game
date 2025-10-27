@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cuy6w40kc1t83"]
+[gd_scene load_steps=10 format=3 uid="uid://cuy6w40kc1t83"]
 
 [ext_resource type="Script" uid="uid://cdcwli7mja4vg" path="res://tscns/修炼UI.gd" id="1_om3im"]
 [ext_resource type="PackedScene" uid="uid://bwnrp7q050y52" path="res://tscns/组件/修仙者信息组件.tscn" id="2_4c2pr"]
@@ -7,6 +7,7 @@
 [ext_resource type="StyleBox" uid="uid://dns4aunnfimkj" path="res://tscns/theme/Tab标签选择样式.tres" id="4_kguvv"]
 [ext_resource type="PackedScene" uid="uid://dsi2rmwaxk2tk" path="res://tscns/外出节点/外出内容.tscn" id="5_qrxuh"]
 [ext_resource type="PackedScene" uid="uid://bt443bqtku2n7" path="res://tscns/内容/阵型内容.tscn" id="6_qrxuh"]
+[ext_resource type="PackedScene" uid="uid://bwu6oueht6ysy" path="res://tscns/内容/背包内容.tscn" id="8_giv7k"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hgdpn"]
 
@@ -82,6 +83,8 @@ text = "阵型"
 
 [node name="背包" type="Button" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab标签"]
 layout_mode = 2
+size_flags_horizontal = 3
+text = "背包"
 
 [node name="Tab容器" type="PanelContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer"]
 layout_mode = 2
@@ -94,4 +97,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="阵型内容" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器" instance=ExtResource("6_qrxuh")]
+layout_mode = 2
+
+[node name="背包内容" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器" instance=ExtResource("8_giv7k")]
 layout_mode = 2

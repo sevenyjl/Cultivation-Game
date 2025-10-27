@@ -23,9 +23,6 @@ script/source = "extends PanelContainer
 @export var default_name:String=\"\"
 @export var tips:Node
 
-func _notification(what: int) -> void:
-	$Label.text=default_name
-
 func _process(delta: float) -> void:
 	if !is_visible_in_tree():
 		return
