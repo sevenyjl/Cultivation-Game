@@ -20,6 +20,7 @@ var current_tab: int = 0
 signal tab_changed(tab_index: int)
 
 var _当前选择的玩家:BaseCultivation
+var _选中样式:StyleBox = preload("res://tscns/theme/Tab标签选择样式.tres")
 func _ready():
 	var tab_button=$"VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab标签".get_children()
 	for i in tab_button.size():
@@ -47,15 +48,27 @@ func 初始化():
 
 # 切换Tab
 func switch_tab(tab_index: int):
-	# 更新当前Tab
-	current_tab = tab_index
+	var tab_button=$"VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab标签".get_children()
+	var old_button=tab_button.get(current_tab) as Button
+	old_button.remove_theme_stylebox_override("normal")
+	old_button.remove_theme_stylebox_override("pressed")
+	old_button.remove_theme_stylebox_override("hover")
+
+	# 更新当前Tab索引并为新按钮设置选中样式
+	current_tab=tab_index
+	var new_button=(tab_button.get(tab_index) as Button)
+	new_button.add_theme_stylebox_override("normal", _选中样式)
+	new_button.add_theme_stylebox_override("pressed", _选中样式)
+	new_button.add_theme_stylebox_override("hover", _选中样式)
+
 	# 隐藏所有Tab内容
 	var tab_contents=$VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab容器.get_children()
 	for content in tab_contents:
-		content.visible = false
-	
+		content.visible=false
+
 	# 显示选中的Tab内容
-	if tab_index >= 0 and tab_index < tab_contents.size():
-		tab_contents[tab_index].visible = true
+	if tab_index>=0 and tab_index<tab_contents.size():
+		tab_contents[tab_index].visible=true
+
 	# 发送信号
 	tab_changed.emit(tab_index)

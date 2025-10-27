@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://cuy6w40kc1t83"]
+[gd_scene load_steps=9 format=3 uid="uid://cuy6w40kc1t83"]
 
 [ext_resource type="Script" uid="uid://cdcwli7mja4vg" path="res://tscns/修炼UI.gd" id="1_om3im"]
 [ext_resource type="PackedScene" uid="uid://bwnrp7q050y52" path="res://tscns/组件/修仙者信息组件.tscn" id="2_4c2pr"]
 [ext_resource type="PackedScene" uid="uid://c25dgi5fjgy8a" path="res://tscns/全局倍速.tscn" id="2_c2lfu"]
 [ext_resource type="PackedScene" uid="uid://b7rxrpg6ouh75" path="res://tscns/修炼面板.tscn" id="2_tiv2u"]
+[ext_resource type="StyleBox" uid="uid://dns4aunnfimkj" path="res://tscns/theme/Tab标签选择样式.tres" id="4_kguvv"]
 [ext_resource type="PackedScene" uid="uid://dsi2rmwaxk2tk" path="res://tscns/外出节点/外出内容.tscn" id="5_qrxuh"]
 [ext_resource type="PackedScene" uid="uid://bt443bqtku2n7" path="res://tscns/内容/阵型内容.tscn" id="6_qrxuh"]
 
@@ -65,8 +66,8 @@ size_flags_horizontal = 3
 [node name="修炼" type="Button" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab标签"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_styles/normal = ExtResource("4_kguvv")
 toggle_mode = true
-button_pressed = true
 text = "修炼"
 
 [node name="外出" type="Button" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab标签"]
@@ -78,6 +79,9 @@ text = "外出"
 layout_mode = 2
 size_flags_horizontal = 3
 text = "阵型"
+
+[node name="背包" type="Button" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab标签"]
+layout_mode = 2
 
 [node name="Tab容器" type="PanelContainer" parent="VBoxContainer/HBoxContainer/主容器/VBoxContainer"]
 layout_mode = 2
