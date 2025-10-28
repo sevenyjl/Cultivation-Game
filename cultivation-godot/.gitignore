@@ -3,4 +3,4 @@
 /android/
 
 # 忽略API配置文件
-ai/config.gd
+ai/*.cfg
