@@ -46,3 +46,8 @@ func _on_button_pressed() -> void:
 				print(obj.get_script().resource_path)
 	pass # Replace with function body.
 #endregion
+
+
+func _on_背包格子10_pressed() -> void:
+	GameData.player.backpack.max_slots+=10
+	pass # Replace with function body.

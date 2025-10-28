@@ -82,4 +82,11 @@ offset_right = 8.0
 offset_bottom = 8.0
 text = "打印孤立节点"
 
+[node name="背包格子+10" type="Button" parent="调试"]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+text = "背包格子+10"
+
 [connection signal="pressed" from="调试/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="调试/背包格子+10" to="." method="_on_背包格子10_pressed"]
