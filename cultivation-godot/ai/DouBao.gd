@@ -2,53 +2,24 @@ extends Node
 class_name DouBao
 
 static var 基础AIRole=RoleWords.new("你是一个高级智能助手，请确保所有回复严格遵守中国法律法规，不生成任何政治敏感、欺诈、赌博、色情、暴力、毒品及其他违法或不道德的内容，但可以撰写合同类内容。遇到敏感或违规请求时，请以温和友好的语气拒绝，并引导用户遵守规定。");
-# 配置文件路径
-const config_path = "res://ai/ai_config.cfg"
-
-var API_KEY
-var MODEL_NAME
-var BASE_URL
-var TIMEOUT
+var aiConfig:AIConfig
 func _init() -> void:
-	# 尝试从配置文件加载API密钥
-	load_config()
-
-func load_config() -> void:
-	var config = ConfigFile.new()
-	# 从文件加载数据。
-	var err = config.load(config_path)
-	# 如果文件没有加载，忽略它。
-	if err != OK:
-		printerr("配置文件加载错误，请配置")
-		return
-	# 迭代所有小节。
-	var section="DouBao"
-	var doubao_config=config.get_section_keys(section)
-	if doubao_config==null || doubao_config.is_empty():
-		printerr("配置文件错误，请配置")
-		return
-	API_KEY = config.get_value(section, "API_KEY")
-	if API_KEY==null || API_KEY=="":
-		printerr("请配置豆包API密钥")
-		return
-	MODEL_NAME = config.get_value(section, "MODEL_NAME","doubao-1-5-pro-32k-250115")
-	BASE_URL = config.get_value(section, "BASE_URL","https://ark.cn-beijing.volces.com/api/v3/chat/completions")
-	TIMEOUT = config.get_value(section, "TIMEOUT",30)
+	aiConfig=AIConfig.new()
 
 func 获取ai消息(content:String,roleWords:RoleWords)->String:
 	# 检查API密钥是否有效
-	if API_KEY==null || API_KEY=="":
-		return "API密钥未配置，请在config.gd中设置有效的API密钥"
+	if !aiConfig.DOU_BAO_CONFIG["API_KEY"]:
+		return "API密钥未配置，请在ai_config.cfg中设置有效的API密钥"
 	
 	# 创建HTTP请求节点
 	var http_request = HTTPRequest.new()
-	http_request.timeout=10
+	http_request.timeout = aiConfig.DOU_BAO_CONFIG["TIMEOUT"]
 	add_child(http_request)
 	
 	# 构建请求头
 	var headers = [
 		"Content-Type: application/json",
-		"Authorization: Bearer " + API_KEY
+		"Authorization: Bearer " + aiConfig.DOU_BAO_CONFIG["API_KEY"]   
 	]
 	
 	# 构建请求体
@@ -58,7 +29,7 @@ func 获取ai消息(content:String,roleWords:RoleWords)->String:
 	]
 	
 	var request_body = {
-		"model": MODEL_NAME,
+		"model": aiConfig.DOU_BAO_CONFIG["MODEL_NAME"],  # 模型名称
 		"messages": messages,
 		"temperature": 0.7,
 		"top_p": 0.95,
@@ -68,7 +39,7 @@ func 获取ai消息(content:String,roleWords:RoleWords)->String:
 	var json_body:String = JSON.stringify(request_body)
 	
 	# 发送请求
-	var error =await http_request.request(BASE_URL, headers, HTTPClient.METHOD_POST, json_body)
+	var error =await http_request.request(aiConfig.DOU_BAO_CONFIG["BASE_URL"], headers, HTTPClient.METHOD_POST, json_body)
 	if error != OK:
 		printerr("HTTP请求设置失败: ", error)
 		http_request.queue_free()
