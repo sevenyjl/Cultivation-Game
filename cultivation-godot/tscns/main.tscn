@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://d3r87tepgl6qf"]
+[gd_scene load_steps=8 format=3 uid="uid://d3r87tepgl6qf"]
 
 [ext_resource type="Script" uid="uid://btdwy6e4hkax7" path="res://tscns/main.gd" id="1_gpgin"]
 [ext_resource type="PackedScene" uid="uid://c4g6jg0gt6hbr" path="res://tscns/战斗UI.tscn" id="1_guqoi"]
 [ext_resource type="PackedScene" uid="uid://cuy6w40kc1t83" path="res://tscns/修炼UI.tscn" id="3_mrkoo"]
+[ext_resource type="Texture2D" uid="uid://o4vs444fjjor" path="res://asserts/关闭.png" id="4_jimh7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mrkoo"]
 bg_color = Color(0.19215687, 0.19215687, 0.19215687, 0.6039216)
@@ -75,6 +76,16 @@ offset_right = 138.0
 offset_bottom = 331.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_d36ai")
 
+[node name="关闭调试" type="Button" parent="调试"]
+z_index = 999
+layout_mode = 0
+offset_left = 116.0
+offset_top = 1.0
+offset_right = 324.0
+offset_bottom = 209.0
+scale = Vector2(0.1, 0.1)
+icon = ExtResource("4_jimh7")
+
 [node name="VBoxContainer" type="VBoxContainer" parent="调试"]
 layout_mode = 0
 offset_right = 40.0
@@ -96,6 +107,7 @@ text = "调试豆包ai接口"
 layout_mode = 2
 text = "随机武器生成"
 
+[connection signal="pressed" from="调试/关闭调试" to="." method="_on_关闭调试_pressed"]
 [connection signal="pressed" from="调试/VBoxContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="调试/VBoxContainer/背包格子+10" to="." method="_on_背包格子10_pressed"]
 [connection signal="pressed" from="调试/VBoxContainer/调试豆包ai接口" to="." method="_on_调试豆包ai接口_pressed"]

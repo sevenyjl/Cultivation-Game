@@ -77,3 +77,8 @@ func _on_随机武器生成_pressed() -> void:
 	print("攻击成长范围: ", w.atk.min_growth, " - ", w.atk.max_growth)
 	print("=======================\n")
 	pass
+
+
+func _on_关闭调试_pressed() -> void:
+	$"调试".hide()
+	pass # Replace with function body.
