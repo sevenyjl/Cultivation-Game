@@ -2,7 +2,7 @@ extends Node
 class_name Wepoen
 
 # 武器数据存储路径
-const WEAPON_DATA_PATH = "user://weapon_data.json"
+const WEAPON_DATA_PATH = "res://entity/weapon_data.json"
 
 # 不再需要直接引用aiConfig，因为使用DouBao.gd中的方法处理AI调用
 
@@ -29,54 +29,40 @@ func _init() -> void:
 	pass
 
 # 获取随机武器方法
-static func get_random_weapon() -> Wepoen:
-	var weapon = Wepoen.new()
-	
+func get_random_weapon() -> Wepoen:
 	# 尝试从JSON文件获取武器数据
-	var weapon_data = weapon._get_weapon_data_from_json()
-	if weapon_data.size() > 0:
-		# 如果获取到数据，应用到武器对象
-		weapon._apply_weapon_data(weapon_data)
-	else:
+	var weapon_data = _get_weapon_data_from_json().pick_random()
+	if weapon_data=={}:
+		print("AI 生成中")
 		# 如果没有获取到数据，使用AI生成多个武器数据
-		weapon._generate_weapon_data_with_ai()
-	
-	return weapon
+		await  _generate_weapon_data_with_ai()
+		print("AI 完成")
+	else:
+		# 如果获取到数据，应用到武器对象
+		_apply_weapon_data(weapon_data)
+	return self
 
 # 从JSON文件获取武器数据
-func _get_weapon_data_from_json() -> Dictionary:
+func _get_weapon_data_from_json() -> Array:
 	# 使用Godot内置的FileAccess类
 	var file = FileAccess.open(WEAPON_DATA_PATH, FileAccess.READ)
 	if file == null:
 		# 如果文件不存在，创建一个空的文件
 		_create_empty_weapon_json()
-		return {}
+		return [{}]
 	
 	var content = file.get_as_text()
 	file.close()
 	
 	# 使用Godot内置的JSON类
-	var json_parser = JSON.new()
-	var error = json_parser.parse(content)
-	
-	if error != OK:
-		printerr("解析武器数据JSON失败: ", json_parser.get_error_message())
-		return {}
-	
-	var weapon_data_array = json_parser.get_data()
-	
-	# 检查是否是数组且不为空
-	if weapon_data_array is Array and weapon_data_array.size() > 0:
-		# 随机选择一个武器数据
-		return weapon_data_array[randi() % weapon_data_array.size()]
-	
-	return {}
+	var weapon_data_array =  JSON.parse_string(content)
+	return weapon_data_array
 
 # 创建空的武器数据JSON文件
 func _create_empty_weapon_json() -> void:
 	var file = FileAccess.open(WEAPON_DATA_PATH, FileAccess.WRITE)
 	if file != null:
-		file.store_string("[]")
+		file.store_string("[{}]")
 		file.close()
 		print("已创建空的武器数据文件")
 
@@ -119,8 +105,11 @@ func _generate_weapon_data_with_ai() -> void:
 	
 	# 使用已有的DouBao类调用AI
 	var doubao = DouBao.new()
+	add_child(doubao)
+	
 	var role_words = DouBao.RoleWords.new("你是一个游戏数据生成专家，请为修仙游戏生成合理的武器数据。")
 	var ai_response = await doubao.获取ai消息(prompt, role_words)
+	print("生成%s个武器成功：%s" % [weapons_count, ai_response])
 	var weapon_data_array = JSON.parse_string(ai_response)
 	if weapon_data_array is Array and weapon_data_array.size() > 0:
 		# 保存所有生成的武器数据

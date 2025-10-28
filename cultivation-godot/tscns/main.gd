@@ -63,5 +63,17 @@ func _on_调试豆包ai接口_pressed() -> void:
 
 func _on_随机武器生成_pressed() -> void:
 	var w=Wepoen.new()
-	w.get_random_weapon()
-	pass # Replace with function body.
+	add_child(w)
+	await w.get_random_weapon()
+	# 打印武器相关信息
+	print("\n=== 随机生成武器信息 ===")
+	print("武器名称: ", w.name_str)
+	print("武器描述: ", w.desc)
+	print("武器类型: ", w.weapon_type)
+	print("武器品质: ", w.weapon_quality)
+	print("材料类型: ", w.material_type)
+	print("武器等级: ", w.level)
+	print("攻击力范围: ", w.atk.min_value, " - ", w.atk.max_value)
+	print("攻击成长范围: ", w.atk.min_growth, " - ", w.atk.max_growth)
+	print("=======================\n")
+	pass
