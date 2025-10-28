@@ -2,6 +2,7 @@ extends Control
 class_name MainNode
 
 @onready var 修炼ui=$"修炼ui"
+@onready var 战斗ui=$"战斗UI"
 
 #region 外部方法
 func 打开弹窗(node:PanelContainer):
@@ -44,10 +45,17 @@ func _on_button_pressed() -> void:
 			prints(obj, obj.owner, obj.get_script())
 			if obj.get_script():
 				print(obj.get_script().resource_path)
-	pass # Replace with function body.
-#endregion
-
 
 func _on_背包格子10_pressed() -> void:
 	GameData.player.backpack.max_slots+=10
 	pass # Replace with function body.
+
+
+func _on_调试豆包ai接口_pressed() -> void:
+	var doubao=DouBao.new()
+	add_child(doubao)
+	var re=await doubao.获取ai消息("你好",DouBao.基础AIRole)
+	print(re)
+	pass # Replace with function body.
+
+#endregion

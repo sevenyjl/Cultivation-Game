@@ -2,8 +2,13 @@ extends PanelContainer
 
 func _process(delta: float) -> void:
 	if GameData.player:
-		if %"突破":
-			%"突破".disable=not GameData.player.can_level_up()
+		# 检查是否在战斗中（通过战斗UI的可见性）
+		var is_in_battle = GameData.mainNode.战斗ui.visible
+		# 获取所有按钮组件并设置disable状态
+		for button in [%"修炼", %"突破", %"恢复"]:
+			if button:
+				# 战斗中禁用所有按钮
+				button.disable = is_in_battle
 
 func 初始化() -> void:
 	%"修炼".点击按钮.connect(func():
