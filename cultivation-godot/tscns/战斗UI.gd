@@ -159,7 +159,7 @@ func 伤害动画(attacker_component:Control, target_component:Control)->Tween:
 	# 获取攻击者和目标的人物数据
 	var attacker_data = character_data_map[attacker_component]
 	var target_data = character_data_map[target_component]
-	var attack_power = attacker_data.attack_stats.get_current_value()
+	var attack_power = attacker_data.获取攻击力()
 	var defense_power = target_data.defense_stats.get_current_value()
 	# 计算伤害值（攻击值 - 防御值）
 	var damage = max(1, roundf((attack_power - defense_power) * 100) / 100)
