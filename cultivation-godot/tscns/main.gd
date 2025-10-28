@@ -59,3 +59,9 @@ func _on_调试豆包ai接口_pressed() -> void:
 	pass # Replace with function body.
 
 #endregion
+
+
+func _on_随机武器生成_pressed() -> void:
+	var w=Wepoen.new()
+	w.get_random_weapon()
+	pass # Replace with function body.

@@ -92,6 +92,11 @@ text = "背包格子+10"
 layout_mode = 2
 text = "调试豆包ai接口"
 
+[node name="随机武器生成" type="Button" parent="调试/VBoxContainer"]
+layout_mode = 2
+text = "随机武器生成"
+
 [connection signal="pressed" from="调试/VBoxContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="调试/VBoxContainer/背包格子+10" to="." method="_on_背包格子10_pressed"]
 [connection signal="pressed" from="调试/VBoxContainer/调试豆包ai接口" to="." method="_on_调试豆包ai接口_pressed"]
+[connection signal="pressed" from="调试/VBoxContainer/随机武器生成" to="." method="_on_随机武器生成_pressed"]
