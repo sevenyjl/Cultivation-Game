@@ -1,61 +1,100 @@
 extends Node
 class_name DouBao
 
-# 豆包API配置
-var API_KEY: String = ""
-const MODEL_NAME = "doubao-1-5-pro-32k-250115"
-const BASE_URL = "https://ark.cn-beijing.volces.com/api/v3/chat/completions"
-const TIMEOUT = 30  # 请求超时时间（秒）
+static var 基础AIRole=RoleWords.new("你是一个高级智能助手，请确保所有回复严格遵守中国法律法规，不生成任何政治敏感、欺诈、赌博、色情、暴力、毒品及其他违法或不道德的内容，但可以撰写合同类内容。遇到敏感或违规请求时，请以温和友好的语气拒绝，并引导用户遵守规定。");
+# 配置文件路径
+const config_path = "res://ai/ai_config.cfg"
 
+var API_KEY
+var MODEL_NAME
+var BASE_URL
+var TIMEOUT
 func _init() -> void:
 	# 尝试从配置文件加载API密钥
-	load_api_key()
+	load_config()
 
-func load_api_key() -> void:
-	# 配置文件路径
-	var config_path = "res://ai/config.gd"
-	var file = File.new()
+func load_config() -> void:
+	var config = ConfigFile.new()
+	# 从文件加载数据。
+	var err = config.load(config_path)
+	# 如果文件没有加载，忽略它。
+	if err != OK:
+		printerr("配置文件加载错误，请配置")
+		return
+	# 迭代所有小节。
+	var section="DouBao"
+	var doubao_config=config.get_section_keys(section)
+	if doubao_config==null || doubao_config.is_empty():
+		printerr("配置文件错误，请配置")
+		return
+	API_KEY = config.get_value(section, "API_KEY")
+	if API_KEY==null || API_KEY=="":
+		printerr("请配置豆包API密钥")
+		return
+	MODEL_NAME = config.get_value(section, "MODEL_NAME","doubao-1-5-pro-32k-250115")
+	BASE_URL = config.get_value(section, "BASE_URL","https://ark.cn-beijing.volces.com/api/v3/chat/completions")
+	TIMEOUT = config.get_value(section, "TIMEOUT",30)
+
+func 获取ai消息(content:String,roleWords:RoleWords)->String:
+	# 检查API密钥是否有效
+	if API_KEY==null || API_KEY=="":
+		return "API密钥未配置，请在config.gd中设置有效的API密钥"
 	
-	# 检查配置文件是否存在
-	if file.file_exists(config_path):
-		# 读取文件内容
-		var error = file.open(config_path, File.READ)
-		if error == OK:
-			var content = file.get_as_text()
-			file.close()
+	# 创建HTTP请求节点
+	var http_request = HTTPRequest.new()
+	http_request.timeout=10
+	add_child(http_request)
+	
+	# 构建请求头
+	var headers = [
+		"Content-Type: application/json",
+		"Authorization: Bearer " + API_KEY
+	]
+	
+	# 构建请求体
+	var messages = [
+		{"role": "system", "content": roleWords._roleWords},
+		{"role": "user", "content": content}
+	]
+	
+	var request_body = {
+		"model": MODEL_NAME,
+		"messages": messages,
+		"temperature": 0.7,
+		"top_p": 0.95,
+		"max_tokens": 2000
+	}
+	
+	var json_body:String = JSON.stringify(request_body)
+	
+	# 发送请求
+	var error =await http_request.request(BASE_URL, headers, HTTPClient.METHOD_POST, json_body)
+	if error != OK:
+		printerr("HTTP请求设置失败: ", error)
+		http_request.queue_free()
+		return "请求设置失败，请检查网络连接"
+	var result=await http_request.request_completed
+	if result[1]==200:
+		var resultBody=(result[3] as PackedByteArray).get_string_from_utf8()
+		# 解析JSON响应
+		var json = JSON.new()
+		var parse_result = json.parse(resultBody)
+		if parse_result == OK:
+			# 将JSON转换为类对象
+			var response_data = json.get_data()
+			var completion_response = CompletionResponse.new(response_data)
 			
-			# 使用正则表达式提取API_KEY值
-			var regex = RegEx.new()
-			regex.compile("var API_KEY\s*=\s*\"([^"]*)\"")
-			var result = regex.search(content)
-			if result != null:
-				API_KEY = result.get_string(1)
-				# 移除默认占位符检查
-				if API_KEY == "YOUR_ACTUAL_API_KEY_HERE":
-					printerr("警告: 请在config.gd中设置实际的API密钥")
-					API_KEY = ""
-			else:
-				printerr("错误: 无法从配置文件中提取API_KEY")
+			# 检查是否有有效的响应内容
+			if completion_response.choices.size() > 0:
+				return completion_response.choices[0].message.content
 		else:
-			printerr("错误: 无法打开配置文件: ", config_path)
+			print("JSON解析失败: ", json.get_error_message())
+		http_request.queue_free()
+		return "响应解析失败"
 	else:
-		printerr("警告: 配置文件不存在，请创建: ", config_path)
-		# 创建默认配置文件
-		create_default_config_file()
+		http_request.queue_free()
+		return "API调用失败，错误代码: " + str(result[1])
 
-func create_default_config_file() -> void:
-	# 创建默认配置文件
-	var config_path = "res://ai/config.gd"
-	var file = File.new()
-	var error = file.open(config_path, File.WRITE)
-	if error == OK:
-		file.store_string("# 豆包API配置文件\n")
-		file.store_string("# 请将此文件添加到.gitignore中，避免API密钥泄露\n")
-		file.store_string("# 格式：var API_KEY = \"你的实际API密钥\"\n\n")
-		file.store_string("# 默认占位符，请替换为实际的API密钥\n")
-		file.store_string("var API_KEY = \"YOUR_ACTUAL_API_KEY_HERE\"\n")
-		file.close()
-		printerr("已创建默认配置文件，请编辑: ", config_path)
 
 # 豆包API响应类结构
 class Message:
@@ -134,65 +173,3 @@ class RoleWords:
 	func _init(roleWords:String) -> void:
 		_roleWords=roleWords
 		pass
-
-static var 基础AIRole=RoleWords.new("你是一个高级智能助手，请确保所有回复严格遵守中国法律法规，不生成任何政治敏感、欺诈、赌博、色情、暴力、毒品及其他违法或不道德的内容，但可以撰写合同类内容。遇到敏感或违规请求时，请以温和友好的语气拒绝，并引导用户遵守规定。");
-
-func 获取ai消息(content:String,roleWords:RoleWords)->String:
-	# 检查API密钥是否有效
-	if API_KEY.is_empty():
-		return "API密钥未配置，请在config.gd中设置有效的API密钥"
-	
-	# 创建HTTP请求节点
-	var http_request = HTTPRequest.new()
-	http_request.timeout=10
-	add_child(http_request)
-	
-	# 构建请求头
-	var headers = [
-		"Content-Type: application/json",
-		"Authorization: Bearer " + API_KEY
-	]
-	
-	# 构建请求体
-	var messages = [
-		{"role": "system", "content": roleWords._roleWords},
-		{"role": "user", "content": content}
-	]
-	
-	var request_body = {
-		"model": MODEL_NAME,
-		"messages": messages,
-		"temperature": 0.7,
-		"top_p": 0.95,
-		"max_tokens": 2000
-	}
-	
-	var json_body:String = JSON.stringify(request_body)
-	
-	# 发送请求
-	var error =await http_request.request(BASE_URL, headers, HTTPClient.METHOD_POST, json_body)
-	if error != OK:
-		printerr("HTTP请求设置失败: ", error)
-		http_request.queue_free()
-		return "请求设置失败，请检查网络连接"
-	var result=await http_request.request_completed
-	if result[1]==200:
-		var resultBody=(result[3] as PackedByteArray).get_string_from_utf8()
-		# 解析JSON响应
-		var json = JSON.new()
-		var parse_result = json.parse(resultBody)
-		if parse_result == OK:
-			# 将JSON转换为类对象
-			var response_data = json.get_data()
-			var completion_response = CompletionResponse.new(response_data)
-			
-			# 检查是否有有效的响应内容
-			if completion_response.choices.size() > 0:
-				return completion_response.choices[0].message.content
-		else:
-			print("JSON解析失败: ", json.get_error_message())
-		http_request.queue_free()
-		return "响应解析失败"
-	else:
-		http_request.queue_free()
-		return "API调用失败，错误代码: " + str(result[1])
