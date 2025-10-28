@@ -343,3 +343,12 @@ func 吸收灵气进入体内(num:float):
 func 是否存活() -> bool:
 	return hp_stats.get_current_value() > 0
 #endregion 相关判断方法
+#region 属性获取方法
+## 获取攻击力
+func 获取攻击力()->float:
+	var result=attack_stats.get_current_value()
+	if wepoen:
+		var 武器攻击力=wepoen.atk.get_current_value()
+		result+=武器攻击力
+	return result
+#endregion
