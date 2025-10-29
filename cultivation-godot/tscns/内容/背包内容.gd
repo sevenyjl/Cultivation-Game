@@ -5,7 +5,6 @@ extends PanelContainer
 var _backpack:Backpack
 
 # 资源引用
-var slot_scene: PackedScene = preload("res://tscns/组件/装备带tips.tscn")
 @onready var _item_grid: GridContainer=$ScrollContainer/ItemGrid
 
 func _process(delta: float) -> void:
@@ -21,18 +20,12 @@ func 初始化(backpack:Backpack):
 	await get_tree().process_frame
 	# 创建新的空格子
 	for i in range(_backpack.max_slots):
-		var slot = slot_scene.instantiate()
-		slot.name = "Slot_%d" % i
-		slot.default_name = ""
-		_item_grid.add_child(slot)
+		_item_grid.add_child(ItemTips.get_ItemTips(null))
 
 	for i in _backpack.item_slots.size():
 		var item=_backpack.item_slots[i]
-		var node=_item_grid.get_child(i) as ItemTips
-		if item is Wepoen:
-			node.武器背包Tips.初始化(item)
-			node.tips=node.武器背包Tips
-		node.default_name=item.name_str
+		var itemTips=_item_grid.get_child(i) as ItemTips
+		itemTips.添加item(item)
 
 func _ready() -> void:
 	# 确保网格容器的列数与脚本中的设置一致

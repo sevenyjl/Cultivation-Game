@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bwu6oueht6ysy"]
 
 [ext_resource type="Script" uid="uid://0b0jjqf8kdcg" path="res://tscns/内容/背包内容.gd" id="1_1x86m"]
-[ext_resource type="PackedScene" uid="uid://q4dsd2o5ecm7" path="res://tscns/组件/装备带tips.tscn" id="2_xpbv6"]
+[ext_resource type="PackedScene" uid="uid://q4dsd2o5ecm7" path="res://tscns/组件/tips/装备带tips.tscn" id="2_xpbv6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bag"]
 content_margin_left = 8.0

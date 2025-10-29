@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dvb1nbi7vsqn6" path="res://tscns/战斗UI.gd" id="1_0x8k9"]
 [ext_resource type="PackedScene" uid="uid://ch5ft504adcxv" path="res://tscns/组件/人员战斗信息组件.tscn" id="2_3x4k5"]
-[ext_resource type="PackedScene" uid="uid://q4dsd2o5ecm7" path="res://tscns/组件/装备带tips.tscn" id="3_mhaon"]
+[ext_resource type="PackedScene" uid="uid://q4dsd2o5ecm7" path="res://tscns/组件/tips/装备带tips.tscn" id="3_mhaon"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mhaon"]
 content_margin_left = 10.0

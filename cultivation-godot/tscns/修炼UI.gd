@@ -21,6 +21,7 @@ signal tab_changed(tab_index: int)
 
 var _当前选择的玩家:BaseCultivation
 var _选中样式:StyleBox = preload("res://tscns/theme/Tab标签选择样式.tres")
+
 func _ready():
 	var tab_button=$"VBoxContainer/HBoxContainer/主容器/VBoxContainer/Tab标签".get_children()
 	for i in tab_button.size():
@@ -30,13 +31,11 @@ func _ready():
 	switch_tab(0)
 
 func _process(delta: float) -> void:
-	if _当前选择的玩家:
-		# 调用修仙者信息组件的更新方法
-		cultivator_info_component.update_cultivator_info(_当前选择的玩家)
 	pass
 
 func _初始化玩家信息():
 	_当前选择的玩家=GameData.player
+	cultivator_info_component.初始化(_当前选择的玩家)
 	pass
 
 func 初始化():

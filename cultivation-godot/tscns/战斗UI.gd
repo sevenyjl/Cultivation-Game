@@ -416,25 +416,24 @@ func _战斗结束(结果:String):
 		# todo 将所有敌人的物品给加入到 %"掉落物品" 中呈现，并加入到玩家背包中（调用Backpack的 添加物品 方法）
 		for i in EnemyTeamList.get_children():
 			if i.has_meta("is_occupied") and i.get_meta("is_occupied"):
-				var player_data = i.character_data
+				var player_data = i.character_data as BaseCultivation
 				if player_data.wepoen:
 					GameData.player.backpack.添加物品(player_data.wepoen)
-					var itemTips=preload("uid://q4dsd2o5ecm7").instantiate() as ItemTips
-					%"掉落物品".add_child(itemTips)
-					await get_tree().process_frame
-					itemTips.tips=itemTips.武器背包Tips
-					itemTips.武器背包Tips.初始化(player_data.wepoen)
-				
+					var 掉落物品=弹窗node.get_node("VBoxContainer/ScrollContainer/掉落物品")
+					var itemTips=ItemTips.get_ItemTips(player_data.wepoen)
+					itemTips.tips.show_操作=false
+					掉落物品.add_child(itemTips)
+					
+					
 				for item in player_data.backpack.item_slots:
 					GameData.player.backpack.添加物品(item)
-					var itemTips=preload("uid://q4dsd2o5ecm7").instantiate() as ItemTips
-					%"掉落物品".add_child(itemTips)
-					await get_tree().process_frame
-					if item is Wepoen:
-						itemTips.tips=itemTips.武器背包Tips
-						itemTips.武器背包Tips.初始化(player_data.wepoen)
-			
-			
+					var 掉落物品=弹窗node.get_node("VBoxContainer/ScrollContainer/掉落物品")
+					var itemTips=ItemTips.get_ItemTips(item)
+					itemTips.tips.show_操作=false
+					掉落物品.add_child(itemTips)
+					
+		print(%"掉落物品".get_child_count())
+		await get_tree().physics_frame
 		弹窗node.get_node("VBoxContainer/战斗胜利！").visible=true
 		添加战斗日志("[color=#00FF00]战斗胜利！[/color]")
 	else:

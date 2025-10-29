@@ -1,5 +1,0 @@
-[gd_scene format=3 uid="uid://ctl1xra5efpva"]
-
-[node name="Tips" type="Panel"]
-offset_right = 200.0
-offset_bottom = 100.0
