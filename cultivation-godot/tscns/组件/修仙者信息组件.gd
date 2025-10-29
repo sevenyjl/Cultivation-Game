@@ -59,3 +59,7 @@ func _process(d):
 		
 		# 更新生命恢复冷却时间
 		health_regen_cooldown_value.text = str(cultivator.health_regen_cooldown.min_value) + ".0-" + str(cultivator.health_regen_cooldown.max_value) + ".0秒"
+		# 武器变了
+		if cultivator.wepoen!=%"法宝".item:
+			%"法宝".添加item(cultivator.wepoen)
+			%"法宝".tips.show_操作=false

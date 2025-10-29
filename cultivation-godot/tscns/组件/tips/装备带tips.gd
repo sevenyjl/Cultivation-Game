@@ -23,7 +23,8 @@ func 添加item(item):
 
 func 移除item():
 	if tips:
-		tips.free()
+		tips.visible=false
+		tips.queue_free()
 	tips=null
 	item=null
 
@@ -47,6 +48,7 @@ func _process(delta: float) -> void:
 			self.set_meta("is_mouse_inside",true)
 			get_tree().root.set_meta("global_show_inside_id",str(get_instance_id()))
 			tips.visible=true
+			# tips位置自动处理 放在出框
 			tips.global_position=get_global_mouse_position()
 			pass
 	else:

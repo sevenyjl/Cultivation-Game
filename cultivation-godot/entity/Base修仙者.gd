@@ -353,3 +353,8 @@ func 获取攻击力()->float:
 		result+=武器攻击力
 	return result
 #endregion
+func 装备武器(wepon:Wepoen):
+	backpack.移除物品(wepon)
+	backpack.添加物品(self.wepoen)
+	self.wepoen=wepon
+	pass

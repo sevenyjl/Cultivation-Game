@@ -11,3 +11,8 @@ func 初始化(wepoen:Wepoen):
 	$"VBoxContainer/名称/Value".text="%s(%s)"%[self.data.name_str,self.data.weapon_quality]
 	$"VBoxContainer/攻击力/Value".text="%s~%s"%[self.data.atk.min_value,self.data.atk.max_value]
 	$"VBoxContainer/描述/Value".text=self.data.desc
+
+
+func _on_装备_pressed() -> void:
+	GameData.mainNode.修炼ui._当前选择的玩家.装备武器(data)
+	pass # Replace with function body.

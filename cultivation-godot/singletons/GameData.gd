@@ -36,6 +36,6 @@ func 游戏初始化():
 		player.level_up(true)
 	# 玩家初始化阵型位置
 	formation[0][0]=player
-	player.backpack.添加物品(Wepoen.new())
+	player.backpack.添加物品(await Wepoen.new().get_random_weapon())
 	mainNode.add_child(player)
 	pass

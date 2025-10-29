@@ -16,12 +16,16 @@ func _process(delta: float) -> void:
 
 func 初始化(backpack:Backpack):
 	_backpack=backpack
+	_backpack.添加物品信息号.connect(更新格子)
 	_initialize_slots()
 	await get_tree().process_frame
 	# 创建新的空格子
 	for i in range(_backpack.max_slots):
 		_item_grid.add_child(ItemTips.get_ItemTips(null))
+	更新格子()
 
+
+func 更新格子():
 	for i in _backpack.item_slots.size():
 		var item=_backpack.item_slots[i]
 		var itemTips=_item_grid.get_child(i) as ItemTips

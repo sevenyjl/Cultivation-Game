@@ -51,3 +51,5 @@ text = "描述："
 [node name="Value" type="RichTextLabel" parent="VBoxContainer/描述"]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[connection signal="pressed" from="VBoxContainer/操作/装备" to="." method="_on_装备_pressed"]
