@@ -49,7 +49,37 @@ func _process(delta: float) -> void:
 			get_tree().root.set_meta("global_show_inside_id",str(get_instance_id()))
 			tips.visible=true
 			# tips位置自动处理 放在出框
-			tips.global_position=get_global_mouse_position()
+			var mouse_pos = get_global_mouse_position()
+			
+			# 先设置tips为可见，以便获取其大小
+			tips.visible = true
+			
+			# 获取tips的大小和窗口大小
+			# 使用custom_minimum_size作为预估大小，如果获取不到则使用默认值
+			var tips_size = tips.custom_minimum_size
+			if tips_size.x <= 0 or tips_size.y <= 0:
+				# 默认大小估计，基于武器背包tips.tscn中的大小
+				tips_size = Vector2(300, 170)
+			
+			var viewport_size = get_viewport_rect().size
+			
+			# 计算初始位置，默认显示在鼠标右侧下方
+			var final_pos = mouse_pos
+			
+			# 检查宽度是否会超出窗口边界，如果是则放在鼠标左侧
+			if final_pos.x + tips_size.x > viewport_size.x:
+				final_pos.x = mouse_pos.x - tips_size.x
+			
+			# 检查高度是否会超出窗口边界，如果是则放在鼠标上方
+			if final_pos.y + tips_size.y > viewport_size.y:
+				final_pos.y = mouse_pos.y - tips_size.y
+			
+			# 确保tips不会显示在窗口外（最小位置为0）
+			final_pos.x = max(0, final_pos.x)
+			final_pos.y = max(0, final_pos.y)
+			
+			# 设置最终位置
+			tips.global_position = final_pos
 			pass
 	else:
 		if is_mouse_inside:
