@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=3 uid="uid://bsyjx678amjgw"]
+
+[ext_resource type="Texture2D" uid="uid://butv143j2r5rf" path="res://asserts/aHR0cHM6Ly93d3cuYWlib3NzLmNoYXQvZmlsZS9kcmF3L21qL29yaWdpbi8zMzY4ZGRlOTY1YWNjMjAzMWYwNzhlYzQ5OWJhNjc5OS5wbmc_1_1.png" id="1_ykrsh"]
+[ext_resource type="Texture2D" uid="uid://dcitb6j6pxngj" path="res://asserts/aHR0cHM6Ly93d3cuYWlib3NzLmNoYXQvZmlsZS9kcmF3L21qL29yaWdpbi8zMzY4ZGRlOTY1YWNjMjAzMWYwNzhlYzQ5OWJhNjc5OS5wbmc_1_2.png" id="2_g14j6"]
+[ext_resource type="Texture2D" uid="uid://dw0jvc2qy6ft" path="res://asserts/aHR0cHM6Ly93d3cuYWlib3NzLmNoYXQvZmlsZS9kcmF3L21qL29yaWdpbi8zMzY4ZGRlOTY1YWNjMjAzMWYwNzhlYzQ5OWJhNjc5OS5wbmc_2_1.png" id="3_vbegm"]
+[ext_resource type="Texture2D" uid="uid://dinba12v7awup" path="res://asserts/aHR0cHM6Ly93d3cuYWlib3NzLmNoYXQvZmlsZS9kcmF3L21qL29yaWdpbi8zMzY4ZGRlOTY1YWNjMjAzMWYwNzhlYzQ5OWJhNjc5OS5wbmc_2_2.png" id="4_ehkex"]
+[ext_resource type="Texture2D" uid="uid://bqetk66fmrf7x" path="res://asserts/aHR0cHM6Ly93d3cuYWlib3NzLmNoYXQvZmlsZS9kcmF3L21qL29yaWdpbi80OTFlMmQ4MTYzNjQxNTQ4MjcxZDEwMzg3Y2IxZWZiMC5wbmc (1)_1_1.png" id="5_xersf"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mf4mk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_ykrsh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_g14j6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_vbegm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ehkex")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_xersf")
+}],
+"loop": true,
+"name": &"default",
+"speed": 9.0
+}]
+
+[node name="Test" type="Node2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(134, 121.5)
+scale = Vector2(2.2761905, 2.1796117)
+sprite_frames = SubResource("SpriteFrames_mf4mk")
+frame_progress = 0.6127123
