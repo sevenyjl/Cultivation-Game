@@ -247,9 +247,10 @@ func can_level_up()->bool:
 	return spiritual_energy.current_value >= spiritual_energy.max_value
 
 # 升级
-func level_up():
-	if not can_level_up():
-		return
+func level_up(强制升级:bool=false):
+	if not 强制升级:
+		if not can_level_up():
+			return
 	level += 1
 	# 检查是否刚刚突破了境界
 	var previous_realm = get_realm_by_level(level - 1)

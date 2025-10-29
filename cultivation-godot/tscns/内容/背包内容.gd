@@ -27,8 +27,12 @@ func 初始化(backpack:Backpack):
 		_item_grid.add_child(slot)
 
 	for i in _backpack.item_slots.size():
-		var node=_item_grid.get_child(i)
-		node.default_name=_backpack.item_slots[i].name_str
+		var item=_backpack.item_slots[i]
+		var node=_item_grid.get_child(i) as ItemTips
+		if item is Wepoen:
+			node.武器背包Tips.初始化(item)
+			node.tips=node.武器背包Tips
+		node.default_name=item.name_str
 
 func _ready() -> void:
 	# 确保网格容器的列数与脚本中的设置一致

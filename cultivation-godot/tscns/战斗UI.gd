@@ -9,9 +9,10 @@ const CHARACTER_COMPONENT_SCENE = preload("uid://ch5ft504adcxv")
 # 是所有队伍中的最小值
 var 基础速度:float=0
 var 倍速:float=1.0
-# 存储character_component和character_data的映射关系
+# 存data，compoent
 var character_component_map: Dictionary = {}
-var character_data_map: Dictionary = {}
+# 存速度队列label，componet
+var label_character_component_map:Dictionary={}
 # 战斗是否正在进行中
 var _战斗进行中:bool = false
 # 战斗日志配置
@@ -48,7 +49,7 @@ const COLS = 3
 func 初始化战斗(player_formation:Array, enemy_formation:Array):
 	# 清空映射字典
 	character_component_map.clear()
-	character_data_map.clear()
+	label_character_component_map.clear()
 	BattleLogContent.text = ""
 	基础速度 = 0
 	_战斗进行中 = true
@@ -56,6 +57,8 @@ func 初始化战斗(player_formation:Array, enemy_formation:Array):
 	for i in PlayerTeamList.get_children():
 		i.queue_free()
 	for i in EnemyTeamList.get_children():
+		i.queue_free()
+	for i in %"掉落物品".get_children():
 		i.queue_free()
 	# 清空速度队列中的角色名称标签
 	for i in CharacterNamesContainer.get_children():
@@ -128,8 +131,8 @@ func create_character_component(character_data:BaseCultivation,team_list:Control
 	character_component.初始化人员战斗信息(character_data)
 	# 存储映射关系到字典
 	character_component_map[character_data] = character_component
-	character_data_map[character_component] = character_data
 	# 添加到队伍列表
+	print(character_component)
 	team_list.add_child(character_component)
 	初始化速度队列(character_component)
 	return character_component
@@ -144,7 +147,7 @@ func 开始攻击(character_data):
 	if enemies.size() > 0:
 		var enemy_component = enemies[0]
 		# 添加战斗日志
-		var enemy_data = character_data_map[enemy_component]
+		var enemy_data = enemy_component.character_data
 		添加战斗日志("[color=#FFFF00]" + character_data.name_str + " 攻击了 " + enemy_data.name_str + "[/color]")
 		# 创建攻击动画
 		创建攻击动画(attacker_component, enemy_component)
@@ -157,8 +160,8 @@ func 开始攻击(character_data):
 func 伤害动画(attacker_component:Control, target_component:Control)->Tween:
 	var tween = create_tween()
 	# 获取攻击者和目标的人物数据
-	var attacker_data = character_data_map[attacker_component]
-	var target_data = character_data_map[target_component]
+	var attacker_data = attacker_component.character_data
+	var target_data = target_component.character_data
 	var attack_power = attacker_data.获取攻击力()
 	var defense_power = target_data.defense_stats.get_current_value()
 	# 计算伤害值（攻击值 - 防御值）
@@ -260,7 +263,7 @@ var _是否处理速度队列:bool = true
 func 初始化速度队列(character_component):
 	_是否处理速度队列=true
 	# 从字典获取character_data
-	var character_data = character_data_map[character_component]
+	var character_data =character_component.character_data
 	# 创建角色名称标签
 	var name_label = Label.new()
 	name_label.text = character_data.name_str
@@ -269,7 +272,7 @@ func 初始化速度队列(character_component):
 	name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	# 使用字典存储name_label和character_component的映射
-	character_component_map[name_label] = character_component
+	label_character_component_map[name_label] = character_component
 	var speed_stats=character_data.speed_stats as RandomValue
 	var speed = speed_stats.get_current_value()
 	if 基础速度 == 0:
@@ -308,10 +311,10 @@ func _速度队列处理(delta: float):
 		
 		# 遍历所有角色标签
 		for i in CharacterNamesContainer.get_children():
-			if i.has_meta("speed_data") and character_component_map.has(i):
+			if i.has_meta("speed_data") and label_character_component_map.has(i):
 				var speed = i.get_meta("speed_data")
-				var character_component = character_component_map[i]
-				var character_data = character_data_map[character_component]
+				var character_component = label_character_component_map[i]
+				var character_data = character_component.character_data
 				
 				# 计算该角色完成整个路程所需的时间（秒）
 				# 基础速度需要5秒，其他速度根据比例计算
@@ -380,15 +383,15 @@ func 检查战斗结束():
 	
 	# 统计玩家存活数
 	for i in PlayerTeamList.get_children():
-		if i.has_meta("is_occupied") and i.get_meta("is_occupied") and character_data_map.has(i):
-			var player_data = character_data_map[i]
+		if i.has_meta("is_occupied") and i.get_meta("is_occupied"):
+			var player_data = i.character_data
 			if player_data.hp_stats.get_current_value() > 0:
 				玩家存活数 += 1
 	
 	# 统计敌人存活数
 	for i in EnemyTeamList.get_children():
-		if i.has_meta("is_occupied") and i.get_meta("is_occupied") and character_data_map.has(i):
-			var enemy_data = character_data_map[i]
+		if i.has_meta("is_occupied") and i.get_meta("is_occupied"):
+			var enemy_data = i.character_data
 			if enemy_data.hp_stats.get_current_value() > 0:
 				敌人存活数 += 1
 	
@@ -410,6 +413,28 @@ func _战斗结束(结果:String):
 	弹窗node.visible=true
 	# 根据结果添加战斗日志
 	if 结果 == "胜利":
+		# todo 将所有敌人的物品给加入到 %"掉落物品" 中呈现，并加入到玩家背包中（调用Backpack的 添加物品 方法）
+		for i in EnemyTeamList.get_children():
+			if i.has_meta("is_occupied") and i.get_meta("is_occupied"):
+				var player_data = i.character_data
+				if player_data.wepoen:
+					GameData.player.backpack.添加物品(player_data.wepoen)
+					var itemTips=preload("uid://q4dsd2o5ecm7").instantiate() as ItemTips
+					%"掉落物品".add_child(itemTips)
+					await get_tree().process_frame
+					itemTips.tips=itemTips.武器背包Tips
+					itemTips.武器背包Tips.初始化(player_data.wepoen)
+				
+				for item in player_data.backpack.item_slots:
+					GameData.player.backpack.添加物品(item)
+					var itemTips=preload("uid://q4dsd2o5ecm7").instantiate() as ItemTips
+					%"掉落物品".add_child(itemTips)
+					await get_tree().process_frame
+					if item is Wepoen:
+						itemTips.tips=itemTips.武器背包Tips
+						itemTips.武器背包Tips.初始化(player_data.wepoen)
+			
+			
 		弹窗node.get_node("VBoxContainer/战斗胜利！").visible=true
 		添加战斗日志("[color=#00FF00]战斗胜利！[/color]")
 	else:
@@ -434,15 +459,15 @@ func _随机获取敌人(character_component,number:int=1)->Array:
 	if _是否为玩家队伍(character_component):
 		for i in EnemyTeamList.get_children():
 			# 只添加有角色占据且存活的组件
-			if i.has_meta("is_occupied") and i.get_meta("is_occupied") and character_data_map.has(i):
-				var enemy_data = character_data_map[i]
+			if i.has_meta("is_occupied") and i.get_meta("is_occupied"):
+				var enemy_data =i.character_data
 				if enemy_data.hp_stats.get_current_value() > 0:
 					enemies.append(i)
 	else:
 		for i in PlayerTeamList.get_children():
 			# 只添加有角色占据且存活的组件
-			if i.has_meta("is_occupied") and i.get_meta("is_occupied") and character_data_map.has(i):
-				var enemy_data = character_data_map[i]
+			if i.has_meta("is_occupied") and i.get_meta("is_occupied"):
+				var enemy_data = i.character_data
 				if enemy_data.hp_stats.get_current_value() > 0:
 					enemies.append(i)
 	enemies.shuffle()
@@ -453,15 +478,15 @@ func _随机获取友队(character_component,number:int=1)->Array:
 	if _是否为玩家队伍(character_component):
 		for i in PlayerTeamList.get_children():
 			# 只添加有角色占据且存活的组件
-			if i.has_meta("is_occupied") and i.get_meta("is_occupied") and character_data_map.has(i):
-				var player_data = character_data_map[i]
+			if i.has_meta("is_occupied") and i.get_meta("is_occupied"):
+				var player_data = i.character_data
 				if player_data.hp_stats.get_current_value() > 0:
 					players.append(i)
 	else:
 		for i in EnemyTeamList.get_children():
 			# 只添加有角色占据且存活的组件
-			if i.has_meta("is_occupied") and i.get_meta("is_occupied") and character_data_map.has(i):
-				var player_data = character_data_map[i]
+			if i.has_meta("is_occupied") and i.get_meta("is_occupied"):
+				var player_data = i.character_data
 				if player_data.hp_stats.get_current_value() > 0:
 					players.append(i)
 	players.shuffle()

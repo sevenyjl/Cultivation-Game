@@ -32,8 +32,8 @@ func 游戏初始化():
 	# 先随机生成玩家
 	player = BaseCultivation.new()
 	player.name_str = "张三"
-	for i in 3:
-		player.level_up()
+	for i in 10:
+		player.level_up(true)
 	# 玩家初始化阵型位置
 	formation[0][0]=player
 	player.backpack.添加物品(Wepoen.new())

@@ -361,6 +361,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 3
 
 [node name="掉落物品" type="GridContainer" parent="PanelContainer/VBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(600, 250)
 layout_mode = 2
 size_flags_horizontal = 4
