@@ -31,8 +31,11 @@ func 结束战斗():
 
 
 func _ready() -> void:
-	GameData.mainNode=self
-	GameData.游戏初始化()
+	# 设置main_node引用，这对于GameData访问UI组件很重要
+	GameData.set_main_node(self)
+	# 初始化游戏数据
+	GameData.initialize_game()
+	# 初始化UI
 	$"修炼ui".初始化()
 	pass
 

@@ -6,10 +6,19 @@ class_name BaseCultivation
 # 修仙者基础类
 # 包含所有修仙者的基本属性和方法
 
+# 细粒度信号
+signal level_changed(new_level)
+signal stats_changed
+signal health_changed(current_health, max_health)
+signal spiritual_energy_changed(current_energy, max_energy)
+signal realm_changed(new_realm)
+signal weapon_equipped(new_weapon, old_weapon)
+signal died(attacker, victim)
+
 # 基础属性
 @export var id: String = ""
 @export var name_str: String = "未命名修仙者"
-@export var level: int = 1  # 修炼等级
+var _level: int = 1  # 修炼等级
 
 # 灵气系统（使用范围值类管理）
 var spiritual_energy: RangedValue
@@ -37,12 +46,12 @@ var health_regen_rate: RandomValue
 
 # 生命恢复冷却时间 （使用随机值类管理，表示恢复间隔的时间范围，单位：秒）
 var health_regen_cooldown: RandomValue
-var 是否在阵型中:bool=false
+var _in_formation: bool = false
 
 # 武器
-var wepoen:Wepoen
+var _weapon: Wepoen
 # 背包
-var backpack:Backpack
+var backpack: Backpack
 
 # 修炼境界
 enum CultivationRealm {
@@ -60,15 +69,43 @@ enum CultivationRealm {
 
 # 移除了直接的realm属性，改为通过等级动态计算
 
-signal 死亡(攻击角色:BaseCultivation,死亡角色:BaseCultivation)
+# 属性访问器
+func get_level() -> int:
+	return _level
+
+func set_level(value: int) -> void:
+	if _level != value:
+		_level = max(1, value)
+		level_changed.emit(_level)
+		realm_changed.emit(get_current_realm())
+
+func get_in_formation() -> bool:
+	return _in_formation
+
+func set_in_formation(value: bool) -> void:
+	_in_formation = value
+
+func get_weapon() -> Wepoen:
+	return _weapon
+
+func set_weapon(value: Wepoen) -> void:
+	if _weapon != value:
+		var old_weapon = _weapon
+		_weapon = value
+		weapon_equipped.emit(value, old_weapon)
 
 func _init() -> void:
+	# 初始化背包
 	if backpack == null:
 		backpack = Backpack.new()
 		add_child(backpack)
-	if wepoen == null:
-		wepoen = Wepoen.new()
-		add_child(wepoen)
+	
+	# 初始化武器
+	if _weapon == null:
+		_weapon = Wepoen.new()
+		add_child(_weapon)
+	
+	# 初始化生命值系统
 	if hp_stats == null:
 		hp_stats = RangedValue.new()
 		hp_stats.min_value = 0
@@ -161,25 +198,29 @@ func _init() -> void:
 func _获取成长属性列表() -> Array:
 	return [hp_stats, spiritual_energy, absorption_rate, absorption_cooldown, speed_stats, attack_stats, defense_stats, health_regen_rate, health_regen_cooldown]
 
+# 英文方法名作为兼容接口
+func _get_growth_properties() -> Array:
+	return _获取成长属性列表()
+
 # 根据等级获取当前境界
 func get_current_realm() -> CultivationRealm:
-	if level < 10:
+	if _level < 10:
 		return CultivationRealm.FANREN
-	elif level < 20:
+	elif _level < 20:
 		return CultivationRealm.LIANQI
-	elif level < 35:
+	elif _level < 35:
 		return CultivationRealm.ZHUJI
-	elif level < 50:
+	elif _level < 50:
 		return CultivationRealm.JINDAN
-	elif level < 70:
+	elif _level < 70:
 		return CultivationRealm.YUANYING
-	elif level < 90:
+	elif _level < 90:
 		return CultivationRealm.HUASHEN
-	elif level < 110:
+	elif _level < 110:
 		return CultivationRealm.LIANXU
-	elif level < 130:
+	elif _level < 130:
 		return CultivationRealm.HEHE
-	elif level < 150:
+	elif _level < 150:
 		return CultivationRealm.DACHENG
 	else:
 		return CultivationRealm.DUDIE
@@ -191,10 +232,10 @@ func get_realm_level() -> int:
 	
 	# 对于凡人，层数从1开始计算
 	if current_realm == CultivationRealm.FANREN:
-		return level
+		return _level
 	else:
 		# 其他境界，层数从1开始计算
-		return level - start_level + 1
+		return _level - start_level + 1
 
 # 获取境界名称
 func get_realm_name() -> String:
@@ -227,13 +268,16 @@ func get_realm_name_by_realm(target_realm: CultivationRealm) -> String:
 			return "未知境界"
 
 # 恢复生命值方法
-func 恢复生命(恢复量: float) -> void:
+func recover_health(amount: float) -> void:
 	if hp_stats:
 		# 增加当前生命值，但不超过最大值
-		var new_health = hp_stats.current_value + 恢复量
+		var new_health = hp_stats.current_value + amount
 		hp_stats.current_value = min(new_health, hp_stats.max_value)
 		# 确保生命值不低于最小值（通常为0）
 		hp_stats.current_value = max(hp_stats.current_value, hp_stats.min_value)
+		# 触发生命值变化信号
+		health_changed.emit(hp_stats.current_value, hp_stats.max_value)
+		stats_changed.emit()
 
 # 获取完整的境界显示名称（包含层数）
 func get_full_realm_name() -> String:
@@ -243,27 +287,43 @@ func get_full_realm_name() -> String:
 	# 凡人也显示层数
 	return get_realm_name_by_realm(current_realm) + "第" + str(realm_level) + "层"
 
-func can_level_up()->bool:
+func can_level_up() -> bool:
 	return spiritual_energy.current_value >= spiritual_energy.max_value
 
 # 升级
-func level_up(强制升级:bool=false):
-	if not 强制升级:
-		if not can_level_up():
-			return
-	level += 1
+func level_up(force: bool = false) -> void:
+	if not force and not can_level_up():
+		return
+	
+	# 保存旧等级和境界用于比较
+	var old_level = _level
+	var previous_realm = get_realm_by_level(old_level)
+	
+	# 升级
+	set_level(old_level + 1)
+	
 	# 检查是否刚刚突破了境界
-	var previous_realm = get_realm_by_level(level - 1)
 	var current_realm = get_current_realm()
+	
 	print("升级前的吸收冷却时间：%s~%s" % [absorption_cooldown.min_value, absorption_cooldown.max_value])
+	
 	if previous_realm != current_realm:
 		# 境界突破，执行突破逻辑
 		_on_realm_breakthrough(previous_realm, current_realm)
-	for i in _获取成长属性列表():
-		i.grow()
+		
+	# 所有属性成长
+	for prop in _获取成长属性列表():
+		prop.grow()
+	
 	print("升级后的吸收冷却时间：%s~%s" % [absorption_cooldown.min_value, absorption_cooldown.max_value])
+	
 	# 灵气归零
-	spiritual_energy.current_value=0
+	spiritual_energy.current_value = 0
+	spiritual_energy_changed.emit(spiritual_energy.current_value, spiritual_energy.max_value)
+	
+	# 通知统计数据变化
+	stats_changed.emit()
+	
 	print(name_str + " 修炼到 " + get_full_realm_name() + "！")
 
 
@@ -325,36 +385,61 @@ func get_required_level_for_realm(target_realm: CultivationRealm) -> int:
 			return 999
 
 #region 属性变化方法
-func 应用伤害(damage: float,造成角色:BaseCultivation):
+func apply_damage(damage: float, attacker: BaseCultivation) -> void:
 	# 应用伤害到目标
-	hp_stats.current_value=(hp_stats.get_current_value() - damage)
-	if !是否存活():
-		死亡.emit(造成角色,self)
+	if hp_stats:
+		hp_stats.current_value = hp_stats.current_value - damage
+		# 触发生命值变化信号
+		health_changed.emit(hp_stats.current_value, hp_stats.max_value)
+		stats_changed.emit()
+		
+		if not is_alive():
+			# 触发死亡信号
+			died.emit(attacker, self)
 
 # 吸收灵气（多余的灵气无法溢出）
-func 吸收灵气进入体内(num:float):
-	spiritual_energy.current_value += num
-	# 检查是否超过最大灵气
-	if spiritual_energy.current_value > spiritual_energy.max_value:
-		spiritual_energy.current_value = spiritual_energy.max_value
+func absorb_spiritual_energy(amount: float) -> void:
+	if spiritual_energy:
+		spiritual_energy.current_value += amount
+		# 检查是否超过最大灵气
+		if spiritual_energy.current_value > spiritual_energy.max_value:
+			spiritual_energy.current_value = spiritual_energy.max_value
+		# 触发灵气变化信号
+		spiritual_energy_changed.emit(spiritual_energy.current_value, spiritual_energy.max_value)
+		stats_changed.emit()
 
 #endregion 属性变化方法
 #region 相关判断方法
 # 检查是否存活
-func 是否存活() -> bool:
-	return hp_stats.get_current_value() > 0
+func is_alive() -> bool:
+	return hp_stats and hp_stats.current_value > 0
 #endregion 相关判断方法
+
 #region 属性获取方法
 ## 获取攻击力
-func 获取攻击力()->float:
-	var result=attack_stats.get_current_value()
-	if wepoen:
-		var 武器攻击力=wepoen.atk.get_current_value()
-		result+=武器攻击力
+func get_attack_power() -> float:
+	var result = attack_stats.get_current_value()
+	if _weapon and _weapon.atk:
+		var weapon_atk = _weapon.atk.get_current_value()
+		result += weapon_atk
 	return result
 #endregion
-func 装备武器(wepon:Wepoen):
-	backpack.移除物品(wepon)
-	backpack.添加物品(self.wepoen)
-	self.wepoen=wepon
-	pass
+
+# 装备武器
+func equip_weapon(weapon: Wepoen) -> void:
+	if not weapon or weapon == _weapon:
+		return
+	
+	# 将当前武器放回背包
+	if _weapon:
+		backpack.add_item(_weapon)
+	
+	# 将新武器从背包移除并装备
+	if backpack.has_item(weapon):
+		backpack.remove_item(weapon)
+	
+	# 设置新武器
+	set_weapon(weapon)
+	
+	# 通知统计数据变化
+	stats_changed.emit()

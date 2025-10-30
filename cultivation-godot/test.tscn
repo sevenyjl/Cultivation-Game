@@ -1,10 +1,10 @@
 [gd_scene load_steps=7 format=3 uid="uid://bsyjx678amjgw"]
 
-[ext_resource type="Texture2D" uid="uid://butv143j2r5rf" path="res://asserts/aHR0cHM6Ly93d3cuYWlib3NzLmNoYXQvZmlsZS9kcmF3L21qL29yaWdpbi8zMzY4ZGRlOTY1YWNjMjAzMWYwNzhlYzQ5OWJhNjc5OS5wbmc_1_1.png" id="1_ykrsh"]
-[ext_resource type="Texture2D" uid="uid://dcitb6j6pxngj" path="res://asserts/aHR0cHM6Ly93d3cuYWlib3NzLmNoYXQvZmlsZS9kcmF3L21qL29yaWdpbi8zMzY4ZGRlOTY1YWNjMjAzMWYwNzhlYzQ5OWJhNjc5OS5wbmc_1_2.png" id="2_g14j6"]
-[ext_resource type="Texture2D" uid="uid://dw0jvc2qy6ft" path="res://asserts/aHR0cHM6Ly93d3cuYWlib3NzLmNoYXQvZmlsZS9kcmF3L21qL29yaWdpbi8zMzY4ZGRlOTY1YWNjMjAzMWYwNzhlYzQ5OWJhNjc5OS5wbmc_2_1.png" id="3_vbegm"]
-[ext_resource type="Texture2D" uid="uid://dinba12v7awup" path="res://asserts/aHR0cHM6Ly93d3cuYWlib3NzLmNoYXQvZmlsZS9kcmF3L21qL29yaWdpbi8zMzY4ZGRlOTY1YWNjMjAzMWYwNzhlYzQ5OWJhNjc5OS5wbmc_2_2.png" id="4_ehkex"]
-[ext_resource type="Texture2D" uid="uid://bqetk66fmrf7x" path="res://asserts/aHR0cHM6Ly93d3cuYWlib3NzLmNoYXQvZmlsZS9kcmF3L21qL29yaWdpbi80OTFlMmQ4MTYzNjQxNTQ4MjcxZDEwMzg3Y2IxZWZiMC5wbmc (1)_1_1.png" id="5_xersf"]
+[ext_resource type="Texture2D" uid="uid://boep5rlhhb7pf" path="res://asserts/抠图处理 (1).png" id="1_ykrsh"]
+[ext_resource type="Texture2D" uid="uid://dm0jvfydwm86h" path="res://asserts/抠图处理 (2).png" id="2_g14j6"]
+[ext_resource type="Texture2D" uid="uid://b3cyfvlgmwab2" path="res://asserts/抠图处理 (3).png" id="3_vbegm"]
+[ext_resource type="Texture2D" uid="uid://dtdb23oet8s4l" path="res://asserts/抠图处理 (4).png" id="4_ehkex"]
+[ext_resource type="Texture2D" uid="uid://dgkgar0tumq4" path="res://asserts/抠图处理.png" id="5_xersf"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_mf4mk"]
 animations = [{

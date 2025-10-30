@@ -14,7 +14,7 @@ func 初始化() -> void:
 	%"修炼".点击按钮.connect(func():
 		_冷却完成(%"修炼",GameData.player.absorption_cooldown)
 		var 灵气吸收量=GameData.player.absorption_rate.get_current_value()
-		GameData.player.吸收灵气进入体内(灵气吸收量)
+		GameData.player.absorb_spiritual_energy(灵气吸收量)
 	)
 	%"突破".点击按钮.connect(func():
 		GameData.player.level_up()

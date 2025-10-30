@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dinba12v7awup"
-path="res://.godot/imported/aHR0cHM6Ly93d3cuYWlib3NzLmNoYXQvZmlsZS9kcmF3L21qL29yaWdpbi8zMzY4ZGRlOTY1YWNjMjAzMWYwNzhlYzQ5OWJhNjc5OS5wbmc_2_2.png-f0e76aeeebfd55d91dea5e8454db6560.ctex"
+uid="uid://dm0jvfydwm86h"
+path="res://.godot/imported/抠图处理 (2).png-2d3bfebe2e0f10ddd72d1cdda38788ce.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asserts/aHR0cHM6Ly93d3cuYWlib3NzLmNoYXQvZmlsZS9kcmF3L21qL29yaWdpbi8zMzY4ZGRlOTY1YWNjMjAzMWYwNzhlYzQ5OWJhNjc5OS5wbmc_2_2.png"
-dest_files=["res://.godot/imported/aHR0cHM6Ly93d3cuYWlib3NzLmNoYXQvZmlsZS9kcmF3L21qL29yaWdpbi8zMzY4ZGRlOTY1YWNjMjAzMWYwNzhlYzQ5OWJhNjc5OS5wbmc_2_2.png-f0e76aeeebfd55d91dea5e8454db6560.ctex"]
+source_file="res://asserts/抠图处理 (2).png"
+dest_files=["res://.godot/imported/抠图处理 (2).png-2d3bfebe2e0f10ddd72d1cdda38788ce.ctex"]
 
 [params]
 
